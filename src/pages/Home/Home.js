@@ -550,7 +550,7 @@ const Home = (props) => {
   const nextRef_2 = useRef(null);
   return (
     <AnimatePresence>
-      <div>
+      {/* <div>
         <div className="mx-auto max-h-[328px] xl:pt-[0px] xsm:pt-[15px]">
           <Swiper
             modules={[Navigation, Pagination, Scrollbar, A11y]}
@@ -942,7 +942,7 @@ const Home = (props) => {
         </div>
         
       </div>
-      {props.Review}
+      {props.Review} */}
     </AnimatePresence>
    
   );

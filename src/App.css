@@ -1,78 +1,94 @@
 /* index.css or App.css */
 @import "~@fortawesome/fontawesome-free/css/all.css";
-*{
-    margin: 0;
-    padding: 0;
-    font-family: 'Poppins', sans-serif;
-    box-sizing: border-box;
-    scroll-behavior: smooth;
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 .discount {
- border-bottom: 1px solid #666666;
- max-width: 50px;
- margin-top: -10px;
+  border-bottom: 1px solid #666666;
+  max-width: 50px;
+  margin-top: -10px;
 }
 
 .swiper-button-next {
   display: none;
-  }
-  
-  .swiper-button-prev {
-    display: none;
-  }
-  .border_1{
-    border: 2px solid #0156FF;
-  }
-  .core{
-    background: url(./pages/img/core.jpg);
-    background-repeat: no-repeat;
-    background-position: right;
-    }
- .back{
-  background: linear-gradient(270deg, #F5F7FF 0%, #F5F7FF 66.67%, rgba(240, 242, 241, 0) 100%);
-padding-left: clamp(0px,39vw,500px); 
 }
- .back_2{
-  background: linear-gradient(90deg, #F5F7FF 0%, #F5F7FF 66.67%, rgba(240, 242, 241, 0) 100%);
+
+.swiper-button-prev {
+  display: none;
 }
- .linear_1{
-  background: radial-gradient(50% 50.00% at 50% 50.00%, #242528 0%, #040404 100%);
- }
- .back_3{
-  background: linear-gradient(90deg, #010101 0%, #0E0F10 68.23%, rgba(20, 21, 23, 0) 100%);
- }
-.productDiv:hover{
+.border_1 {
+  border: 2px solid #0156ff;
+}
+.core {
+  background: url(./pages/img/core.jpg);
+  background-repeat: no-repeat;
+  background-position: right;
+}
+.back {
+  background: linear-gradient(
+    270deg,
+    #f5f7ff 0%,
+    #f5f7ff 66.67%,
+    rgba(240, 242, 241, 0) 100%
+  );
+  padding-left: clamp(0px, 39vw, 500px);
+}
+.back_2 {
+  background: linear-gradient(
+    90deg,
+    #f5f7ff 0%,
+    #f5f7ff 66.67%,
+    rgba(240, 242, 241, 0) 100%
+  );
+}
+.linear_1 {
+  background: radial-gradient(50% 50% at 50% 50%, #242528 0%, #040404 100%);
+}
+.back_3 {
+  background: linear-gradient(
+    90deg,
+    #010101 0%,
+    #0e0f10 68.23%,
+    rgba(20, 21, 23, 0) 100%
+  );
+}
+.productDiv:hover {
   box-shadow: 0px 5px 15px 0px #00000024;
 }
-.searchinput{
-  width:clamp(100px,74.2vw,950px);
-  height:clamp(20px,5vw,60px); ;
+.searchinput {
+  width: clamp(100px, 74.2vw, 950px);
+  height: clamp(20px, 5vw, 60px);
 }
-@media screen and (min-width:350px){
-  .searchInput_2{
-    height: clamp(40px,4.2vw,70px);
+@media screen and (min-width: 350px) {
+  .searchInput_2 {
+    height: clamp(40px, 4.2vw, 70px);
   }
 }
-.first-input{
-  font-size:clamp(14px,2vw,20px);
+.first-input {
+  font-size: clamp(14px, 2vw, 20px);
 }
-.height{
-  height:328px ;
+.height {
+  height: 328px;
 }
-.input_4{
-  width: clamp(300px,30.5vw,391px);
+.input_4 {
+  width: clamp(300px, 30.5vw, 391px);
 }
-.heading{
-  font-size: clamp(28px,3vw,38px);
+.heading {
+  font-size: clamp(28px, 3vw, 38px);
 }
-.gap_1{
-  gap: clamp(10px,4.2vw,54px);
+.gap_1 {
+  gap: clamp(10px, 4.2vw, 54px);
 }
-.padding{
-  padding-left: clamp(5px ,1.8vw, 24px );
-}.maxwidth{
-  max-width:clamp(350px,72vw,925px) ;
+.padding {
+  padding-left: clamp(5px, 1.8vw, 24px);
 }
-.maxwidth_2{
-  width: clamp(330px,33.75vw,432px);
+.maxwidth {
+  max-width: clamp(350px, 72vw, 925px);
+}
+.maxwidth_2 {
+  width: clamp(330px, 33.75vw, 432px);
 }

@@ -81,7 +81,7 @@ const Product = ({Header,Footer,Review}) => {
         </div>
         </div>
         <div className='flex xl:flex-nowrap xsm:flex-wrap-reverse mx-auto max-w-[1920px]'>
-        {/* sfodvksfvmsfjkmvsfv     */}
+  
         {tabIndex==0?( 
             <div className='max-w-[1064px] w-full bg-[#F5F7FF] mx-auto sm:pr-[50px] md:pr-[80px] lg:pr-[118px] flex flex-col items-end pl-[10px]'>
             <div className='max-w-[600px] w-full xl:pl-[80px]'>
@@ -124,7 +124,7 @@ const Product = ({Header,Footer,Review}) => {
             <p className=' text-[18px] leading-[27px] font-bold'><a href=""> More information</a></p>
             </div>
         </div>):('')}
-        {/* tvjnfjnfvnfvn */}
+    
         {tabIndex==1?( 
             <div className='auto max-w-[1064px] w-full bg-[#F5F7FF] xl:pr-[50px] 2xl:pr-[118px]  flex flex-col items-end pl-[10px]'>
             <div className='max-w-[600px] w-full xl:pl-[50px] '>
@@ -156,7 +156,7 @@ const Product = ({Header,Footer,Review}) => {
             <p className=' text-[18px] leading-[27px] font-bold'><a href=""> More information</a></p>
             </div>
         </div>):('')}
-        {/* tjhvfdhvhdvdd */}
+  
         {tabIndex==2?( 
          <div className='mx-auto max-w-[1064px] w-full bg-[#F5F7FF]  flex flex-col items-end pl-[10px] xsm:pr-[30px] md:pr-[60px] lg:pr-[80px] xl:pr-[118px]'>
             <div className=' max-w-[600px] w-full xl:pl-[150px] 2xl:pl-[100px] '>

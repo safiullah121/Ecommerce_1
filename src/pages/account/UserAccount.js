@@ -33,7 +33,7 @@ const information_2 =[
 
   return (
     <>
-      {props.Header}
+      {/* {props.Header}
       <div className="max-w-[1400px] w-full  mx-auto">
         <div className="flex pt-[21px]">
           {label.map((item, index) => (
@@ -107,7 +107,7 @@ const information_2 =[
         </div>
       </div>
       </div>
-      {props.Footer}
+      {props.Footer} */}
       
     </>
   );
