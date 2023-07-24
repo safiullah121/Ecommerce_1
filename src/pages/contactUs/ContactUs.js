@@ -25,7 +25,7 @@ const ContactUs = ({Header,Footer}) => {
     
   return (
     <>
-    {/* {Header}
+    {Header}
     <div className='max-w-[1400px] w-full flex-wrap mx-auto flex justify-between'>
     <div className='max-w-[925px] w-full pt-[21px] xsm:pb-[0px] xl:pb-[123px]'>
     <div className='flex items-center '>
@@ -63,7 +63,7 @@ Please contact us and we will make sure to get back to you as soon as we possibl
         ))}
     </div>
     </div>
-    {Footer} */}
+    {Footer}
     </>
   )
 }

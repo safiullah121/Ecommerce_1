@@ -1,5 +1,5 @@
 import { React, useState, useRef, useEffect } from "react";
-// import ProductDiv from "./ProductDiv";
+import ProductDiv from "./ProductDiv";
 import Msi from "../img/9.png";
 import Zip from "../img/10.svg";
 import Window from "../img/11.png";
@@ -632,10 +632,10 @@ const Home = (props) => {
             }}
             pagination={{ clickable: true }}
           >
-         {/* {arrayOne.map(
+         {arrayOne.map(
             (item, index) =>
             item.new && <SwiperSlide className=" mx-auto">  <ProductDiv item={item} index={index} /></SwiperSlide>
-          )} */}
+          )}
     </Swiper>
         </div>
         <div className=" relative max-w-[1400px] mx-auto flex justify-between">
@@ -718,10 +718,10 @@ const Home = (props) => {
             </div>
           </div>
 </SwiperSlide>
-          {/* {arrayOne.map(
+          {arrayOne.map(
             (item, index) =>
               item.speaker && <SwiperSlide><ProductDiv item={item} index={index} /></SwiperSlide>
-          )} */}
+          )}
           </Swiper>
         </div>
         <div className="max-w-[1400px] xsm:hidden xl:flex mx-auto mt-[30px]">
@@ -785,10 +785,10 @@ const Home = (props) => {
             </div>
           </div>
 </SwiperSlide>
-          {/* {arrayOne.map(
+          {arrayOne.map(
             (item, index) =>
               item.laptop && <SwiperSlide><ProductDiv item={item} index={index} /></SwiperSlide>
-          )} */}
+          )}
           </Swiper>
         </div>
         <div className="max-w-[1400px] mx-auto xsm:hidden xl:flex mt-[30px]">
@@ -853,10 +853,10 @@ const Home = (props) => {
             </div>
           </div></SwiperSlide>
 
-          {/* {arrayOne.map(
+          {arrayOne.map(
             (item, index) =>
               item.color && <SwiperSlide><ProductDiv item={item} index={index} /></SwiperSlide>
-          )}*/}</Swiper>
+          )}</Swiper>
         </div>
         <div className="mx-auto max-w-[1400px] flex justify-between gap-[20px] pt-[31px]">
         <Swiper
@@ -907,10 +907,10 @@ const Home = (props) => {
             </div>
           </div>
 </SwiperSlide>
-          {/* {arrayOne.map(
+          {arrayOne.map(
             (item, index) =>
               item.monitor &&<SwiperSlide> <ProductDiv item={item} index={index} /></SwiperSlide>
-          )} */}
+          )}
           </Swiper>
         </div>
         <div className="flex flex-wrap max-w-[1400px] mx-auto justify-between pt-[31px] pb-[40px]">

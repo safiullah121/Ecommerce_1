@@ -55,7 +55,7 @@ const Afaq = (props) => {
   return (
     
     <>
-    {/* {props.Header}
+    {props.Header}
     <div className='max-w-[1400px] w-full mx-auto'>
     <div className='flex items-center pb-[19px] pt-[21px]'> 
          {labelArray.map((item , index)=>(
@@ -95,7 +95,7 @@ const Afaq = (props) => {
          </div>
     </div>
   
-    {props.Footer} */}
+    {props.Footer}
     </>
   )
 }
