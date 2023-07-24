@@ -58,7 +58,7 @@ const information_2 =[
                   >
                     {item.a}
                   </li>
-                 {item.a=='My Orders' || item.a=='My Wish List' ?( <div className={`${item.extraClasses}`}></div>):('')}
+                 {item.a==='My Orders' || item.a==='My Wish List' ?( <div className={`${item.extraClasses}`}></div>):('')}
                   </div>
                 ))}
               </ul>
