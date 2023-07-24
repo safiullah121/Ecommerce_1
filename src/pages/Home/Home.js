@@ -1,4 +1,4 @@
-import { React, useRef } from "react";
+import { React, useRef , useState } from "react";
 import ProductDiv from "./ProductDiv";
 import Msi from "../img/9.png";
 import Zip from "../img/10.svg";
@@ -544,10 +544,12 @@ const Home = (props) => {
       para_2: "    01.09.2020",
     },
   ];
-  const prevRef = useRef(null);
-  const nextRef = useRef(null);
-  const prevRef_2 = useRef(null);
-  const nextRef_2 = useRef(null);
+const previous = useRef(null)
+const next = useRef()
+const nsextis = useRef()
+const previs = useRef()
+const [_, setInit] = useState();
+
   return (
     <AnimatePresence>
       <div>
@@ -556,12 +558,11 @@ const Home = (props) => {
             modules={[Navigation, Pagination, Scrollbar, A11y]}
             spaceBetween={0}
             slidesPerView={1}
-            onInit={(swiper) => {
-              swiper.params.navigation.prevEl = prevRef.current;
-              swiper.params.navigation.nextEl = nextRef.current;
-              swiper.navigation.init();
-              swiper.navigation.update();
+            navigation={{
+              prevEl: previous.current,
+              nextEl: next.current,
             }}
+            onInit={() => setInit(true)}
           >
             {swiperImg.map((item, index) => (
               <SwiperSlide className="h-[328px]">
@@ -572,13 +573,13 @@ const Home = (props) => {
         </div>
         <div className=" relative max-w-[1400px] mx-auto flex justify-between">
           <button
-            ref={prevRef}
+            ref={previous}
             className=" absolute  xsm:top-[-70px] sm:top-[-90px] md:top-[-110px] lg:top-[-140px] xl:top-[-188px] left-0 z-10 rounded-l-[30px] bg-[#252931] rotate-180 opacity-50 pl-3 pb-4 pt-4 pr-2"
           >
             <img src={Twoo} alt="" />
           </button>
           <button
-            ref={nextRef}
+            ref={next}
             className="absolute xsm:top-[-70px] sm:top-[-90px] md:top-[-110px] lg:top-[-140px] xl:top-[-188px] right-0 z-10  rounded-r-[30px]  cursor-pointer bg-[#252931] rotate-180 opacity-50 pl-2 pb-4 pt-4 pr-3"
           >
             <img src={One} alt="" />
@@ -624,12 +625,6 @@ const Home = (props) => {
               }
 
             }}
-            onInit={(swiper) => {
-              swiper.params.navigation.prevEl = prevRef_2.current;
-              swiper.params.navigation.nextEl = nextRef_2.current;
-              swiper.navigation.init();
-              swiper.navigation.update();
-            }}
             pagination={{ clickable: true }}
           >
          {arrayOne.map(
@@ -637,20 +632,6 @@ const Home = (props) => {
             item.new && <SwiperSlide className=" mx-auto">  <ProductDiv item={item} index={index} /></SwiperSlide>
           )}
     </Swiper>
-        </div>
-        <div className=" relative max-w-[1400px] mx-auto flex justify-between">
-          <button
-            ref={prevRef_2}
-            className=" absolute  top-[-230px] left-0 z-10 rounded-l-[30px] bg-[#252931] rotate-180 opacity-50 pl-3 pb-4 pt-4 pr-2"
-          >
-            <img src={Twoo} alt="" />
-          </button>
-          <button
-            ref={nextRef_2}
-            className="absolute top-[-230px] right-0 z-10  rounded-r-[30px]  cursor-pointer bg-[#252931] rotate-180 opacity-50 pl-2 pb-4 pt-4 pr-3"
-          >
-            <img src={One} alt="" />
-          </button>
         </div>
 
         <div className="xl:flex xsm:hidden max-w-[1400px] mx-auto pt-[20px] pb-[20px] mt-[18px] mb-[14px]  flex items-center justify-center bg-[#F5F7FF]">
@@ -695,8 +676,6 @@ const Home = (props) => {
 
             }}
             onInit={(swiper) => {
-              swiper.params.navigation.prevEl = prevRef_2.current;
-              swiper.params.navigation.nextEl = nextRef_2.current;
               swiper.navigation.init();
               swiper.navigation.update();
             }}
@@ -763,8 +742,6 @@ const Home = (props) => {
 
             }}
             onInit={(swiper) => {
-              swiper.params.navigation.prevEl = prevRef_2.current;
-              swiper.params.navigation.nextEl = nextRef_2.current;
               swiper.navigation.init();
               swiper.navigation.update();
             }}
@@ -830,8 +807,6 @@ const Home = (props) => {
 
             }}
             onInit={(swiper) => {
-              swiper.params.navigation.prevEl = prevRef_2.current;
-              swiper.params.navigation.nextEl = nextRef_2.current;
               swiper.navigation.init();
               swiper.navigation.update();
             }}
@@ -885,8 +860,6 @@ const Home = (props) => {
 
             }}
             onInit={(swiper) => {
-              swiper.params.navigation.prevEl = prevRef_2.current;
-              swiper.params.navigation.nextEl = nextRef_2.current;
               swiper.navigation.init();
               swiper.navigation.update();
             }}
