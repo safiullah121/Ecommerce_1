@@ -625,7 +625,7 @@ const [_, setInit] = useState();
               }
 
             }}
-            pagination={{ clickable: true }}
+      
           >
          {arrayOne.map(
             (item, index) =>

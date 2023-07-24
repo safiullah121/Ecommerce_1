@@ -72,7 +72,7 @@ const Product = ({Header,Footer,Review}) => {
             </div>
             <div className=' flex items-center flex-wrap justify-center'>
                <div className='flex'> <p className='text-[14px] leading-[21px] font-normal' >On Sale from </p> <p className='pl-1 text-[14px] leading-[21px] font-semibold'>{price}</p> </div>
-                <input type="number" className='ml-[10px] bg-[#F5F7FF] max-w-[70px] max-[40px] pt-[11px] pb-[12px] pr-[9px] pl-[15px] rounded-[6px] font-semibold text-[13px] leading-[27px] outline-none' />
+                <input type="number" min={0} max={100} className='ml-[10px] bg-[#F5F7FF] max-w-[70px] max-[40px] pt-[11px] pb-[12px] pr-[9px] pl-[15px] rounded-[6px] font-semibold text-[13px] leading-[27px] outline-none' />
                 <button className='bg-[#0156FF] ml-[21px] text-[#FFFFFF] text-[14px] leading-[21px] xsm:mt-[15px] sm:mt-[0px] font-semibold rounded-[50px] pt-[15px] pb-[15px] pl-[32px] pr-[32px]'>Add to Cart</button>
                 <button className='bg-[#FFB800] ml-[13px] rounded-[50px] pt-[15px] pb-[15px] pl-[32px] xsm:mt-[15px] sm:mt-[0px] pr-[32px]'><img src={Pay} alt="" /></button>
             </div>

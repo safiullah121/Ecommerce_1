@@ -382,6 +382,9 @@ const Header = () => {
                 ref={hoveredItem_3Ref}
                 onMouseLeave={() => {
                   setHoveredItem_3(false);
+                  setmenu(false);
+                  setmenu_2(false); 
+                  setmenu_3(false);
                 }}
               >
                 <div className="flex h-[400px] bg-white  max-w-[1398px] w-full mx-auto border-[1px] border-[#CACDD8] border-solid">
@@ -402,7 +405,7 @@ const Header = () => {
                         <li className=" list-none text-[14px] leading-[21px] font-[600]">
                           {item.title}
                         </li>
-                        {hoveredItem === index && <img src={item.img} alt="" />}
+                        {item.title=== 'Everyday Use Notebooks' && <img src={item.img} alt="" />}
                       </div>
                     ))}
                   </div>
@@ -423,7 +426,7 @@ const Header = () => {
                           <li className=" list-none text-[14px] leading-[21px] font-[600]">
                             {item.title}
                           </li>
-                          {hoveredItem_2 === index && (
+                          {item.title === 'MSI Workstation Series' && (
                             <img src={item.img} alt="" />
                           )}
                         </div>

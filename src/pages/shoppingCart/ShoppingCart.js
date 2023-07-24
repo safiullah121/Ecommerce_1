@@ -75,7 +75,7 @@ const ShoppingCart = (props) => {
             <img src={item.img} alt="" />
             <p className='max-w-[291px] w-full font-[400] text-[14px] leading-[21px] pl-[29px]'>{item.Desc}</p>
             <p  className='font-[600] text-[16px] leading-[24px] pl-[65px]'>{item.price}</p>
-            <input type={item.type}  className='w-[70px] h-[50px] bg-[#F5F7FF] rounded-[6px] pl-[10px] ml-[60px] outline-none'/>
+            <input type={item.type} min={0} max={100} className='w-[70px] h-[50px] bg-[#F5F7FF] rounded-[6px] pl-[10px] ml-[60px] outline-none'/>
             <p className='font-[600] text-[16px] leading-[24px] pl-[40px]'>{item.subtotal}</p>
             <div className='ml-[60px] flex flex-col gap-[10px]'>
                 <img src={item.edit} alt="" className='h-[26px] w-[26px]'/>
