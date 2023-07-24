@@ -20,7 +20,7 @@ import Therma from "../../pages/img/therma.svg";
 import Adata from "../../pages/img/adata.svg";
 import Pakard from "../../pages/img/pakard.svg";
 import Gig from "../../pages/img/gig.svg";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import ProductDiv from "../../pages/Home/ProductDiv";
@@ -28,8 +28,7 @@ import Color from "../../pages/img/13.svg";
 import cross from "../../pages/img/cross_2.svg";
 import Edit from "../../pages/img/edit.svg";
 import pay from "../../pages/img/pay.svg";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+
 
 const Header = () => {
   const [search, setsearch] = useState(false);

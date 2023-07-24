@@ -6,8 +6,6 @@ import Like from '../img/heart.svg'
 import Graph from '../img/graph.svg'
 import Blue from '../img/blueCart.svg'
 import {useNavigate } from 'react-router-dom';
-import { useEffect, useLayoutEffect } from "react";
-import { useLocation } from "react-router-dom";
 
 
 const ProductDiv = (props) => {

@@ -5,8 +5,8 @@ import Saving from "../../pages/img/Saving.svg";
 import Face from "../../pages/img/face.svg";
 import Insta from "../../pages/img/insta.svg";
 import Group from "../../pages/img/8.svg";
-import { BrowserRouter, Link } from "react-router-dom";
-import { useContext } from "react";
+import { Link } from "react-router-dom";
+
 
 const Footer = () => {
   const arrayOne = [

@@ -1,7 +1,5 @@
 import {React , useState} from 'react'
 import Pay from '../img/pay.svg'
-import { color } from 'framer-motion';
-import Trident from '../img/trident.svg'
 import Heart from '../img/heart.svg'
 import Graph from '../img/graph.svg'
 import Message from '../img/message.svg'

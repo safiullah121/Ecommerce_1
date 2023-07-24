@@ -12,7 +12,7 @@ import AboutUs from './pages/about/AboutUs';
 import Header from "./Components/common/Header";
 import Footer from "./Components/common/Footer";
 import Afaq from "./pages/FAQ/Afaq";
-import Review from "./Components/common/Review";
+
 
 function ScrollToTop() {
   const { pathname } = useLocation();

@@ -1,4 +1,4 @@
-import { React, useState, useRef, useEffect } from "react";
+import { React, useRef } from "react";
 import ProductDiv from "./ProductDiv";
 import Msi from "../img/9.png";
 import Zip from "../img/10.svg";
