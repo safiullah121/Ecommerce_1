@@ -4,18 +4,18 @@ import Time from '../img/time.svg'
 import Email from '../img/mail.svg'
 import Phone from '../img/phone.svg'
 
-const ContactUs = ({Header,Footer}) => {
-    const arrayPara =[
+const ContactUs = () => {
+    const label =[
         <p className='text-[#000000] text-[12px] leading[18px] font-normal'>Home</p>,
         <p className='text-[#0156FF] ml-1 mr-1'>›</p>,
         <p className='text-[#000000] text-[12px] leading[18px] font-normal'>Contact Us</p>
     ];  
-    const inputArray =[
+    const inputs =[
         {label:"Your Name", placeholder:"Your Name", type:"text"  },
         {label:"Your Email", placeholder:"Your Name", type:"text",exteaClasses:"md_2:ml-[50px]"  } ,
 
     ];
-    const aboutDiv = [
+    const aboutShop = [
      { image: Location, heading: "Address:", para : "1234 Street Adress City Address, 1234",},
      { image: Phone, heading: "Phone:", para : "(00)1234 5678",},
       {   image: Time, heading: 'We are open:', para: <p>Monday - Thursday: 9:00 AM - 5:30 PM Friday 9:00 AM - 6:00 PM <br/> Saturday: 11:00 AM - 5:00 PM</p> },
@@ -24,12 +24,11 @@ const ContactUs = ({Header,Footer}) => {
 ]
     
   return (
-    <>
-    {Header}
+    <>   
     <div className='max-w-[1400px] w-full flex-wrap mx-auto flex justify-between'>
     <div className='max-w-[925px] w-full pt-[21px] xsm:pb-[0px] xl:pb-[123px]'>
     <div className='flex items-center '>
-            {arrayPara.map((item,index)=>(
+            {label.map((item,index)=>(
                  
                 <div key={index+'para'}>{item}</div>
                  
@@ -37,7 +36,7 @@ const ContactUs = ({Header,Footer}) => {
               <h1 className='font-semibold text-[32px] leading-[48px]'>Contact Us</h1>
               <p className='font-light text-[16px] leading-[30px]'>We love hearing from you, our Shop customers.<br/>
 Please contact us and we will make sure to get back to you as soon as we possibly can.</p>
- <div className={`pl-[10px] max-w-[925px] w-full flex xsm:flex-col md_2:flex-row  xsm:gap-[0px]  md_2:gap-[50px] flex-wrap pt-[21px] `}>   {inputArray.map((item,index)=>(<div key={index+'input'} className={``} >
+ <div className={`pl-[10px] max-w-[925px] w-full flex xsm:flex-col md_2:flex-row  xsm:gap-[0px]  md_2:gap-[50px] flex-wrap pt-[21px] `}>   {inputs.map((item,index)=>(<div key={index+'input'} className={``} >
  <label  className={`flex font-semibold text-[13px] leading-[27px] `}>{item.label} <p className='pl-1 text-[#C94D3F]' >*</p></label>
  <input type={item.type} placeholder={item.placeholder} className={`maxwidth_2 placeholder:text-[#A2A6B0] placeholder:text-[14px] placeholder:font-light placeholder:leading-[20px] pl-[17px]  h-[50px] border-[1px] border-[#A2A6B0] border-solid outline-none rounded-[4px] `}  />
 
@@ -52,7 +51,7 @@ Please contact us and we will make sure to get back to you as soon as we possibl
     </div>
   
     <div className='2xl:max-w-[401px] xl:max-w-[300px] w-full bg-[#F5F7FF] max-h-[401px] xsm:mt-[20px] xl:mt-[121px] pt-[10px] pb-[74px] pl-[31px] xl:pr-[10px] 2xl:pr-[88px]'>
-        {aboutDiv.map((item , index)=>(
+        {aboutShop.map((item , index)=>(
           <div key={index+'about'} className='flex pt-[19px]'>
             <img src={item.image} alt="" className='w-[25px] h-[25px]'/>
             <div className='pl-[10px]'>
@@ -63,7 +62,7 @@ Please contact us and we will make sure to get back to you as soon as we possibl
         ))}
     </div>
     </div>
-    {Footer}
+    
     </>
   )
 }

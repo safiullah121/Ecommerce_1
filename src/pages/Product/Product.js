@@ -13,10 +13,11 @@ import { useLocation } from 'react-router-dom';
 
 
 
-const Product = ({Header,Footer,Review}) => {
+const Product = () => {
+    const [tabIndex, settabindex] = useState(0);
     const location = useLocation();
     const image = location.state && location.state.image;
-    const arrayLi =[
+    const liArray =[
         '•  Intel Core i7-10700F',
         '•  Intel H410',
         '•  WHITE',
@@ -31,7 +32,7 @@ const Product = ({Header,Footer,Review}) => {
         '•  PSU 330W',
         '•  Fan Cooler',   
     ];
-    const arrayPara =[
+    const paraArray =[
         <p className='text-[#000000] text-[12px] leading[18px] font-normal'>Home</p>,
         <p className='text-[#0156FF] ml-1 mr-1'>›</p>,
         <p className='text-[#000000] text-[12px] leading[18px] font-normal'> Laptops</p>,
@@ -39,10 +40,9 @@ const Product = ({Header,Footer,Review}) => {
         <p className='text-[#A3A3A3] text-[12px] leading[18px] font-normal'> MSI WS Series</p>,
     ];
     const [price, setprice] = useState(' $3,299.00');
-    const [tabIndex, settabindex] = useState(0);
+  
   return (
-    <div>
-        {Header}
+    <>
         <div className=' border-b-[1px] border-solid border-[#CACDD8]'>
         <div className='flex justify-between xsm:flex-col-reverse xl:flex-row xsm:gap-[20px] lg:-flex-row items-center max-w-[1398px] mx-auto pt-[26px] pb-[25px] '>
             <div className='flex'>
@@ -84,7 +84,7 @@ const Product = ({Header,Footer,Review}) => {
             <div className='max-w-[1064px] w-full bg-[#F5F7FF] mx-auto sm:pr-[50px] md:pr-[80px] lg:pr-[118px] flex flex-col items-end pl-[10px]'>
             <div className='max-w-[600px] w-full xl:pl-[80px]'>
             <div className='flex items-center pb-[25px] pt-[67px] '>
-            {arrayPara.map((item,index)=>(
+            {paraArray.map((item,index)=>(
                  
                 <div key={index+'para'}>{item}</div>
                  
@@ -127,7 +127,7 @@ const Product = ({Header,Footer,Review}) => {
             <div className='auto max-w-[1064px] w-full bg-[#F5F7FF] xl:pr-[50px] 2xl:pr-[118px]  flex flex-col items-end pl-[10px]'>
             <div className='max-w-[600px] w-full xl:pl-[50px] '>
             <div className='flex items-center pb-[25px] pt-[67px] '>
-            {arrayPara.map((item,index)=>(
+            {paraArray.map((item,index)=>(
                  
                 <div key={index+'para'}>{item}</div>
                  
@@ -135,7 +135,7 @@ const Product = ({Header,Footer,Review}) => {
             <h1 className=' font-medium text-[32px] leading-[48px]'>MSI MPG Trident 3</h1>
             <button href="" className='pt-[13px] text-[12px] leading-[18px] font-normal text-[#0156FF]'>Be the first to review this product</button>
            <ul className='pt-[28px]'>
-        {arrayLi.map((item ,index)=>(
+        {liArray.map((item ,index)=>(
             <li key={index + item}>{item}</li>
         ))}
 
@@ -159,7 +159,7 @@ const Product = ({Header,Footer,Review}) => {
          <div className='mx-auto max-w-[1064px] w-full bg-[#F5F7FF]  flex flex-col items-end pl-[10px] xsm:pr-[30px] md:pr-[60px] lg:pr-[80px] xl:pr-[118px]'>
             <div className=' max-w-[600px] w-full xl:pl-[150px] 2xl:pl-[100px] '>
             <div className='flex items-center pb-[25px] pt-[67px] '>
-            {arrayPara.map((item,index)=>(
+            {paraArray.map((item,index)=>(
                  
                 <div key={index+'para'}>{item}</div>
                  
@@ -211,8 +211,6 @@ const Product = ({Header,Footer,Review}) => {
         
        </div>
         </div>
-       
-         
            <div className='xl:flex xsm:hidden max-w-[1920px] w-full flex justify-end mx-auto max-h-[681px] h-full bg-black'>
             <div className='2xl:max-w-[700px] xl:max-w-[500px]  w-full  bg-transparent pl-[50px] pt-[100px] pb-[110px]'>
             <div className=' flex flex-col  justify-center items-end'>
@@ -227,11 +225,6 @@ const Product = ({Header,Footer,Review}) => {
             <img src={Core} alt="" className='xl:max-w-[870px] 2xl:max-w-[1000px] w-full'/>
            
            </div>
-          
-         
-        
-      
-        
           <div className='max-w-[1920px] w-full flex mx-auto'>
           
             <div className='flex justify-between bg-support_2  max-w-[1920px] w-full h-[400px] bg-no-repeat bg-center'>
@@ -280,9 +273,7 @@ const Product = ({Header,Footer,Review}) => {
                 </div>
             </div>
           </div>
-          
-        {Footer}
-    </div>
+    </>
   )
 }
 

@@ -1,16 +1,7 @@
-import { React, useRef , useState } from "react";
+import { React, useRef , useState , useContext,useEffect} from "react";
 import ProductDiv from "./ProductDiv";
 import Msi from "../img/9.png";
 import Zip from "../img/10.svg";
-import Window from "../img/11.png";
-import White from "../img/12.png";
-import Color from "../img/13.png";
-import Laptop from "../img/14.png";
-import Laptop_2 from "../img/laptop_2.png";
-import Check from "../img/check.svg";
-import Uncheck from "../img/uncheck.svg";
-import Star from "../img/15.svg";
-import Custome from "../img/20.svg";
 import Two from "../img/1.jpg";
 import Three from "../img/2.jpg";
 import Four from "../img/3.jpg";
@@ -30,8 +21,6 @@ import Therma from "../img/therma.svg";
 import Adata from "../img/adata.svg";
 import Pakard from "../img/pakard.svg";
 import Gig from "../img/gig.svg";
-import Monitor from "../img/28.png";
-import Monitor_2 from "../img/monitor_2.png";
 import Whitelap from "../img/whitelap.png";
 import Dragon from "../img/29.png";
 import Green from "../img/30.png";
@@ -41,454 +30,24 @@ import Keyboard from "../img/33.png";
 import Gaming from "../img/34.png";
 import Morning from "../img/35.png";
 import Gaming_2 from "../img/36.png";
-import Color_2 from "../img/color_2.png";
 import { AnimatePresence } from "framer-motion";
+import Context from "../Context";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const Home = (props) => {
-  const arrayOne = [
-    {
-      id: Math.random(),
-      label: Check,
-      label_2: "in stock",
-      image: Window,
-      review: Star,
-      title: (
-        <p className="text-[13px] font-normal leading-[19px]">
-          EX DISPLAY : MSI Pro 16 <br /> Flex-036AU 15.6 MULTITOUCH <br />{" "}
-          All-In-On...
-        </p>
-      ),
-      price: "$499.00",
-      discountedPrice: "$499.00",
-      new: true,
-    },
-    {
-      id: Math.random(),
-      label: Uncheck,
-      label_2: "check availability",
-      image: White,
-      review: Star,
-      title: (
-        <p className="text-[13px] font-normal leading-[19px]">
-          EX DISPLAY : MSI Pro 16 <br /> Flex-036AU 15.6 MULTITOUCH <br />{" "}
-          All-In-On...
-        </p>
-      ),
-      price: <h1 className="">$499.00</h1>,
-      discountedPrice: "$499.00",
-      new: true,
-    },
-    {
-      id: Math.random(),
-      label: Check,
-      label_2: "in stock",
-      image: Color,
-      review: Star,
-      title: (
-        <p className="text-[13px] font-normal leading-[19px]">
-          EX DISPLAY : MSI Pro 16 <br /> Flex-036AU 15.6 MULTITOUCH <br />{" "}
-          All-In-On...
-        </p>
-      ),
-      price: "$499.00",
-      discountedPrice: "$499.00",
-      new: true,
-    },
-    {
-      id: Math.random(),
-      label: Check,
-      label_2: "in stock",
-      image: Laptop,
-      review: Star,
-      title: (
-        <p className="text-[13px] font-normal leading-[19px]">
-          EX DISPLAY : MSI Pro 16 <br /> Flex-036AU 15.6 MULTITOUCH <br />{" "}
-          All-In-On...
-        </p>
-      ),
-      price: "$499.00",
-      discountedPrice: "$499.00",
-      new: true,
-    },
-    {
-      id: Math.random(),
-      label: Check,
-      image: Color,
-      label_2: "in stock",
-      review: Star,
-      title: (
-        <p className="text-[13px] font-normal leading-[19px]">
-          EX DISPLAY : MSI Pro 16 <br /> Flex-036AU 15.6 MULTITOUCH <br />{" "}
-          All-In-On...
-        </p>
-      ),
-      price: "$499.00",
-      discountedPrice: "$499.00",
-      new: true,
-    },
-    {
-      id: Math.random(),
-      label: Check,
-      label_2: "in stock",
-      image: Color,
-      review: Star,
-      title: (
-        <p className="text-[13px] font-normal leading-[19px]">
-          EX DISPLAY : MSI Pro 16 <br /> Flex-036AU 15.6 MULTITOUCH <br />{" "}
-          All-In-On...
-        </p>
-      ),
-      price: "$499.00",
-      discountedPrice: "$499.00",
-      new: true,
-    },
-    {
-      id: Math.random(),
-      label: Check,
-      label_2: "in stock",
-      image: Window,
-      review: Star,
-      title: (
-        <p className="text-[13px] font-normal leading-[19px]">
-          EX DISPLAY : MSI Pro 16 <br /> Flex-036AU 15.6 MULTITOUCH <br />{" "}
-          All-In-On...
-        </p>
-      ),
-      price: "$499.00",
-      discountedPrice: "$499.00",
-      new: true,
-    },
-    {
-      id: Math.random(),
-      label: Check,
-      label_2: "in stock",
-      image: Custome,
-      review: Star,
-      title: (
-        <p className="text-[13px] font-normal leading-[19px]">
-          'EX DISPLAY : MSI Pro 16 <br /> Flex-036AU 15.6 MULTITOUCH <br />{" "}
-          All-In-On...'
-        </p>
-      ),
-      price: "$499.00",
-      discountedPrice: "$499.00",
-      speaker: true,
-    },
-    {
-      id: Math.random(),
-      label: Check,
-      label_2: "in stock",
-      image: Custome,
-      review: Star,
-      title: (
-        <p className="text-[13px] font-normal leading-[19px]">
-          'EX DISPLAY : MSI Pro 16 <br /> Flex-036AU 15.6 MULTITOUCH <br />{" "}
-          All-In-On...'
-        </p>
-      ),
-      price: "$499.00",
-      discountedPrice: "$499.00",
-      speaker: true,
-    },
-    {
-      id: Math.random(),
-      label: Check,
-      label_2: "in stock",
-      image: Custome,
-      review: Star,
-      title: (
-        <p className="text-[13px] font-normal leading-[19px]">
-          'EX DISPLAY : MSI Pro 16 <br /> Flex-036AU 15.6 MULTITOUCH <br />{" "}
-          All-In-On...'
-        </p>
-      ),
-      price: "$499.00",
-      discountedPrice: "$499.00",
-      speaker: true,
-    },
-    {
-      id: Math.random(),
-      label: Check,
-      label_2: "in stock",
-      image: Custome,
-      review: Star,
-      title: (
-        <p className="text-[13px] font-normal leading-[19px]">
-          'EX DISPLAY : MSI Pro 16 <br /> Flex-036AU 15.6 MULTITOUCH <br />{" "}
-          All-In-On...'
-        </p>
-      ),
-      price: "$499.00",
-      discountedPrice: "$499.00",
-      speaker: true,
-    },
-    {
-      id: Math.random(),
-      label: Check,
-      label_2: "in stock",
-      image: Custome,
-      review: Star,
-      title: (
-        <p className="text-[13px] font-normal leading-[19px]">
-          'EX DISPLAY : MSI Pro 16 <br /> Flex-036AU 15.6 MULTITOUCH <br />{" "}
-          All-In-On...'
-        </p>
-      ),
-      price: "$499.00",
-      discountedPrice: "$499.00",
-      speaker: true,
-    },
-    {
-      id: Math.random(),
-      label: Check,
-      label_2: "in stock",
-      image: Monitor,
-      review: Star,
-      title: (
-        <p className="">
-          EX DISPLAY : MSI Pro 16 <br /> Flex-036AU 15.6 MULTITOUCH <br />{" "}
-          All-In-On...
-        </p>
-      ),
-      price: "$499.00",
-      discountedPrice: "$499.00",
-      monitor: true,
-    },
-    {
-      id: Math.random(),
-      label: Check,
-      label_2: "in stock",
-      image: Monitor,
-      review: Star,
-      title: (
-        <p className="">
-          EX DISPLAY : MSI Pro 16 <br /> Flex-036AU 15.6 MULTITOUCH <br />{" "}
-          All-In-On...
-        </p>
-      ),
-      price: "$499.00",
-      discountedPrice: "$499.00",
-      monitor: true,
-    },
-    {
-      id: Math.random(),
-      label: Check,
-      label_2: "in stock",
-      image: Monitor,
-      review: Star,
-      title: (
-        <p className="">
-          EX DISPLAY : MSI Pro 16 <br /> Flex-036AU 15.6 MULTITOUCH <br />{" "}
-          All-In-On...
-        </p>
-      ),
-      price: "$499.00",
-      discountedPrice: "$499.00",
-      monitor: true,
-    },
-    {
-      id: Math.random(),
-      label: Check,
-      label_2: "in stock",
-      image: Monitor_2,
-      review: Star,
-      title: (
-        <p className="">
-          EX DISPLAY : MSI Pro 16 <br /> Flex-036AU 15.6 MULTITOUCH <br />{" "}
-          All-In-On...
-        </p>
-      ),
-      price: "$499.00",
-      discountedPrice: "$499.00",
-      monitor: true,
-    },
-    {
-      id: Math.random(),
-      label: Check,
-      label_2: "in stock",
-      image: Monitor,
-      review: Star,
-      title: (
-        <p className="">
-          EX DISPLAY : MSI Pro 16 <br /> Flex-036AU 15.6 MULTITOUCH <br />{" "}
-          All-In-On...
-        </p>
-      ),
-      price: "$499.00",
-      discountedPrice: "$499.00",
-      monitor: true,
-    },
-    ,
-    {
-      id: Math.random(),
-      label: Check,
-      label_2: "in stock",
-      image: Laptop_2,
-      review: Star,
-      title: (
-        <p className="text-[13px] font-normal leading-[19px]">
-          EX DISPLAY : MSI Pro 16 <br /> Flex-036AU 15.6 MULTITOUCH <br />{" "}
-          All-In-On...
-        </p>
-      ),
-      price: "$499.00",
-      discountedPrice: "$499.00",
-      laptop: true,
-    },
-    {
-      id: Math.random(),
-      label: Check,
-      label_2: "in stock",
-      image: Laptop,
-      review: Star,
-      title: (
-        <p className="text-[13px] font-normal leading-[19px]">
-          EX DISPLAY : MSI Pro 16 <br /> Flex-036AU 15.6 MULTITOUCH <br />{" "}
-          All-In-On...
-        </p>
-      ),
-      price: "$499.00",
-      discountedPrice: "$499.00",
-      laptop: true,
-    },
-    {
-      id: Math.random(),
-      label: Check,
-      label_2: "in stock",
-      image: Laptop,
-      review: Star,
-      title: (
-        <p className="text-[13px] font-normal leading-[19px]">
-          EX DISPLAY : MSI Pro 16 <br /> Flex-036AU 15.6 MULTITOUCH <br />{" "}
-          All-In-On...
-        </p>
-      ),
-      price: "$499.00",
-      discountedPrice: "$499.00",
-      laptop: true,
-    },
-    {
-      id: Math.random(),
-      label: Check,
-      label_2: "in stock",
-      image: Laptop,
-      review: Star,
-      title: (
-        <p className="text-[13px] font-normal leading-[19px]">
-          EX DISPLAY : MSI Pro 16 <br /> Flex-036AU 15.6 MULTITOUCH <br />{" "}
-          All-In-On...
-        </p>
-      ),
-      price: "$499.00",
-      discountedPrice: "$499.00",
-      laptop: true,
-    },
-    {
-      id: Math.random(),
-      label: Check,
-      label_2: "in stock",
-      image: Laptop_2,
-      review: Star,
-      title: (
-        <p className="text-[13px] font-normal leading-[19px]">
-          EX DISPLAY : MSI Pro 16 <br /> Flex-036AU 15.6 MULTITOUCH <br />{" "}
-          All-In-On...
-        </p>
-      ),
-      price: "$499.00",
-      discountedPrice: "$499.00",
-      laptop: true,
-    },
-    {
-      id: Math.random(),
-      label: Check,
-      label_2: "in stock",
-      image: Color_2,
-      review: Star,
-      title: (
-        <p className="text-[13px] font-normal leading-[19px]">
-          EX DISPLAY : MSI Pro 16 <br /> Flex-036AU 15.6 MULTITOUCH <br />{" "}
-          All-In-On...
-        </p>
-      ),
-      price: "$499.00",
-      discountedPrice: "$499.00",
-      color: true,
-    },
-    {
-      id: Math.random(),
-      label: Check,
-      label_2: "in stock",
-      image: Color,
-      review: Star,
-      title: (
-        <p className="text-[13px] font-normal leading-[19px]">
-          EX DISPLAY : MSI Pro 16 <br /> Flex-036AU 15.6 MULTITOUCH <br />{" "}
-          All-In-On...
-        </p>
-      ),
-      price: "$499.00",
-      discountedPrice: "$499.00",
-      color: true,
-    },
-    {
-      id: Math.random(),
-      label: Check,
-      label_2: "in stock",
-      image: Color,
-      review: Star,
-      title: (
-        <p className="text-[13px] font-normal leading-[19px]">
-          EX DISPLAY : MSI Pro 16 <br /> Flex-036AU 15.6 MULTITOUCH <br />{" "}
-          All-In-On...
-        </p>
-      ),
-      price: "$499.00",
-      discountedPrice: "$499.00",
-      color: true,
-    },
-    {
-      id: Math.random(),
-      label: Check,
-      label_2: "in stock",
-      image: Color,
-      review: Star,
-      title: (
-        <p className="text-[13px] font-normal leading-[19px]">
-          EX DISPLAY : MSI Pro 16 <br /> Flex-036AU 15.6 MULTITOUCH <br />{" "}
-          All-In-On...
-        </p>
-      ),
-      price: "$499.00",
-      discountedPrice: "$499.00",
-      color: true,
-    },
-    {
-      id: Math.random(),
-      label: Check,
-      label_2: "in stock",
-      image: Color_2,
-      review: Star,
-      title: (
-        <p className="text-[13px] font-normal leading-[19px]">
-          EX DISPLAY : MSI Pro 16 <br /> Flex-036AU 15.6 MULTITOUCH <br />{" "}
-          All-In-On...
-        </p>
-      ),
-      price: "$499.00",
-      discountedPrice: "$499.00",
-      color: true,
-    },
-  ];
-  const lies = [
-    "MSI Infinute Series",
-    "MSI Triden",
-    "MSI GL Serie s",
-    "MSI Nightblade",
+  const products = useContext(Context)
+
+  const li = [
+    { title:"MSI Infinute Series", extraClass:"text-[#020203] border-b-[2px] border-[#0156FF] border-solid"},
+    { title:"MSI Triden"},
+    { title:"MSI GL Serie s"},
+   {  title:"MSI Nightblade"},
   ];
   const swiperImg = [Msi, Two, Three, Four, Five];
   const images = [Rules, messi, Razer, Therma, Adata, Pakard, Gig];
-  const about = [
+  const advertisment = [
     {
       img: Whitelap,
       para_1:
@@ -545,13 +104,12 @@ const Home = (props) => {
     },
   ];
 const previous = useRef(null)
-const next = useRef()
-const nsextis = useRef()
-const previs = useRef()
-const [_, setInit] = useState();
-
+const next = useRef(null)
+const swiperRef = useRef(null);
+const [_, setInit] = useState(null);
   return (
     <AnimatePresence>
+      {products.productToast&& (toast.info('Product Is Added To Your Cart'))}
       <div>
         <div className="mx-auto max-h-[328px] xl:pt-[0px] xsm:pt-[15px]">
           <Swiper
@@ -565,7 +123,7 @@ const [_, setInit] = useState();
             onInit={() => setInit(true)}
           >
             {swiperImg.map((item, index) => (
-              <SwiperSlide className="h-[328px]">
+              <SwiperSlide key={item.id} className="h-[328px]">
                 <div className="mx-auto w-full h-auto object-cover object-center"><img src={item} className="mx-auto" /></div>
               </SwiperSlide>
             ))}
@@ -573,6 +131,7 @@ const [_, setInit] = useState();
         </div>
         <div className=" relative max-w-[1400px] mx-auto flex justify-between">
           <button
+        
             ref={previous}
             className=" absolute  xsm:top-[-70px] sm:top-[-90px] md:top-[-110px] lg:top-[-140px] xl:top-[-188px] left-0 z-10 rounded-l-[30px] bg-[#252931] rotate-180 opacity-50 pl-3 pb-4 pt-4 pr-2"
           >
@@ -599,11 +158,14 @@ const [_, setInit] = useState();
             </a>
           </div>
         </div>
-      <div className="flex xsm:flex-wrap xl:flex-nowrap xl:justify-between xsm:justify-center gap-[10px] max-w-[1400px] mx-auto pt-[4px] pr-2 pl-4">
+      <div className="bg-transparent flex xsm:flex-wrap xl:flex-nowrap justify-center gap-[10px] max-w-[1440px] mx-auto pt-[4px] pr-2 pl-4">
       <Swiper
-      className="flex justify-center"
+      ref={swiperRef}
+      className="mx-auto flex justify-center"
             modules={[Navigation, Pagination, Scrollbar, A11y]}
             spaceBetween={8}
+           
+          
             breakpoints={{
               340:{
                 slidesPerView:1,   
@@ -627,14 +189,14 @@ const [_, setInit] = useState();
             }}
       
           >
-         {arrayOne.map(
+         {products.allProducts.map(
             (item, index) =>
-            item.new && <SwiperSlide className=" mx-auto">  <ProductDiv item={item} index={index} /></SwiperSlide>
+            item.new && <SwiperSlide key={item.id} className=" mx-auto">  <ProductDiv item={item} index={index} /></SwiperSlide>
           )}
     </Swiper>
         </div>
-
-        <div className="xl:flex xsm:hidden max-w-[1400px] mx-auto pt-[20px] pb-[20px] mt-[18px] mb-[14px]  flex items-center justify-center bg-[#F5F7FF]">
+      
+        <div className="xl:flex xsm:hidden max-w-[1400px] mx-auto pt-[20px] pb-[20px] mb-[14px]  flex items-center justify-center bg-[#F5F7FF]">
           <img src={Zip} alt="" />
           <div className="flex items-center ml-[11px] w-[1px] h-[23px]  border-[1px] border-[#00AEB8] border-solid">
             <p className=""></p>
@@ -649,9 +211,9 @@ const [_, setInit] = useState();
             </a>{" "}
           </p>
         </div>
-         <div className="mx-auto max-w-[1400px]  flex justify-between shrink-0  pt-[14px]">
+         <div className="mx-auto max-w-[1400px]  flex justify-between  pt-[14px]">
          <Swiper
-      className=" justify-center h-[410px]"
+      className="flex justify-center "
             modules={[Navigation, Pagination, Scrollbar, A11y]}
             spaceBetween={10}
             breakpoints={{
@@ -681,7 +243,7 @@ const [_, setInit] = useState();
             }}
           >
             <SwiperSlide>
-<div className="bg-custome  bg-cover h-[350px]  cursor-pointer max-w-[233px] w-full mx-auto  pt-[120px] pb-[32px]  bg-no-repeat flex flex-col text-center items-center ">
+<div className="bg-custome mt-[20px] bg-cover h-[350px]  cursor-pointer max-w-[233px] w-full mx-auto  pt-[120px] pb-[32px]  bg-no-repeat flex flex-col text-center items-center ">
             <div className="">
               <h1 className="text-[#FFFFFF] text-[22px] font-bold leading-[28px]">
                 Custome <br /> Build
@@ -697,27 +259,27 @@ const [_, setInit] = useState();
             </div>
           </div>
 </SwiperSlide>
-          {arrayOne.map(
+          {products.allProducts.map(
             (item, index) =>
               item.speaker && <SwiperSlide><ProductDiv item={item} index={index} /></SwiperSlide>
           )}
           </Swiper>
         </div>
-        <div className="max-w-[1400px] xsm:hidden xl:flex mx-auto mt-[30px]">
+        <div className="max-w-[1400px] xsm:hidden xl:flex mx-auto pt-[30px]">
           <ul className="flex gap-[29px] items-center">
-            {lies.map((item, index) => (
+            {li.map((item, index) => (
               <li
                 key={index + "lies"}
-                className="font-semibold text-[16px] leading-[28px] text-[#838383] cursor-pointer"
+                className={`font-semibold text-[16px] leading-[28px] text-[#838383] cursor-pointer ${item.extraClass}`}
               >
-                {item}
+                {item.title}
               </li>
             ))}
           </ul>
         </div>
         <div className="mx-auto max-w-[1400px] flex justify-between gap-[20px] pt-[23px]">
         <Swiper
-      className="flex justify-center h-[410px]"
+      className="flex justify-center "
             modules={[Navigation, Pagination, Scrollbar, A11y]}
             spaceBetween={10}
             breakpoints={{
@@ -746,7 +308,7 @@ const [_, setInit] = useState();
               swiper.navigation.update();
             }}
           ><SwiperSlide>
-         <div className="bg-laptop h-[350px]  mx-auto bg-cover cursor-pointer max-w-[233px] w-full pt-[120px] pb-[32px] bg-no-repeat flex flex-col text-center items-center ">
+         <div className="bg-laptop h-[350px] mt-[20px] mx-auto bg-cover cursor-pointer max-w-[233px] w-full pt-[120px] pb-[32px] bg-no-repeat flex flex-col text-center items-center ">
             <div className="">
               <h1 className="text-[#FFFFFF] text-[22px] font-bold leading-[28px]">
                 Custome <br /> Build
@@ -762,27 +324,31 @@ const [_, setInit] = useState();
             </div>
           </div>
 </SwiperSlide>
-          {arrayOne.map(
-            (item, index) =>
-              item.laptop && <SwiperSlide><ProductDiv item={item} index={index} /></SwiperSlide>
+          {products.allProducts.map(
+            (item, index) =>{
+              if(item.laptop){
+                console.log(item)
+                return item.laptop && <SwiperSlide key={item.id}><ProductDiv item={item} index={index} /></SwiperSlide>
+              }
+            }
           )}
           </Swiper>
         </div>
         <div className="max-w-[1400px] mx-auto xsm:hidden xl:flex mt-[30px]">
           <ul className="flex gap-[29px] items-center">
-            {lies.map((item, index) => (
+            {li.map((item, index) => (
               <li
                 key={index + "lies"}
-                className="font-semibold text-[16px] leading-[28px] text-[#838383] cursor-pointer"
-              >
-                {item}
+                className={`font-semibold text-[16px] leading-[28px] text-[#838383] cursor-pointer ${item.extraClass}`}
+                >
+                  {item.title}
               </li>
             ))}
           </ul>
         </div>
         <div className="mx-auto max-w-[1400px] flex justify-between gap-[20px] pt-[23px]">
         <Swiper
-      className="flex justify-center h-[410px]"
+      className="flex justify-center "
             modules={[Navigation, Pagination, Scrollbar, A11y]}
             spaceBetween={10}
             breakpoints={{
@@ -812,7 +378,7 @@ const [_, setInit] = useState();
             }}
           ><SwiperSlide>
           
-          <div className="bg-desktop h-[35opx] mx-auto bg-cover cursor-pointer  max-w-[233px] w-full pt-[120px] pb-[32px]  bg-no-repeat flex flex-col text-center items-center ">
+          <div className="bg-desktop h-[35opx] mt-[20px] mx-auto bg-cover cursor-pointer  max-w-[233px] w-full pt-[120px] pb-[32px]  bg-no-repeat flex flex-col text-center items-center ">
             <div className="">
               <h1 className="text-[#FFFFFF] text-[22px] font-bold leading-[28px]">
                 Custome <br /> Build
@@ -828,14 +394,14 @@ const [_, setInit] = useState();
             </div>
           </div></SwiperSlide>
 
-          {arrayOne.map(
+          {products.allProducts.map(
             (item, index) =>
-              item.color && <SwiperSlide><ProductDiv item={item} index={index} /></SwiperSlide>
+              item.color && <SwiperSlide key={item.id}><ProductDiv item={item} index={index} /></SwiperSlide>
           )}</Swiper>
         </div>
         <div className="mx-auto max-w-[1400px] flex justify-between gap-[20px] pt-[31px]">
         <Swiper
-      className="flex justify-between h-[410px]"
+      className="flex justify-between "
             modules={[Navigation, Pagination, Scrollbar, A11y]}
             spaceBetween={10}
             breakpoints={{
@@ -864,7 +430,7 @@ const [_, setInit] = useState();
               swiper.navigation.update();
             }}
           ><SwiperSlide>
-          <div className="bg-monitor h-[350px] mx-auto bg-cover cursor-pointer  max-w-[233px] w-full pt-[120px] pb-[32px]  bg-no-repeat flex flex-col text-center items-center ">
+          <div className="bg-monitor h-[350px] mt-[20px] mx-auto bg-cover cursor-pointer  max-w-[233px] w-full pt-[120px] pb-[32px]  bg-no-repeat flex flex-col text-center items-center ">
             <div className="">
               <h1 className="text-[#FFFFFF] text-[22px] font-bold leading-[28px]">
                 Custome <br /> Build
@@ -880,15 +446,15 @@ const [_, setInit] = useState();
             </div>
           </div>
 </SwiperSlide>
-          {arrayOne.map(
+          {products.allProducts.map(
             (item, index) =>
-              item.monitor &&<SwiperSlide> <ProductDiv item={item} index={index} /></SwiperSlide>
+              item.monitor &&<SwiperSlide key={item.id}> <ProductDiv item={item} index={index} /></SwiperSlide>
           )}
           </Swiper>
         </div>
-        <div className="flex flex-wrap max-w-[1400px] mx-auto justify-between pt-[31px] pb-[40px]">
+        <div className="flex xsm:flex-wrap xl:flex-nowrap max-w-[1400px] mx-auto justify-between pt-[31px] pb-[40px]">
           {images.map((item, index) => (
-            <div key={index + "images"} className="mx-auto">
+            <div key={index + "images"} className="">
               <img src={item} alt="" />
             </div>
           ))}
@@ -897,11 +463,11 @@ const [_, setInit] = useState();
           <h1 className="font-semibold text-[22px] leading-[33px] xsm:text-center md:text-start">
             Follow us on Instagram for News, Offers & More
           </h1>
-          <div className="flex flex-wrap gap-[9px] mx-auto pb-[57px]">
-            {about.map((item, index) => (
+          <div className="flex flex-wrap gap-[9px] mx-auto  pb-[57px]">
+            {advertisment.map((item, index) => (
               <div
                 key={index + "about"}
-                className="max-w-[225px] mx-auto flex flex-col items-center justify-center pt-[21px]"
+                className="max-w-[225px] xsm:mx-auto xl:mx-0 flex flex-col items-center justify-center pt-[21px]"
               >
                 <img src={item.img} alt="" />
                 <p className="w-[185px] text-center font-normal text-[12px] leading-[18px] pt-[10px]">
@@ -917,6 +483,19 @@ const [_, setInit] = useState();
         
       </div>
       {props.Review}
+       
+      <ToastContainer
+        position="top-center"
+        autoClose={1500}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover={true}
+        theme="light"
+      />
     </AnimatePresence>
    
   );

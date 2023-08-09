@@ -20,54 +20,45 @@ import Therma from "../../pages/img/therma.svg";
 import Adata from "../../pages/img/adata.svg";
 import Pakard from "../../pages/img/pakard.svg";
 import Gig from "../../pages/img/gig.svg";
-import { useState, useRef } from "react";
+import { useState, useRef , useEffect} from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import ProductDiv from "../../pages/Home/ProductDiv";
-import Color from "../../pages/img/13.svg";
-import cross from "../../pages/img/cross_2.svg";
-import Edit from "../../pages/img/edit.svg";
 import pay from "../../pages/img/pay.svg";
-
+import { useContext } from "react";
+import Context from "../../pages/Context";
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
+
+  const [searchMenu , setSearchMenu] = useState(false);
+  const [hoveredItem_3, setHoveredItem_3] = useState(null);
+  const [dropDown_2, setdropDown_2] = useState(false);
+  const [menu, setmenu] = useState(false);
+  const [menu_2, setmenu_2] = useState(false);
+  const [menu_3, setmenu_3] = useState(false);
   const [search, setsearch] = useState(false);
   const [dropDown, setdropDown] = useState(false);
-  const dropDownRef = useRef();
-  const imageRef = useRef();
-  const drop = useRef();
-  const image = useRef();
-  window.addEventListener("click", (e) => {
-    if (e.target !== dropDownRef.current && e.target !== imageRef.current) {
-      setdropDown(false);
-    }
-  });
-  window.addEventListener("click", (e) => {
-    if (e.target !== drop.current && e.target !== image.current) {
-      setdropDown_2(false);
-    }
-  });
-  window.addEventListener("click", (e) => {
-    if (e.target !== cartRef.current && e.target !== cartimageRef.current) {
-      setshoppingCart(false);
-    }
-  });
-  window.addEventListener("click", (e) => {
-    if (e.target !== sideRef.current && e.target !== sideImageRef.current) {
-      setsideBar(false);
-    }
-  });
-  const handleSearchClick = () => {
-    setsearch(true);
-  };
-  const handleDropDownClick = () => {
-    setdropDown(!dropDown);
-  };
+  const [sideBar, setsideBar] = useState(false);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [resulsToggle, setResulsToggle] = useState(false);
+  const [shoppingCart, setshoppingCart] = useState(false);
+  const [selectedTitleIndex, setSelectedTitleIndex] = useState(0);
 
-  const handleCrossClick = () => {
-    setsearch(false);
-  };
-  const firstMenu = [
+
+  const dropDownRef = useRef(null);
+  const imageRef = useRef(null);
+  const drop = useRef(null);
+  const image = useRef(null);
+  const mainSearch = useRef(null)
+  const searchRef = useRef(null)
+  const hoveredItem_3Ref = useRef(null);
+  const cartRef = useRef(null);
+  const cartimageRef = useRef(null);
+  const sideRef = useRef(null);
+  const sideImageRef = useRef(null);
+
+  const firstHoveredMenu = [
     { title: "Everyday Use Notebooks", img: right },
     { title: "MSI Workstation Series  ", img: right },
     { title: "MSI Prestige Series  ", img: right },
@@ -76,46 +67,40 @@ const Header = () => {
     { title: "Netbooks", img: right },
     { title: "Infinity Gaming Notebooks", img: right },
   ];
-  const secondMenu = [
+  const secondHoveredMenu = [
     { title: "MSI Workstation Series", img: right },
     { title: "  MSI Prestige Series ", img: right },
   ];
-  const thirdMenu = [
+  const thirdHoveredMenu = [
     { title: "MSI WS Series", num: <p className="text-[#A2A6B0]"> (12)</p> },
     { title: "  MSI WT Series", num: <p className="text-[#A2A6B0]"> (31)</p> },
     { title: "  MSI WE Series", num: <p className="text-[#A2A6B0]"> (7)</p> },
   ];
-  const arrayOne = [
+  const hoveredProducts = [
     {
-      id: Math.random(),
-      label: Check,
+      id: 1,
+      label:Check,
       label_2: "in stock",
       image: Window,
-      review: Star,
-      title: (
-        <p className="text-[13px] font-normal leading-[19px]">
-          EX DISPLAY : MSI Pro 16 <br /> Flex-036AU 15.6 MULTITOUCH <br />{" "}
-          All-In-On...
-        </p>
-      ),
+      review:Star,
+      title:  "Microsoft Tablet Surface Pro 9 Core i7 12th Generation 16GB RAM 512GB SSD Windows 11 " ,
       price: "$499.00",
       discountedPrice: "$499.00",
+      Qty : 1 ,
+      new: true,
     },
     {
-      id: Math.random(),
-      label: Check,
+      id: 1,
+      label:Check,
       label_2: "in stock",
       image: Window,
-      review: Star,
-      title: (
-        <p className="text-[13px] font-normal leading-[19px]">
-          EX DISPLAY : MSI Pro 16 <br /> Flex-036AU 15.6 MULTITOUCH <br />{" "}
-          All-In-On...
-        </p>
-      ),
+      review:Star,
+      title:  "Microsoft Tablet Surface Pro 9 Core i7 12th Generation 16GB RAM 512GB SSD Windows 11 " ,
       price: "$499.00",
       discountedPrice: "$499.00",
-    },
+      Qty : 1 ,
+      new: true,
+    }
   ];
   const images = [
     { img: Rules },
@@ -126,13 +111,7 @@ const Header = () => {
     { img: Pakard },
     { img: Gig },
   ];
-  const [hoveredItem, setHoveredItem] = useState(null);
-  const [hoveredItem_2, setHoveredItem_2] = useState(null);
-  const [hoveredItem_3, setHoveredItem_3] = useState(null);
-  const [dropDown_2, setdropDown_2] = useState(false);
-  const [menu, setmenu] = useState(false);
-  const [menu_2, setmenu_2] = useState(false);
-  const [menu_3, setmenu_3] = useState(false);
+
   const lies = [
     { title: "My  Account", path: "/UserAccount" },
     { title: " My Wish List (0)", path: "/UserAccount" },
@@ -140,19 +119,6 @@ const Header = () => {
     { title: "  Create an Account", path: "/Register" },
     { title: " Sign In", path: "/Register" },
   ];
-  const cart = {
-    count: "1x",
-    img: Color,
-    title: "EX DISPLAY : MSI Pro 16 Flex-036AU 15.6 MULTITOUCH All-In-On...",
-    cross: cross,
-    edit: Edit,
-  };
-
-  const count = 2;
-  const hoveredItem_3Ref = useRef();
-  const cartRef = useRef();
-  const cartimageRef = useRef();
-  const [shoppingCart, setshoppingCart] = useState(false);
   const sale = [
     { title: "Laptops" },
     { title: "Desktop PCs" },
@@ -167,11 +133,119 @@ const Header = () => {
     { title: "Sign Up", path: "/Register" },
     { title: "Sign In", path: "/Register" },
   ];
-  const [sideBar, setsideBar] = useState(false);
-  const sideRef = useRef(null);
-  const sideImageRef = useRef(null);
+  const product = useContext(Context);
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+    window.addEventListener("click", (e) => {
+      if (e.target !== dropDownRef.current && e.target !== imageRef.current) {
+        setdropDown(false);
+      }
+      if (e.target !== drop.current && e.target !== image.current) {
+        setdropDown_2(false);
+      }
+      if (e.target !== cartimageRef.current) {
+       setshoppingCart(false);
+      }
+      if (e.target !== sideRef.current && e.target !== sideImageRef.current) {
+        setsideBar(false);
+      }
+      if (e.target !== searchRef.current && e.target !== mainSearch.current) {
+        setSearchMenu(false);
+      }
+    });
+  
+  },[])
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "ArrowDown") {
+        e.preventDefault(); // Prevent default behavior of scrolling the page
+        setSelectedTitleIndex((prevIndex) =>
+          (prevIndex + 1) % filteredProducts.length
+        );
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        setSelectedTitleIndex((prevIndex) =>
+          (prevIndex - 1 + filteredProducts.length) % filteredProducts.length
+        );
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [filteredProducts.length]);
+  useEffect(() => {
+    setFilteredProducts(product.allProducts);
+ 
+  }, [product.allProducts]);
+
+  const handleSearchClick = () => {
+    setsearch(true);
+  };
+  const handleDropDownClick = () => {
+    setdropDown(!dropDown);
+  };
+
+  const handleCrossClick = () => {
+    setsearch(false);
+  };
+  const handleChange = (e) => {
+  console.log('change');
+  const searchTerm = e.target.value.toLowerCase();
+  const filtered = product.allProducts.filter((item) =>
+  item.title.toLowerCase().includes(searchTerm)
+  );
+if (e.target.value==""){
+  setFilteredProducts( [{
+    title:  "No Products To Show",
+  }]);
+}
+  else if (filtered.length <= 0){
+    setFilteredProducts( [{
+      title:  "No Products To Show",
+    }]);
+  }
+  else{
+    setFilteredProducts(filtered)
+  }
+  setSearchMenu(true)
+
+  };
+  const handleProductsSearched = ()=>{
+  
+    if (filteredProducts[0].title!=="No Products To Show") {
+      navigate('/SearchedProducts' , {state:{filteredProducts}})   
+      setResulsToggle(true)   
+    }
+    
+  }
+  const handleKeyUp = (e)=>{
+    if (filteredProducts[0].title!=="No Products To Show") {
+    if (e.key=='Enter') {
+      navigate('/SearchedProducts' , {state:{filteredProducts}})
+      setSearchMenu(false)
+      setResulsToggle(false)
+    }}
+  }
+  const convertPrice = (val) => {
+    return parseInt(val.slice(1));
+  };
+  const calculateOrderPrice = () => {
+    let total = 0;
+    products.forEach((item) => {
+      total += item.Qty * convertPrice(item.price);
+    });
+    return total;
+  };
+  const products =  JSON.parse(localStorage.getItem('product'));
+  const handleProceedClick = ()=>{
+    navigate("/Checkout" , {state:{filteredProducts}})  
+  }
   return (
-    <header >
+    <header>
       <div className="xsm:hidden xl:block pt-[15px] pb-[15px] bg-[#020202] ">
         <motion.div
           initial={{ opacity: 0, x: -40 }}
@@ -289,7 +363,7 @@ const Header = () => {
         >
           <div className="flex items-center justify-between xl:w-auto xsm:w-full">
             <Link to="/">
-              <img src={Logo} alt="" className="" />
+              <img src={Logo} alt="" className="" onClick={()=>{product.setproductToast(false)}}/>
             </Link>
             <div className="xsm:block xl:hidden pr-[15px] pt-[3px]">
               {" "}
@@ -304,22 +378,26 @@ const Header = () => {
             </div>
 
             {search === true ? (
-              <div className="flex items-center justify-center">
-                <div className="relative flex items-center">
+              <div className="flex items-center justify-center  xsm:hidden xl:block">
+                <div className="relative flex items-center ">
                   <motion.input
-                    type="search"
-                    className="bg-[#F5F7FF] searchinput outline-none rounded-full  pl-12 pr-12 text-xl "
+                  ref={mainSearch}
+                    type="text"
+                    className="bg-[#F5F7FF] text-[18px] searchinput outline-none rounded-full xsm:hidden xl:block  pl-12 pr-12  "
                     placeholder="Search entire store here..."
                     initial={{ opacity: 0, x: -40 }}
                     animate={{ opacity: 2, x: 0 }}
                     transition={{ duration: 0.7 }}
+                    onChange={handleChange}
+                    onKeyUp={handleKeyUp}
                   />
                   <motion.button
                     initial={{ opacity: 0, x: -100 }}
                     animate={{ opacity: 2, x: 0 }}
                     transition={{ duration: 0.7 }}
                     className="search bg-transparent outline-none rounded-full  pl-12 pr-7 absolute top-[9px] right-0 mt-3"
-                    onClick={handleSearchClick}
+                    onClick={handleProductsSearched}
+                    
                   >
                     <img src={Search} alt="" />
                   </motion.button>
@@ -387,12 +465,11 @@ const Header = () => {
                   setmenu_3(false);
                 }}
               >
-                <div className="flex h-[400px] bg-white  max-w-[1398px] w-full mx-auto border-[1px] border-[#CACDD8] border-solid">
+                <div className="divShadow">
+                <div className="flex  bg-white  max-w-[1398px] w-full mx-auto border-[1px] border-[#CACDD8] border-solid">
                   <div className="max-w-[330px] w-full border-[1px] border-[#CACDD8] border-solid">
-                    {firstMenu.map((item, index) => (
+                    {firstHoveredMenu.map((item, index) => (
                       <div
-                        onMouseEnter={() => setHoveredItem(index)}
-                        onMouseLeave={() => setHoveredItem(null)}
                         key={index + "menu"}
                         onClick={() => {
                           setmenu((menu) => !menu);
@@ -411,14 +488,12 @@ const Header = () => {
                   </div>
                   {menu ? (
                     <div className="max-w-[263px] w-full border-[1px] border-[#CACDD8] border-solid">
-                      {secondMenu.map((item, index) => (
+                      {secondHoveredMenu.map((item, index) => (
                         <div
                           onClick={() => {
                             setmenu_2((menu_2) => !menu_2);
                             setmenu_3(false);
                           }}
-                          onMouseEnter={() => setHoveredItem_2(index)}
-                          onMouseLeave={() => setHoveredItem_2(null)}
                           key={index + "2menu"}
                           className={`cursor-pointer w-full flex justify-between items-center hover:bg-[#F5F7FF] pl-[28px] pt-[10px] pb-[13px] pr-[24px] 
                   }`}
@@ -437,7 +512,7 @@ const Header = () => {
                   )}
                   {menu_2 ? (
                     <div className="max-w-[263px] w-full border-[1px] border-[#CACDD8] border-solid">
-                      {thirdMenu.map((item, index) => (
+                      {thirdHoveredMenu.map((item, index) => (
                         <div
                           key={index + "3menu"}
                           onClick={() => {
@@ -456,7 +531,7 @@ const Header = () => {
                   )}
                   {menu_3 ? (
                     <div className="flex w-full justify-around border-[1px] border-[#CACDD8] border-solid">
-                      {arrayOne.map((item, index) => (
+                      {hoveredProducts.map((item, index) => (
                         <ProductDiv item={item} index={index} />
                       ))}
                     </div>
@@ -464,13 +539,14 @@ const Header = () => {
                     ""
                   )}
                 </div>
-                <div className="max-w-[1398px] mx-auto w-full flex border-[1px] border-[#CCCCCC] border-solid">
+                <div className="max-w-[1398px]  mx-auto w-full flex border-[1px] border-[#CCCCCC] border-solid">
                   {images.map((item, index) => (
                     <div key={index + "imags"}>
                       {" "}
                       <img src={item.img} alt="" />
                     </div>
                   ))}
+                </div>
                 </div>
               </div>
             ) : (
@@ -509,7 +585,7 @@ const Header = () => {
               {shoppingCart && (
                 <div
                   ref={cartRef}
-                  className="absolute z-50  right-[22px] top-[22px] w-[311px]  bg-white pt-[23px] border-[#CACDD8] border-[1px] border-solid"
+                  className="absolute z-50 max-h-[511px] overflow-y-auto  right-[22px] top-[22px] w-[311px]  bg-white pt-[23px] border-[#CACDD8] border-[1px] border-solid"
                 >
                   <div className="relative">
                     <div class="absolute right-[15px] top-[-26px] h-[15px] w-[15px]  border-solid border-[#ffffff] border-b-8 border-l-8 transform rotate-45"></div>
@@ -518,7 +594,7 @@ const Header = () => {
                     My Cart
                   </h1>
                   <p className="font-[400] leading-[18px] text-[12px] text-[#000000] text-center pt-[6px]">
-                    2 item in cart
+                  {product.selectedProducts.length } item in cart
                   </p>
                   <div className="pt-[17px] w-full pb-[20px] flex justify-center border-b-[1px] border-solid border-[#CACDD8]">
                     <Link to="/ShoppingCart">
@@ -528,52 +604,33 @@ const Header = () => {
                       </button>
                     </Link>
                   </div>
-                  {Array.from({ length: count }).map((_, index) => (
+                  {products.map((item, index) => (
                     <div
                       key={index + "cart"}
-                      className="flex justify-between pt-[17px] pb-[19px] items-start pl-[15px] pr-[8px] border-b-[1px] border-solid border-[#CACDD8]"
+                      className="flex justify-between pt-[17px] gap-[10px] pb-[19px] items-start pl-[15px] pr-[8px] border-b-[1px] border-solid border-[#CACDD8]"
                     >
                       <div className="flex items-center h-[70px]">
-                        <h1>{cart.count}</h1>
+                        <h1>{item.Qty}x</h1>
                       </div>
 
                       <img
-                        src={cart.img}
+                        src={item.image}
                         alt=""
-                        className="w-[65px] h-[65px]"
+                        className="w-[50px] h-[50px]"
                       />
-                      <p>{cart.title}</p>
-                      <div className="flex flex-col gap-[5px]">
-                        <div>
-                          <img
-                            src={cart.cross}
-                            alt=""
-                            className="max-w-[20px]  h-[20px]"
-                          />
-                        </div>
-                        <div>
-                          <img
-                            src={cart.edit}
-                            alt=""
-                            className="max-w-[20px]  h-[20px]"
-                          />
-                        </div>
-                      </div>
+                      <p>{item.title}</p>
                     </div>
                   ))}
                   <h1 className="flex items-center justify-center text-[14px] leading-[18px] font-[600] text-[#A2A6B0] pt-[16px]">
                     Subtotal:
                     <p className=" text-black pl-2 text-[18px] leading-[26px] font-[600]">
-                      $499.00
+                    ${calculateOrderPrice().toFixed(2)}
                     </p>
                   </h1>
                   <div className="flex items-center justify-center flex-col gap-[10px] pt-[13px] pb-[24px]">
-                    <Link to="/Checkout">
-                      {" "}
-                      <button className="w-[250px] h-[37px] bg-[#0156FF] rounded-[50px] text-[14px] leading-[21px] font-[600] text-[#ffff]">
-                        Go to Checkout
+                      <button onClick={handleProceedClick} className="w-[250px] h-[37px] bg-[#0156FF] rounded-[50px] text-[14px] leading-[21px] font-[600] text-[#ffff]">
+                      Proceed To Checkout
                       </button>
-                    </Link>
                     <button className="w-[250px] h-[37px] bg-[#FFB800] rounded-[50px] text-[14px] leading-[18px] font-[600] flex items-center justify-center gap-1 ">
                       <p>Check out with </p>
                       <img src={pay} alt="" />
@@ -592,8 +649,8 @@ const Header = () => {
               }}
               className=" cursor-pointer"
             />
-            <div className=" absolute right-[57px] rounded-full w-[16px] h-[17px] bg-[#0156FF] flex items-center justify-center text-[10px] leading-[15px]  text-[#ffff]">
-              2
+            <div className="count absolute right-[57px] rounded-full w-[16px] h-[17px] bg-[#0156FF] flex items-center justify-center text-[10px] leading-[15px]  text-[#ffff]">
+            {product.selectedProducts.length }
             </div>
             {dropDown_2 == 1 ? (
               <div className="relitive " ref={drop}>
@@ -616,9 +673,23 @@ const Header = () => {
               ""
             )}
           </div>
+         
         </motion.div>
       </div>
-      <div></div>
+      <div>
+   {searchMenu==true &&  (<div ref={searchRef} className="max-w-[1400px] w-full relative mx-auto">
+     <div className={`pt-[5px]  border-[1px] border-[solid] border-slate-300 absolute xsm:top-[64px] xl:top-[0px] z-30 left-[90px] searchinput_2 bg-[#ffffff] rounded-[20px]`}>
+     {filteredProducts.map((item, index)=> (
+      <h1 onClick={handleProductsSearched} key={index+'allProducts'} className={`hover:bg-slate-300 searchedTitle cursor-pointer rounded-[20px] p-[10px] border-b-[1px] border-[solid] border-slate-300${
+         selectedTitleIndex === index  ? ("bg-slate-300") : ("")
+      } `}  style={{
+        animation: `${
+          index === selectedTitleIndex ? "fadeInDown" : ""
+        } 1s ease`,
+      }}>{item.title}</h1>
+     ))}
+</div>
+     </div>)}</div>
       <div className="relative xsm:flex xl:hidden  ">
         {sideBar == false ? (
           <div className="relative w-full ">
@@ -629,11 +700,13 @@ const Header = () => {
               initial={{ opacity: 0, x: -40 }}
               animate={{ opacity: 2, x: 0 }}
               transition={{ duration: 0.7 }}
+              onChange={handleChange}
             />
             <motion.button
               initial={{ opacity: 0, x: -100 }}
               animate={{ opacity: 2, x: 0 }}
               transition={{ duration: 0.7 }}
+              onClick={handleProductsSearched}
               className="search bg-transparent outline-none rounded-full  pl-12 pr-7 absolute top-[17px]  right-0 mt-3 sm:h-[10px]"
             >
               <img src={Search} alt="" className="xsm:w-[15px] lg:w-[18px]" />
@@ -659,6 +732,7 @@ const Header = () => {
           </motion.div>
         )}
       </div>
+    
     </header>
   );
 };

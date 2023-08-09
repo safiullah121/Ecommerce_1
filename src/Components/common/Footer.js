@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 
 const Footer = () => {
-  const arrayOne = [
+  const firstColumn = [
     "About Us",
     "About Zip",
     "Privacy Policy",
@@ -20,7 +20,7 @@ const Footer = () => {
     "Advanced Search",
     "Newsletter Subscription",
   ];
-  const arrayTwo = [
+  const secondColumn = [
     "CPUS",
     "Add On Cards",
     "Hard Drives (Internal)",
@@ -32,7 +32,7 @@ const Footer = () => {
     "Speakers / Headsets",
     "Motherboards",
   ];
-  const arrayThree = [
+  const thirdColumn = [
     "Custom PCs",
     "Servers",
     "MSI All-In-One PCs",
@@ -40,7 +40,7 @@ const Footer = () => {
     "ASUS PCs",
     "Tecs PCs",
   ];
-  const arrayFour = [
+  const fourthColumn = [
     "Evryday Use Notebooks",
     "MSI Workstation Series",
     "MSI Prestige Series",
@@ -48,7 +48,7 @@ const Footer = () => {
     "Netbooks",
     "Infinity Gaming Notebooks",
   ];
-  const arrayFive = [
+  const fifthColumn = [
     { title: "Address: 1234 Street Adress City Address, 1234" },
     {
       title: "Phones:",
@@ -71,7 +71,7 @@ const Footer = () => {
     },
   ];
   return (
-    <>
+    <footer>
       <div className="bg-[#F5F7FF]">
         <div className="flex justify-between flex-col gap-[20px] lg:gap-[0px] lg:flex-row mx-auto max-w-[1055px] w-full  pb-10 pt-10">
           <div className="max-w-[265px] mx-auto  text-center flex flex-col items-center">
@@ -132,7 +132,7 @@ const Footer = () => {
                 Information
               </h1>
               <div className="flex flex-col ">
-                {arrayOne.map((item, index) => (
+                {firstColumn.map((item, index) => (
                   <Link
                     to={item == "About Us" ? "/AboutUs" : ""}
                     key={index + "footer_1"}
@@ -148,7 +148,7 @@ const Footer = () => {
                 PC Parts
               </h1>
               <div className="flex flex-col">
-                {arrayTwo.map((item, index) => (
+                {secondColumn.map((item, index) => (
                   <Link
                     key={index + "footer_2"}
                     className="text-[#FFFFFF] xsm:text-center sm:text-start  font-[400] text-[14px] leading-[14px] block pb-2 "
@@ -163,7 +163,7 @@ const Footer = () => {
                 Desktop PCs
               </h1>
               <div className="flex flex-col">
-                {arrayThree.map((item, index) => (
+                {thirdColumn.map((item, index) => (
                   <Link
                     key={index + "footer_3"}
                     className="text-[#FFFFFF] font-[400] text-[14px] leading-[14px] block pb-2 xsm:text-center sm:text-start "
@@ -178,7 +178,7 @@ const Footer = () => {
                 Laptops
               </h1>
               <div className="flex flex-col">
-                {arrayFour.map((item, index) => (
+                {fourthColumn.map((item, index) => (
                   <Link
                     key={index + "footer_4"}
                     className="text-[#FFFFFF] font-[400] xsm:text-center sm:text-start  text-[14px] leading-[14px] block pb-2 "
@@ -189,15 +189,15 @@ const Footer = () => {
               </div>
             </div>
             <div className="pt-6">
-              <h1 className="text-[#FFFFFF80] text-[13px] leading-[18px] font-[700] pb-4 xsm:text-center sm:text-start ">
+              <h1 className="text-[#FFFFFF80]  text-[13px] leading-[18px] font-[700] pb-4 xsm:text-center sm:text-start ">
                 Address
               </h1>
               <div className="">
-                <div className="flex flex-col text-center mx-auto">
-                  {arrayFive.map((item, index) => (
+                <div className="flex flex-col  mx-auto">
+                  {fifthColumn.map((item, index) => (
                     <Link
                       key={index + "footer_5"}
-                      className={`mx-auto text-[#FFFFFF] font-[400] text-center text-[14px] leading-[14px] flex   pb-2 `}
+                      className={` text-[#FFFFFF] font-[400] xsm:mx-auto xsm:text-center sm:mx-0 sm:text-start text-[14px] leading-[14px] flex   pb-2 `}
                     >
                       {item.title}{" "}
                       <p className={`${item.classlist}`}>{item.title_2}</p>
@@ -223,7 +223,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </>
+    </footer>
   );
 };
 

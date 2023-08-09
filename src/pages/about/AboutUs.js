@@ -17,7 +17,6 @@ const AboutUs = (props) => {
   ];
   return (
     <>
-      {props.Header}
       <div className="max-w-[1400px] w-full mx-auto">
         <div className="flex gap-[2px] pt-[21px] pb-[19px]">
           {label.map((item, index) => (
@@ -151,7 +150,6 @@ const AboutUs = (props) => {
         </div>
       </div>
       {props.Review}
-      {props.Footer}
     </>
   );
 };

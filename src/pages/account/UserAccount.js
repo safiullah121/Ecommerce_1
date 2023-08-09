@@ -7,7 +7,7 @@ const UserAccount = (props) => {
     { title: '›', extraClasses: 'text-[#0156FF] pl-1 pr-1' },
     { title: 'My Dashboard' },
   ];
-  const dashboardA = [
+  const dashboardLinks = [
     { a: 'Account Dashboard' },
     { a: 'Account Information' },
     { a: 'Address Book' },
@@ -33,7 +33,7 @@ const information_2 =[
 
   return (
     <>
-      {props.Header}
+ 
       <div className="max-w-[1400px] w-full  mx-auto">
         <div className="flex pt-[21px]">
           {label.map((item, index) => (
@@ -50,7 +50,7 @@ const information_2 =[
         <div className='mx-auto max-w-[326px] w-full pb-[46px]'>
             <div className="max-w-[326px] w-full bg-[#F5F7FF] pt-[20px] pb-[6px] ">
               <ul>
-                {dashboardA.map((item, index) => (
+                {dashboardLinks.map((item, index) => (
                     <div   key={index + 'a'} className={` flex flex-col  pb-[14px]`}>
                   <li
                     className={`pl-[17px]  ${dashboard === index ? 'text-[#000000] border-l-[3px] border-solid border-[#0156FF] font-[600]' : 'text-[#666666]'} cursor-pointer text-[15px] leading-[22px] font-[400]`}
@@ -107,7 +107,7 @@ const information_2 =[
         </div>
       </div>
       </div>
-      {props.Footer}
+
       
     </>
   );

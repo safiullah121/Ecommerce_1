@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 const Register = (props) => {
-    const labelArray =[
+    const label =[
         <p className='text-[#000000] '>Home</p>,
         <p className='text-[#0156FF] pl-1 pr-1'>›</p>,
         <p className='text-[#000000] '>Login</p>
@@ -13,11 +13,10 @@ const Register = (props) => {
 '•  Track orders and more'
     ]
   return (
-    <div>
-      {props.Header}
+    <>
       <div className='max-w-[1400px] w-full pt-[21px] pb-[58px] mx-auto '>
       <div className='flex items-center '>
-            {labelArray.map((item,index)=>(
+            {label.map((item,index)=>(
                 <div key={index+'label'}> <p className='text-[12px] leading[18px] font-normal'>{item}</p> </div>
             ))}  </div>
         <h1 className='text-[32px] leading-[48px] font-semibold pt-[19px]'>Customer Login</h1> 
@@ -51,9 +50,8 @@ const Register = (props) => {
               <Link to='/FAQ'>  <button className='text-[14px] leading-[21px] font-semibold bg-[#0156FF] text-[#ffffff] rounded-[50px] w-[208px] h-[50px] mt-[35px]'>Create An Account</button></Link>
             </div>
       </div>   
-            </div>
-      {props.Footer}
-    </div>
+      </div>
+    </>
   )
 }
 

@@ -1,9 +1,10 @@
 import React from 'react'
 import { useState } from 'react';
 
-const Afaq = (props) => {
+const Afaq = () => {
   const [font, setfont] = useState(0);
-  const labelArray =[
+
+  const label =[
     {text:'Home'},
      {text:'›' , extraClass:'text-[#0156FF] pl-2 pr-2'},
     {text:'Login'},
@@ -49,16 +50,16 @@ const Afaq = (props) => {
      {title:'Information on the Products supplied',ref:"Information"},
      {title:'Delivery',ref:"Delivery"},
   ]
+
   const handleClick = (index)=>{
     setfont(index)
   }
   return (
     
     <>
-    {props.Header}
     <div className='max-w-[1400px] w-full mx-auto'>
     <div className='flex items-center pb-[19px] pt-[21px]'> 
-         {labelArray.map((item , index)=>(
+         {label.map((item , index)=>(
         <p key={index+'index'} className={`${item.extraClass} text-[12px] leading[18px] font-normal`}>{item.text}</p>
          ))}
          </div>
@@ -94,8 +95,6 @@ const Afaq = (props) => {
           </div>
          </div>
     </div>
-  
-    {props.Footer}
     </>
   )
 }

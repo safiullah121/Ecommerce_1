@@ -1,20 +1,22 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Drop from '../img/drop.svg'
 import Drop_2 from '../img/dropup.svg'
 import Tick from '../img/tick.svg'
 import Center from '../img/centerpiece.svg'
 import Beautiful from '../img/beautiful.svg'
 import { useState } from 'react'
-
+import { useLocation } from 'react-router-dom'
+import Context from '../Context'
 
 const CheckOut = (props) => {
+  const product = useContext(Context)
   const [country, setcountry] = useState('United States');
   const [Province, setProvince] = useState('Please, select a region, state or province');
   const [drop, setdrop] = useState(false);
   const [drop_2, setdrop_2] = useState(false);
   const [radio, setradio] = useState(false);
   const [radios, setradios] = useState(true);
-  const [blue, setblue] = useState(1);
+  const [blue, setblue] = useState('farad');
   const [products, setproducts] = useState(false);
 
   const label = [
@@ -36,9 +38,11 @@ const CheckOut = (props) => {
     {img:Center ,para:'MSI MEG Trident X 10SD-1012AU Intel i7 10700K, 2070 SUPER...' ,qty:'Qty 1' ,price:'$3,799.00'},
     {img:Beautiful ,para:'MSI MEG Trident X 10SD-1012AU Intel i7 10700K, 2070 SUPER...' ,qty:'Qty 1' ,price:'$3,799.00'},
   ]
+  const convertPrice = (val) => {
+    return parseInt(val.slice(1));
+  };
   return (
     <>
-    {props.Header}
     <div className='max-w-[1400px] w-full xsm:flex-col md:flex-row flex gap-[10px] justify-between mx-auto pl-[10px] pr-[10px]'>
      <div className='max-w-[924px] w-full pb-[87px] pt-[21px]'>
      <div className='flex'>
@@ -104,14 +108,14 @@ const CheckOut = (props) => {
      <div className='max-w-[446px] mx-auto w-full mb-[20px]'>
       <div className='flex max-w-[388px] w-full justify-between  xsm:mt-[0px] md:mt-[58px] mx-auto' >
         <div className='max-w-[194px] w-full flex items-center justify-center relative flex-col top-[20px]  '>
-            <div onClick={()=>{setblue(1)}} className={`z-10 bg-[#ffffff] rounded-full w-[40px] h-[40px] border-[2.5px] border-solid  flex items-center justify-center ${blue==1?('border-[#0156FF]'):('border-[#CACDD8]')} cursor-pointer`}><img src={Tick} alt="" /></div>
-            <div className={`z-5 absolute  top-[20px]  max-w-[194px] w-full border-[1.5px]  border-solid  ${blue==1?(' border-[#0156FF]'):('border-[#CACDD8]')}] `} ></div>
-            <p className={`text-[16px] font-[400] leading-[20px] pt-[6px] ${blue==1?('text-[#000000]'):('text-[#CACDD8]')}`} >Shipping</p>
+            <div onClick={()=>{setblue('farad')}} className={`z-10 bg-[#ffffff] rounded-full w-[40px] h-[40px] border-[2.5px] border-solid  flex items-center justify-center ${blue=='farad'?('border-[#0156FF]'):('border-[#CACDD8]')} cursor-pointer`}><img src={Tick} alt="" /></div>
+            <div className={`z-5 absolute  top-[20px]  max-w-[194px] w-full border-[1.5px]  border-solid  ${blue==='farad'?(' border-[#0156FF]'):('border-[#CACDD8]')} `} ></div>
+            <p className={`text-[16px] font-[400] leading-[20px] pt-[6px] ${blue=='farad'?('text-[#000000]'):('text-[#CACDD8]')}`} >Shipping</p>
         </div>
         <div className='max-w-[194px] w-full flex items-center justify-center relative flex-col top-[20px]  '>
-            <div onClick={()=>{setblue(2)}} className={`z-10 bg-[#ffffff] rounded-full w-[40px] h-[40px] border-[2.5px] border-solid ${blue==2?('border-[#0156FF]'):('border-[#CACDD8]')} flex items-center justify-center cursor-pointer`}><p className='text-[15px] leading-[24px] font-[600]'>2</p></div>
-            <div className={`z-5 absolute top-[20px]   max-w-[194px] w-full border-[1.5px]  border-solid  ${blue==2?(' border-[#0156FF]'):('border-[#CACDD8]')}]`}></div>
-            <p className={`text-[16px] font-[400] leading-[20px] pt-[6px] ${blue==2?('text-[#000000]'):('text-[#CACDD8]')}`}>Review & Payments</p>
+            <div onClick={()=>{setblue('ali')}} className={`z-10 bg-[#ffffff] rounded-full w-[40px] h-[40px] border-[2.5px] border-solid ${blue=='ali'?('border-[#0156FF]'):('border-[#CACDD8]')} flex items-center justify-center cursor-pointer`}><p className='text-[15px] leading-[24px] font-[600]'>2</p></div>
+            <div className={`z-5 absolute top-[20px]   max-w-[194px] w-full border-[1.5px]  border-solid  ${blue=='ali'?(' border-[#0156FF]'):('border-[#CACDD8]')}`}></div>
+            <p className={`text-[16px] font-[400] leading-[20px] pt-[6px] ${blue=='ali'?('text-[#000000]'):('text-[#CACDD8]')}`}>Review & Payments</p>
         </div>
       </div>
       <div className='bg-[#F5F7FF] w-full  mt-[66px] pt-[18px] pb-[30px] pl-[32px] pr-[30px]'>
@@ -119,17 +123,17 @@ const CheckOut = (props) => {
           <h1 className='font-[600] text-[24px] leading-[36px]'>Order Summary</h1>
         </div>
         <div className='w-full flex justify-between items-center pt-[16px]'>
-          <p className='text-[14px] leading-[21px] font-[400] '>2 Items in Cart</p>
+          <p className='text-[14px] leading-[21px] font-[400] '>{product.selectedProducts.length} Items in Cart</p>
           {products?(<img src={Drop} alt="" onClick={()=>{setproducts(false)}} className='cursor-pointer'/>):(<img src={Drop_2} alt=""  onClick={()=>{setproducts(true)}} className='cursor-pointer'/>)}
         </div>
         {products ?( 
         <div>
-        {details.map((item , index)=>(
+        {product.selectedProducts.map((item , index)=>(
           <div key={index+'details'} className='flex  items-start pt-[25px] gap-[15px]'>
-            <img src={item.img} alt="" className='h-[62px] w-[62px]'/>
+            <img src={item.image} alt="" className='h-[62px] w-[62px] '/>
             <div>
-              <div><p className='text-[14px] leading-[21px] font-[400]'>{item.para}</p></div>
-              <div className='flex pt-[5px]'><p className='text-[14px] leading-[20px] font-[400] text-[#A2A6B0] pr-1'>{item.qty}</p><p className='text-[14px] leading-[19px] font-[600]'>{item.price}</p></div>
+              <div><p className='text-[14px] leading-[21px] font-[400]'>{item.title}</p></div>
+              <div className='flex pt-[5px]'><p className='text-[14px] leading-[20px] font-[400] text-[#A2A6B0] pr-1'>{item.Qty}</p><p className='text-[14px] leading-[19px] font-[600]'> ${item.Qty * convertPrice(item.price)}.00</p></div>
             </div>
           </div>
         ))}</div>):('')
@@ -137,7 +141,7 @@ const CheckOut = (props) => {
       </div>
      </div>
     </div>
-    {props.Footer}
+   
     </>
   )
 }

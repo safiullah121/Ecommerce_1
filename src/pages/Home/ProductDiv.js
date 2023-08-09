@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState ,useContext } from 'react';
 import Rating from './Rating';
-import White from '../img/12.svg';
+import Uncheck from "../img/uncheck.svg";
 import { Link, ScrollRestoration } from 'react-router-dom';
 import Like from '../img/heart.svg';
 import Graph from '../img/graph.svg';
 import Blue from '../img/blueCart.svg';
 import { useNavigate } from 'react-router-dom';
+import Context from '../Context'
+
 
 const ProductDiv = (props) => {
   const navigate = useNavigate();
@@ -36,6 +38,37 @@ const ProductDiv = (props) => {
     setHover_1(false);
   };
 
+const product = useContext(Context)
+const handleClick3 = (e) => {
+  e.stopPropagation();
+  const id = props.item.id;
+  const existingArray = JSON.parse(localStorage.getItem("product")) || [];
+  const existingProduct = existingArray.find((product) => product.id === id);
+
+  if (existingProduct) {
+    if (existingProduct.Qty < 50) {
+      const updatedArray = existingArray.map((product) => {
+        if (product.id === id) {
+          const newQty = product.Qty + 1;
+          return { ...product, Qty: newQty > 50 ? 50 : newQty };
+        }
+        return product;
+      });
+      localStorage.setItem("product", JSON.stringify(updatedArray));
+      product.setselectedProducts(updatedArray);
+    } else {
+      console.log("Quantity already at maximum (50)");
+    }
+  } else {
+    const selectedArrayObj = product.allProducts.find((i) => i?.id === id);
+    const newProduct = { ...selectedArrayObj, Qty: 1 };
+    existingArray.push(newProduct);
+    localStorage.setItem("product", JSON.stringify(existingArray));
+    product.setselectedProducts(existingArray);
+  }
+product.setproductToast(true)
+};
+
   return (
     <>
       <div
@@ -44,19 +77,20 @@ const ProductDiv = (props) => {
         onClick={handleClick}
         className={` cursor-pointer group ${
           hover_1 === true && 'productDiv'
-        } rounded-[20px] w-[220px] relative pt-[5px] pr-[10px] pl-[17px] mx-auto h-[390px]`}
+        } rounded-[20px] ml-[5px] w-[220px] relative pt-[5px] pr-[10px] pl-[17px]  pb-[20px] h-[400px] mt-[10px] mb-[10px]`}
+      id={props.item.id}
       >
         <div key={props.index}
         onClick={handleClick}
 
         >
           <div
-            className={`flex ${
-              props.item.image === White ? 'text-[#C94D3F]' : 'text-[#78A962]'
-            } pl-2`}
+            className={`flex  pl-2`}
           >
             <img src={props.item.label} alt='' />
-            <p className='pl-1 text-[10px] leading-[21px] font-normal '>
+            <p className={`${
+              props.item.label == Uncheck ? 'text-[#C94D3F]' : 'text-[#78A962]'
+            } pl-1 text-[10px] leading-[21px] font-normal `}>
               {props.item.label_2}
             </p>
           </div>
@@ -85,7 +119,7 @@ const ProductDiv = (props) => {
  
             {hover ? (
               <div className=' pt-[13px] flex justify-center' onClick={handleClick2} onMouseEnter={handleMouseEnter_2}>
-                <button className='flex items-center gap-[10px] pl-[20px] pr-[20px] pt-[8px] pb-[8px] h-[37px] border-[2px] border-[#0156FF] border-solid rounded-[50px]'>
+                <button onClick={handleClick3} className='flex items-center gap-[10px] pl-[20px] pr-[20px] pt-[8px] pb-[8px] h-[37px] border-[2px] border-[#0156FF] border-solid rounded-[50px]'>
                   <img src={Blue} alt='' />
                   <p className='text-[#0156FF] text-[14px] font-[600] leading-[21px]'>
                     Add To Cart
@@ -114,22 +148,7 @@ const ProductDiv = (props) => {
         )}
          </div>  
       </div>
-      
-      {/* {hover ? (
-          <div
-           
-            className='relative top-[25px] right-[25px] flex flex-col '
-          >
-            <div  onMouseEnter={handleMouseEnter_2} className='absolute z-10 top-[-500px] right-[10px] w-[30px] h-[30px] mb-[3px] rounded-full border-2 border-solid border-[#A2A6B0] flex flex-col items-center justify-center'>
-              <img src={Like} alt='' />
-            </div>
-            <div  onMouseEnter={handleMouseEnter_2} className='absolute z-10 top-[-467px] right-[10px] w-[30px] h-[30px] mb-[3px] rounded-full border-2 border-solid border-[#A2A6B0] flex flex-col items-center justify-center'>
-              <img src={Graph} alt='' />
-            </div>
-          </div>
-        ) : (
-          ''
-        )} */}
+     
     </>
   );
 };
