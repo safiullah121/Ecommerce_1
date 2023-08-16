@@ -1,4 +1,4 @@
-import {React , useState , useRef} from 'react'
+import {React , useState , useRef, useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../../SupabaseClient';
 import { ToastContainer, toast } from "react-toastify";
@@ -11,47 +11,31 @@ const Register = () => {
       password:'',
       password_confirmation:''
     });
-
-
-
     const [loding, setloding] = useState(false);
-   
-   
-   
-   
-   
-   
-   
-   
-    const handleSignUpClick = async (e) => {
-      e.preventDefault();
-      try {
-        const { data, error } = await supabase.auth.signUp({
-          email: userData.email,
-          password: userData.password,
-          options: {
-            data: {
-              full_name: userData.fullName,
-              password_confirmation: userData.password,
-            },
-          },
-        });
-    
-        if (error) {
-          console.error('Sign up error:', error);
-          if (error.message) {
-            alert('Sign up error: ' + error.message);
-          }
-        } else {
-          alert("Please Check Your Email For Verification Link");
-        }
-      } catch (error) {
-        console.error('An error occurred:', error);
-        alert('An error occurred: ' + error.message);
+   const handleSignUpClick = async(e) => {
+    e.preventDefault();
+    try{const { data, error } = await supabase.auth.signUp({
+    email: userData.email,
+    password: userData.password,
+    options: {
+      data: {
+        full_name: userData.fullName,
+        password_confirmation:userData.password,
       }
-    };
-    
-   console.log(userData)
+    }
+  }
+    )
+    console.log(data);
+    if (userData.password !== userData.password_confirmation){
+      toast.error('passwords are different')  
+    }
+    else if(data.user!==null){
+     alert("Please Check Your Email For Varification Link")}
+ 
+  }catch(error){
+      alert(error.message)
+    }
+   };
     const handleChange = (e) => {
        setuserData((previousData)=>{
          return {
@@ -60,7 +44,6 @@ const Register = () => {
          }
        })
     }
-
 
     const label =[
         <p className='text-[#000000] '>Home</p>,
@@ -79,7 +62,7 @@ const Register = () => {
             {label.map((item,index)=>(
                 <div key={index+'label'}> <p className='text-[12px] leading[18px] font-normal'>{item}</p> </div>
             ))}  </div>
-        <h1 className='text-[32px] leading-[48px] font-semibold pt-[19px]'>Customer Login</h1> 
+        <h1 className='text-[32px] leading-[48px] font-semibold pt-[19px]'>Customer Sign Up</h1> 
         <div className='max-w-[1162px] w-full   mx-auto  flex-wrap flex justify-between gap-[20px] pt-[21px]'>
             <div className='bg-[#F5F7FF] pr-[20px] mx-auto max-w-[564px] w-full pt-[37px] xsm:pl-[10px] xsm:pr-[5px] sm:pl-[57px] sm:pr-[60px] pb-[40px]'>
                 <h1 className='text-[18px] leading-[27px] font-semibold'>Registered Customers</h1>
@@ -102,7 +85,7 @@ const Register = () => {
                 </div>
             </div>
             <div className='bg-[#F5F7FF]  mx-auto max-w-[564px] w-full pt-[37px] pl-[57px] pr-[60px] pb-[146px]'>
-                <h1 className='text-[18px] leading-[27px] font-semibold'>New Customer?</h1>
+                <h1 className='text-[18px] leading-[27px] font-semibold'>Old Customer?</h1>
                 <p className='mt-[22px] text-[14px] leading-[20px] font-normal'>Creating an account has many benefits: </p>
                 <ul className='mt-[22px] text-[14px] leading-[20px] font-normal'>
                 {liArray.map((item,index)=>(
@@ -111,7 +94,7 @@ const Register = () => {
                  
                 ))}
                 </ul>
-              <Link to='/FAQ'>  <button className='text-[14px] leading-[21px] font-semibold bg-[#0156FF] text-[#ffffff] rounded-[50px] w-[208px] h-[50px] mt-[35px]'>Create An Account</button></Link>
+              <Link to='/'>  <button className='text-[14px] leading-[21px] font-semibold bg-[#0156FF] text-[#ffffff] rounded-[50px] w-[208px] h-[50px] mt-[35px]'>Log In</button></Link>
             </div>
       </div>   
       </div>

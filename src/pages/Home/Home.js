@@ -108,6 +108,7 @@ const next = useRef(null)
 const swiperRef = useRef(null);
 const [_, setInit] = useState(null);
   return (
+    <div>
     <AnimatePresence>
       {products.productToast&& (toast.info('Product Is Added To Your Cart'))}
       <div>
@@ -158,7 +159,7 @@ const [_, setInit] = useState(null);
             </a>
           </div>
         </div>
-      <div className="bg-transparent flex xsm:flex-wrap xl:flex-nowrap justify-center gap-[10px] max-w-[1440px] mx-auto pt-[4px] pr-2 pl-4">
+      <div className={`bg-transparent flex xsm:flex-wrap xl:flex-nowrap justify-center gap-[10px] max-w-[1440px] mx-auto pt-[4px] pr-2 pl-4 `}>
       <Swiper
       ref={swiperRef}
       className="mx-auto flex justify-center"
@@ -243,7 +244,7 @@ const [_, setInit] = useState(null);
             }}
           >
             <SwiperSlide>
-<div className="bg-custome mt-[20px] bg-cover h-[350px]  cursor-pointer max-w-[233px] w-full mx-auto  pt-[120px] pb-[32px]  bg-no-repeat flex flex-col text-center items-center ">
+<div className={` bg-custome mt-[20px] bg-cover h-[350px]  cursor-pointer max-w-[233px] w-full mx-auto  pt-[120px] pb-[32px]  bg-no-repeat flex flex-col text-center items-center `}>
             <div className="">
               <h1 className="text-[#FFFFFF] text-[22px] font-bold leading-[28px]">
                 Custome <br /> Build
@@ -327,7 +328,6 @@ const [_, setInit] = useState(null);
           {products.allProducts.map(
             (item, index) =>{
               if(item.laptop){
-                console.log(item)
                 return item.laptop && <SwiperSlide key={item.id}><ProductDiv item={item} index={index} /></SwiperSlide>
               }
             }
@@ -497,7 +497,7 @@ const [_, setInit] = useState(null);
         theme="light"
       />
     </AnimatePresence>
-   
+   </div>
   );
 };
 

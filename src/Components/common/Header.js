@@ -28,8 +28,9 @@ import pay from "../../pages/img/pay.svg";
 import { useContext } from "react";
 import Context from "../../pages/Context";
 import { useNavigate } from 'react-router-dom';
+import { supabase } from "../../SupabaseClient";
 
-const Header = () => {
+const Header = ({token}) => {
 
   const [searchMenu , setSearchMenu] = useState(false);
   const [hoveredItem_3, setHoveredItem_3] = useState(null);
@@ -116,8 +117,8 @@ const Header = () => {
     { title: "My  Account", path: "/UserAccount" },
     { title: " My Wish List (0)", path: "/UserAccount" },
     { title: " Compare (0)", path: "/UserAccount" },
-    { title: "  Create an Account", path: "/Register" },
-    { title: " Sign In", path: "/Register" },
+    { title: "  Sign In", path: "/" },
+    { title: " Sign Up", path: "/Register" },
   ];
   const sale = [
     { title: "Laptops" },
@@ -244,6 +245,7 @@ if (e.target.value==""){
   const handleProceedClick = ()=>{
     navigate("/Checkout" , {state:{filteredProducts}})  
   }
+  const userInformation = sessionStorage.getItem('token')
   return (
     <header>
       <div className="xsm:hidden xl:block pt-[15px] pb-[15px] bg-[#020202] ">
@@ -362,7 +364,7 @@ if (e.target.value==""){
           className="xl:pt-[15px] xl:pb-[15px]  justify-between xl:max-w-[1400px]  w-full mx-auto   flex items-center "
         >
           <div className="flex items-center justify-between xl:w-auto xsm:w-full">
-            <Link to="/">
+            <Link to="/Home">
               <img src={Logo} alt="" className="" onClick={()=>{product.setproductToast(false)}}/>
             </Link>
             <div className="xsm:block xl:hidden pr-[15px] pt-[3px]">
@@ -658,7 +660,10 @@ if (e.target.value==""){
                   <div className="relative">
                     <div class="absolute right-[1px] top-[-26px] h-0 w-0 mt-[-4px] ml-[18px] border-solid border-[white] border-b-8 border-l-8 transform rotate-45"></div>
                   </div>
+                  <div>
+                  <h1  className="text-[20px] font-[600] flex items-center"><h1  className="mr-[5px] text-[16px] font-[400]"> Welcome!</h1>{userInformation && token.user.user_metadata.full_name}</h1>
                   {lies.map((item, index) => (
+                   
                     <Link
                       to={item.path}
                       key={index + "lies"}
@@ -667,6 +672,11 @@ if (e.target.value==""){
                       {item.title}
                     </Link>
                   ))}
+                 {userInformation ?    <h1 onClick={async()=>{
+                  sessionStorage.removeItem('token');  
+                  navigate('/')
+                  }} className="block hover:font-[600] list-none cursor-pointer text-[14px] leading-[28px] font-medium">Log out</h1>:''}
+                  </div>
                 </div>
               </div>
             ) : (
