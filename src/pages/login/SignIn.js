@@ -1,11 +1,12 @@
-import {React , useState } from 'react'
+import {React , useContext, useState } from 'react'
 import { Link , useNavigate} from 'react-router-dom'
 import { supabase } from '../../SupabaseClient';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Context from '../Context';
 
 const SignIn = ({setToken}) => {
-    
+    const product = useContext(Context)
     const navigate = useNavigate()
     const [userData, setuserData] = useState({
         email:'',
@@ -14,6 +15,7 @@ const SignIn = ({setToken}) => {
       const [loding, setloding] = useState(false);
      const handleSignIpClick = async(e) => {
       e.preventDefault();
+     
       try{
         const { data, error } = await supabase.auth.signInWithPassword({
           email: userData.email,
@@ -25,6 +27,7 @@ const SignIn = ({setToken}) => {
        if(data.session!==null || data.user!==null){
         navigate("/Home")
         setToken(data)
+        product.setproductToast(false)
        }
     }catch(error){
         alert(error)
