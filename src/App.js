@@ -427,7 +427,8 @@ const images = {
  Custome: Custome,
 }
 const [productToast, setproductToast] = useState(false);
-
+const [hidingExtra, setHidingExtra] = useState(true);
+const [logout, setlogout] = useState(true);
 
 const [selectedProducts, setselectedProducts] = React.useState([])
 useEffect(()=>{
@@ -438,7 +439,9 @@ setselectedProducts(productInLocalStorage)
   const defaultValues = {
     allProducts,setallProducts,
     selectedProducts,setselectedProducts,
-    productToast, setproductToast
+    productToast, setproductToast,
+    hidingExtra,setHidingExtra,
+    logout,setlogout
   };
   const [token, setToken] = useState(false);
 
@@ -455,7 +458,7 @@ setselectedProducts(productInLocalStorage)
 
   return (
     <div className="relative">
-    <div className={`absolute w-screen h-screen  bg-[#353434] z-50 ${isLoading !== true? 'hidden':'block'}`}></div>
+    <div className={`absolute w-screen h-screen  bg-[#ffff] z-50 ${isLoading !== true? 'hidden':'block'}`}></div>
     <Loading isLoading={isLoading} />
     <Context.Provider value={defaultValues}>
     <BrowserRouter>

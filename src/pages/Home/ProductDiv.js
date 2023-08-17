@@ -77,7 +77,7 @@ product.setproductToast(true)
         onClick={handleClick}
         className={` cursor-pointer group ${
           hover_1 === true && 'productDiv'
-        } rounded-[20px] ml-[5px] w-[220px] relative pt-[5px] pr-[10px] pl-[17px]  pb-[20px] h-[400px] mt-[10px] mb-[10px]`}
+        } rounded-[20px]  mx-auto w-[220px] relative pt-[5px] pr-[10px] pl-[17px]  pb-[20px] h-[400px] mt-[10px] mb-[10px]`}
       id={props.item.id}
       >
         <div key={props.index}

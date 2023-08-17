@@ -15,7 +15,8 @@ const SignIn = ({setToken}) => {
       const [loding, setloding] = useState(false);
      const handleSignIpClick = async(e) => {
       e.preventDefault();
-     
+     product.setHidingExtra(true);
+     product.setlogout(true)
       try{
         const { data, error } = await supabase.auth.signInWithPassword({
           email: userData.email,
@@ -27,11 +28,12 @@ const SignIn = ({setToken}) => {
        if(data.session!==null || data.user!==null){
         navigate("/Home")
         setToken(data)
-        product.setproductToast(false)
+       
        }
     }catch(error){
         alert(error)
       }
+      product.setproductToast(false)
      };
       const handleChange = (e) => {
          setuserData((previousData)=>{
@@ -55,7 +57,7 @@ const SignIn = ({setToken}) => {
       ]
     return (
       <>
-        <div className='max-w-[1400px] w-full pt-[21px] pb-[58px] mx-auto '>
+        <div className='max-w-[1400px] w-full pt-[21px] pb-[58px] mx-auto pl-[15px] pr-[15px]'>
         <div className='flex items-center '>
               {label.map((item,index)=>(
                   <div key={index+'label'}> <p className='text-[12px] leading[18px] font-normal'>{item}</p> </div>

@@ -30,6 +30,7 @@ import Keyboard from "../img/33.png";
 import Gaming from "../img/34.png";
 import Morning from "../img/35.png";
 import Gaming_2 from "../img/36.png";
+import offer from "../img/offer.png"
 import { AnimatePresence } from "framer-motion";
 import Context from "../Context";
 import { ToastContainer, toast } from "react-toastify";
@@ -45,7 +46,7 @@ const Home = (props) => {
     { title:"MSI GL Serie s"},
    {  title:"MSI Nightblade"},
   ];
-  const swiperImg = [Msi, Two, Three, Four, Five];
+  const swiperImg = [offer, Two, Three, Four, Five];
   const images = [Rules, messi, Razer, Therma, Adata, Pakard, Gig];
   const advertisment = [
     {
@@ -108,7 +109,7 @@ const next = useRef(null)
 const swiperRef = useRef(null);
 const [_, setInit] = useState(null);
   return (
-    <div>
+    <div className="">
     <AnimatePresence>
       {products.productToast&& (toast.info('Product Is Added To Your Cart'))}
       <div>
@@ -125,7 +126,7 @@ const [_, setInit] = useState(null);
           >
             {swiperImg.map((item, index) => (
               <SwiperSlide key={item.id} className="h-[328px]">
-                <div className="mx-auto w-full h-auto object-cover object-center"><img src={item} className="mx-auto" /></div>
+                <div className="mx-auto max-w-[1400px] w-full max-h-[328px] object-cover object-center"><img src={item} className="mx-auto " /></div>
               </SwiperSlide>
             ))}
           </Swiper>
@@ -159,7 +160,7 @@ const [_, setInit] = useState(null);
             </a>
           </div>
         </div>
-      <div className={`bg-transparent flex xsm:flex-wrap xl:flex-nowrap justify-center gap-[10px] max-w-[1440px] mx-auto pt-[4px] pr-2 pl-4 `}>
+      <div className={` bg-transparent flex xsm:flex-wrap xl:flex-nowrap justify-center gap-[10px] max-w-[1440px] mx-auto pt-[4px] pl-[15px] pr-[15px]  `}>
       <Swiper
       ref={swiperRef}
       className="mx-auto flex justify-center"
@@ -212,7 +213,7 @@ const [_, setInit] = useState(null);
             </a>{" "}
           </p>
         </div>
-         <div className="mx-auto max-w-[1400px]  flex justify-between  pt-[14px]">
+         <div className="mx-auto max-w-[1440px]  flex justify-between  pt-[14px] pl-[15px] pr-[25px]">
          <Swiper
       className="flex justify-center "
             modules={[Navigation, Pagination, Scrollbar, A11y]}
@@ -266,7 +267,7 @@ const [_, setInit] = useState(null);
           )}
           </Swiper>
         </div>
-        <div className="max-w-[1400px] xsm:hidden xl:flex mx-auto pt-[30px]">
+        <div className="max-w-[1440px] xsm:hidden xl:flex mx-auto pt-[30px] pl-[15px] ">
           <ul className="flex gap-[29px] items-center">
             {li.map((item, index) => (
               <li
@@ -278,7 +279,7 @@ const [_, setInit] = useState(null);
             ))}
           </ul>
         </div>
-        <div className="mx-auto max-w-[1400px] flex justify-between gap-[20px] pt-[23px]">
+        <div className="mx-auto max-w-[1440px] flex justify-between gap-[20px] pt-[23px] pl-[15px] pr-[15px]">
         <Swiper
       className="flex justify-center "
             modules={[Navigation, Pagination, Scrollbar, A11y]}
@@ -334,7 +335,7 @@ const [_, setInit] = useState(null);
           )}
           </Swiper>
         </div>
-        <div className="max-w-[1400px] mx-auto xsm:hidden xl:flex mt-[30px]">
+        <div className="max-w-[1440px] mx-auto xsm:hidden xl:flex mt-[30px] pl-[15px]">
           <ul className="flex gap-[29px] items-center">
             {li.map((item, index) => (
               <li
@@ -346,7 +347,7 @@ const [_, setInit] = useState(null);
             ))}
           </ul>
         </div>
-        <div className="mx-auto max-w-[1400px] flex justify-between gap-[20px] pt-[23px]">
+        <div className="mx-auto max-w-[1440px] flex justify-between gap-[20px] pt-[23px] pl-[15px] pr-[15px]">
         <Swiper
       className="flex justify-center "
             modules={[Navigation, Pagination, Scrollbar, A11y]}
@@ -399,7 +400,7 @@ const [_, setInit] = useState(null);
               item.color && <SwiperSlide key={item.id}><ProductDiv item={item} index={index} /></SwiperSlide>
           )}</Swiper>
         </div>
-        <div className="mx-auto max-w-[1400px] flex justify-between gap-[20px] pt-[31px]">
+        <div className="mx-auto max-w-[1440px] flex justify-between gap-[20px] pt-[31px] pl-[15px] pr-[15px]">
         <Swiper
       className="flex justify-between "
             modules={[Navigation, Pagination, Scrollbar, A11y]}
@@ -459,7 +460,7 @@ const [_, setInit] = useState(null);
             </div>
           ))}
         </div>
-        <div className="max-w-[1400px] mx-auto">
+        <div className="max-w-[1400px] mx-auto pl-[15px]">
           <h1 className="font-semibold text-[22px] leading-[33px] xsm:text-center md:text-start">
             Follow us on Instagram for News, Offers & More
           </h1>

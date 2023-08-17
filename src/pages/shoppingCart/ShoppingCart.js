@@ -165,7 +165,7 @@ const productCart = useContext(Context)
 
   return (
     <>
-      <div className="max-w-[1400px] w-full mx-auto flex pl-[10px] justify-between flex-wrap gap-[19px]">
+      <div className="max-w-[1400px] w-full mx-auto flex pl-[15px] pr-[15px] justify-center flex-wrap gap-[19px]">
         <div className="max-w-[916px] w-full pt-[21px] ">
           <div className="flex items-center pb-[19px]">
             {labelArray.map((item, index) => (
@@ -180,8 +180,8 @@ const productCart = useContext(Context)
           <h1 className="text-[32px] font-[600] leading-[48px]">
             Shopping Cart
           </h1>
-          <div className="xsm:hidden md_3:block">
-            <div className="border-b-[1px] flex border-solid border-[#CACDD8] max-w-[916px] w-full pt-[29px] pb-[13px]">
+          <div className="xsm:hidden md_3:block ">
+            <div className="border-b-[1px] flex border-solid mx-auto border-[#CACDD8] max-w-[916px] w-full pt-[29px] pb-[13px]">
               {cartHeader.map((item, index) => (
                 <p
                   key={index + "i"}

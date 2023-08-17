@@ -57,7 +57,7 @@ const Afaq = () => {
   return (
     
     <>
-    <div className='max-w-[1400px] w-full mx-auto'>
+    <div className='max-w-[1400px] w-full mx-auto PL-[15px] pr-[15px]'>
     <div className='flex items-center pb-[19px] pt-[21px]'> 
          {label.map((item , index)=>(
         <p key={index+'index'} className={`${item.extraClass} text-[12px] leading[18px] font-normal`}>{item.text}</p>

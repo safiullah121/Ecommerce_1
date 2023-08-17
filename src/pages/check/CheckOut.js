@@ -4,7 +4,7 @@ import Drop_2 from '../img/dropup.svg'
 import Tick from '../img/tick.svg'
 import Center from '../img/centerpiece.svg'
 import Beautiful from '../img/beautiful.svg'
-import { useState } from 'react'
+import { useState , useEffect} from 'react'
 import { useLocation } from 'react-router-dom'
 import Context from '../Context'
 
@@ -19,6 +19,7 @@ const CheckOut = (props) => {
   const [blue, setblue] = useState('farad');
   const [products, setproducts] = useState(false);
 
+ 
   const label = [
     {label:'Home'},
     {label:' › ', extraclass:'text-[#0156FF] pl-1 pr-1 font-[300]'},
@@ -43,7 +44,7 @@ const CheckOut = (props) => {
   };
   return (
     <>
-    <div className='max-w-[1400px] w-full xsm:flex-col md:flex-row flex gap-[10px] justify-between mx-auto pl-[10px] pr-[10px]'>
+    <div className='max-w-[1400px] w-full xsm:flex-col md:flex-row flex gap-[10px] justify-between mx-auto pl-[15px] pr-[15px]'>
      <div className='max-w-[924px] w-full pb-[87px] pt-[21px]'>
      <div className='flex'>
       {label.map((item , index)=>(

@@ -57,7 +57,7 @@ const Register = () => {
     ]
   return (
     <>
-      <div className='max-w-[1400px] w-full pt-[21px] pb-[58px] mx-auto '>
+      <div className='max-w-[1400px] w-full pt-[21px] pb-[58px] mx-auto pl-[15px] pr-[15px]'>
       <div className='flex items-center '>
             {label.map((item,index)=>(
                 <div key={index+'label'}> <p className='text-[12px] leading[18px] font-normal'>{item}</p> </div>

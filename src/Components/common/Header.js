@@ -22,7 +22,7 @@ import Pakard from "../../pages/img/pakard.svg";
 import Gig from "../../pages/img/gig.svg";
 import { useState, useRef , useEffect} from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, Router } from "react-router-dom";
 import ProductDiv from "../../pages/Home/ProductDiv";
 import pay from "../../pages/img/pay.svg";
 import { useContext } from "react";
@@ -113,12 +113,14 @@ const Header = ({token}) => {
     { img: Gig },
   ];
 
+  // useEffect(() => {
+  //   if (sessionStorage.getItem('token')) {
+  //     product.setHidingExtra(true);
+  //   }
+  // }, []);
   const lies = [
-    { title: "My  Account", path: "/UserAccount" },
-    { title: " My Wish List (0)", path: "/UserAccount" },
-    { title: " Compare (0)", path: "/UserAccount" },
-    { title: "  Sign In", path: "/" },
-    { title: " Sign Up", path: "/Register" },
+    { title: "  Sign In", path: "/" ,extraclass:'hidden'},
+    { title: " Sign Up", path: "/Register" ,extraclass:'hidden'},
   ];
   const sale = [
     { title: "Laptops" },
@@ -245,10 +247,26 @@ if (e.target.value==""){
   const handleProceedClick = ()=>{
     navigate("/Checkout" , {state:{filteredProducts}})  
   }
-  const userInformation = sessionStorage.getItem('token')
+  const userInformation = sessionStorage.getItem('token');
+ 
+  const handleCompareClick = () => {
+    navigate("/UserAccount");
+    const compareSection = document.getElementById("compare");
+    if (compareSection) {
+      compareSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const handleWishListClick = () => {
+    navigate("/UserAccount");
+    const wishListSection = document.getElementById("wish");
+    if (wishListSection) {
+      wishListSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   return (
     <header>
-      <div className="xsm:hidden xl:block pt-[15px] pb-[15px] bg-[#020202] ">
+      <div className="xsm:hidden xl:block pt-[15px] pb-[15px] bg-[#020202] pl-[15px] pr-[15px]">
         <motion.div
           initial={{ opacity: 0, x: -40 }}
           animate={{ opacity: 2, x: 0 }}
@@ -361,9 +379,9 @@ if (e.target.value==""){
           initial={{ opacity: 0, x: -40 }}
           animate={{ opacity: 2, x: 0 }}
           transition={{ duration: 0.7 }}
-          className="xl:pt-[15px] xl:pb-[15px]  justify-between xl:max-w-[1400px]  w-full mx-auto   flex items-center "
+          className="xl:pt-[15px] xl:pb-[15px]  justify-between xl:max-w-[1400px]  w-full mx-auto   flex items-center pl-[15px] pr-[15px]"
         >
-          <div className="flex items-center justify-between xl:w-auto xsm:w-full">
+          <div className="flex items-center justify-between xl:w-auto xsm:w-full ">
             <Link to="/Home">
               <img src={Logo} alt="" className="" onClick={()=>{product.setproductToast(false)}}/>
             </Link>
@@ -662,18 +680,23 @@ if (e.target.value==""){
                   </div>
                   <div>
                   <h1  className="text-[20px] font-[600] flex items-center"><h1  className="mr-[5px] text-[16px] font-[400]"> Welcome!</h1>{userInformation && token.user.user_metadata.full_name}</h1>
+                  <Link to={"/UserAccount"} className="hover:font-[600] list-none cursor-pointer text-[14px] leading-[28px] font-medium">My  Account</Link>
+                  <Link to="/UserAccount#wish"  onClick={handleWishListClick} className="block hover:font-[600] list-none cursor-pointer text-[14px] leading-[28px] font-medium"> My Wish List (0)</Link>
+                  <Link to="/UserAccount#compare" onClick={handleCompareClick} className="block hover:font-[600] list-none cursor-pointer text-[14px] leading-[28px] font-medium">Compare (0)</Link>
                   {lies.map((item, index) => (
                    
                     <Link
                       to={item.path}
                       key={index + "lies"}
-                      className="block hover:font-[600] list-none cursor-pointer text-[14px] leading-[28px] font-medium"
+                      className={` ${product.hidingExtra && item.extraclass} block hover:font-[600] list-none cursor-pointer text-[14px] leading-[28px] font-medium`}
                     >
                       {item.title}
                     </Link>
                   ))}
-                 {userInformation ?    <h1 onClick={async()=>{
-                  sessionStorage.removeItem('token');  
+                 {product.logout ?
+                  <h1 onClick={()=>{
+                      product.setlogout(false)  
+                    product.setHidingExtra(false)
                   navigate('/')
                   }} className="block hover:font-[600] list-none cursor-pointer text-[14px] leading-[28px] font-medium">Log out</h1>:''}
                   </div>

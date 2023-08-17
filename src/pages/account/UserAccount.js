@@ -1,6 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 
 const UserAccount = (props) => {
+  useEffect(() => {
+    // Check if the hash exists in the URL (e.g., #compare or #wish)
+    const hash = window.location.hash;
+    if (hash) {
+      const targetElement = document.querySelector(hash);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, []);
   const [dashboard, setDashboard] = useState(0);
   const label = [
     { title: 'Home ' },
@@ -19,8 +29,9 @@ const UserAccount = (props) => {
     { a: 'My Product Reviews' },
     { a: 'Newsletter Subscriptions' },
   ];
+  const userData = JSON.parse(sessionStorage.getItem('token'));
 const information_1 =[
-{title:'Contact Information',desc:<p  className='font-[300] text-[16px] leading-[20px]'>Alex Driver <br /> ExampeAdress@gmail.com</p>,link:'Edit', link_2:'Change Password'},
+{title:'Contact Information',desc:<p  className='font-[300] text-[16px] leading-[20px]'>{userData.user.user_metadata.full_name} <br /> {userData.user.email}</p>,link:'Edit', link_2:'Change Password'},
 {title:'Newsletters',desc:<p  className='font-[300] text-[16px] leading-[20px]'>You don't subscribe to our <br/> newsletter.</p>,link:'Edit'}
 ];
 const information_2 =[
@@ -31,10 +42,11 @@ const information_2 =[
     setDashboard(index);
   };
 
+
   return (
     <>
  
-      <div className="max-w-[1400px] w-full  mx-auto">
+      <div className="max-w-[1400px] w-full  mx-auto pl-[15px] pr-[15px]">
         <div className="flex pt-[21px]">
           {label.map((item, index) => (
             <p
@@ -63,11 +75,11 @@ const information_2 =[
                 ))}
               </ul>
             </div>
-          <div className='max-w-[326px] w-full bg-[#F5F7FF] mt-[7px] pb-[16px] text-center'>
+          <div id='compare' className='max-w-[326px] w-full bg-[#F5F7FF] mt-[7px] pb-[16px] text-center'>
            <h1 className='font-[700] text-[16px] leading-[24px] pt-[20px] pb-[20px]'>Compare Products</h1>
            <p className='font-[400] text-[13px] leading-[16px] pt-[10px] pb-[10px]'>You have no items to compare.</p>
           </div>
-          <div className='max-w-[326px] w-full bg-[#F5F7FF] mt-[7px] pb-[16px] text-center'>
+          <div id='wish' className='max-w-[326px] w-full bg-[#F5F7FF] mt-[7px] pb-[16px] text-center'>
            <h1 className='font-[700] text-[16px] leading-[24px] pt-[20px] pb-[20px]'>My Wish List</h1>
            <p className='font-[400] text-[13px] leading-[16px] pt-[10px] pb-[10px]'>You have no items in your wish list.</p>
           </div>
@@ -75,14 +87,14 @@ const information_2 =[
         <div className='w-full  mx-auto'>
           <div >
           <h1 className='font-[700] text-[18px] leading-[26px] pb-[14px] border-b-[1px] border-solid border-[#CACDD8] mb-[17px]'>Account Information</h1>
-         <div className='flex  md_3:gap-[117px] xsm:gap-[10px]  xsm:flex-col md_3:flex-row'>
+         <div className='flex  md_3:gap-[117px]  xsm:gap-[10px]  xsm:flex-col md_3:flex-row'>
          {information_1.map((item , index)=>(
-          <div key={index+'information'} className='mx-auto pb-[59px]'>
+          <div key={index+'information'} className=' pb-[59px] justify-start'>
             <h1 className=' font-semibold text-[16px] leading-[20px] pb-[6px]'>{item.title}</h1>
             <p className='text-[16px] leading-[20px] font-[300] pb-[34px]'>{item.desc}</p>
             <div className='flex gap-[24px] text-[#0156FF] underline'>
-              <p>{item.link}</p>
-              <p>{item.link_2}</p>
+              <p className='cursor-pointer'>{item.link}</p>
+              <p className='cursor-pointer'>{item.link_2}</p>
             </div>
           </div>
           ))}
@@ -92,11 +104,11 @@ const information_2 =[
         <div className=' pb-[14px] border-b-[1px] border-solid border-[#CACDD8] mb-[17px] flex gap-[18px] items-center '> <h1 className='font-[700] text-[18px] leading-[26px] '>Address Book</h1> <p className='text-[#0156FF] underline font-[300] text-[14px] leading-[20px]'>Menage Addresses</p></div> 
          <div className='flex  md_3:gap-[117px] xsm:gap-[10px]  xsm:flex-col md_3:flex-row'>
          {information_2.map((item , index)=>(
-          <div key={index+'information_2'} className='mx-auto pb-[59px]'>
+          <div key={index+'information_2'} className=' pb-[59px]'>
             <h1 className=' font-semibold text-[16px] leading-[20px] pb-[6px]'>{item.title}</h1>
             <p className='text-[16px] leading-[20px] font-[300] pb-[34px]'>{item.desc}</p>
             <div className='flex gap-[24px] text-[#0156FF] underline'>
-              <p>{item.link}</p>
+              <p className='cursor-pointer'>{item.link}</p>
              
             </div>
           </div>

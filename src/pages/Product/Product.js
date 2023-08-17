@@ -42,8 +42,8 @@ const Product = () => {
     const [price, setprice] = useState(' $3,299.00');
   
   return (
-    <>
-        <div className=' border-b-[1px] border-solid border-[#CACDD8]'>
+    <div className=''>
+        <div className=' border-b-[1px] border-solid border-[#CACDD8] pl-[15px] pr-[15px]'>
         <div className='flex justify-between xsm:flex-col-reverse xl:flex-row xsm:gap-[20px] lg:-flex-row items-center max-w-[1398px] mx-auto pt-[26px] pb-[25px] '>
             <div className='flex'>
                 <p><button  className={`text-[14px] font-semibold leading-[21px] ${
@@ -197,9 +197,9 @@ const Product = () => {
         <div className='xl:max-w-[600px] 2xl:max-w-[855px] mx-auto w-full'>
         <div className='flex pt-[74px] xsm:justify-center xl:justify-start gap_1'>
             <div className='pt-[12px] padding'>
-                <div className='w-[30px] h-[30px] mb-[3px] rounded-full border-2 border-solid border-[#A2A6B0] flex items-center justify-center'><img src={Heart} alt="" /> </div>
-                <div className='w-[30px] h-[30px] mb-[3px] rounded-full border-2 border-solid border-[#A2A6B0] flex items-center justify-center'><img src={Graph} alt="" /> </div>
-                <div className='w-[30px] h-[30px] mb-[3px] rounded-full border-2 border-solid border-[#A2A6B0] flex items-center justify-center'><img src={Message} alt="" /> </div>
+                <div className='w-[30px] h-[30px] mb-[3px] rounded-full border-2 border-solid border-[#A2A6B0] flex items-center justify-center cursor-pointer '><img src={Heart} alt="" /> </div>
+                <div className='w-[30px] h-[30px] mb-[3px] rounded-full border-2 border-solid border-[#A2A6B0] flex items-center justify-center cursor-pointer'><img src={Graph} alt="" /> </div>
+                <div className='w-[30px] h-[30px] mb-[3px] rounded-full border-2 border-solid border-[#A2A6B0] flex items-center justify-center cursor-pointer'><img src={Message} alt="" /> </div>
             </div>
             <div className=' '>    {image && <img src={image} alt="Trident Image" className='w-[300px] h-[300px] mb-[32px]'/>}
             <div className='flex items-center  max-w-[263px] pb-[98px]'>
@@ -273,7 +273,7 @@ const Product = () => {
                 </div>
             </div>
           </div>
-    </>
+    </div>
   )
 }
 

@@ -25,7 +25,7 @@ const ContactUs = () => {
     
   return (
     <>   
-    <div className='max-w-[1400px] w-full flex-wrap mx-auto flex justify-between'>
+    <div className='max-w-[1400px] w-full flex-wrap mx-auto flex justify-between pl-[15px] pr-[15px]'>
     <div className='max-w-[925px] w-full pt-[21px] xsm:pb-[0px] xl:pb-[123px]'>
     <div className='flex items-center '>
             {label.map((item,index)=>(
@@ -50,7 +50,7 @@ Please contact us and we will make sure to get back to you as soon as we possibl
     <button className='text-[14px] leading-[21px] font-semibold bg-[#0156FF] rounded-[50px] text-[#ffffff] w-[151px] h-[50px] mt-[16px]'>Submit</button>
     </div>
   
-    <div className='2xl:max-w-[401px] xl:max-w-[300px] w-full bg-[#F5F7FF] max-h-[401px] xsm:mt-[20px] xl:mt-[121px] pt-[10px] pb-[74px] pl-[31px] xl:pr-[10px] 2xl:pr-[88px]'>
+    <div className='2xl:max-w-[401px] xl:max-w-[300px] mb-[50px] w-full bg-[#F5F7FF] max-h-[401px] xsm:mt-[20px] xl:mt-[121px] pt-[10px] pb-[74px] pl-[31px] xl:pr-[10px] 2xl:pr-[88px]'>
         {aboutShop.map((item , index)=>(
           <div key={index+'about'} className='flex pt-[19px]'>
             <img src={item.image} alt="" className='w-[25px] h-[25px]'/>
