@@ -9,7 +9,7 @@ import Rtx from '../img/rtx.svg'
 import Ssd from '../img/ssd.svg'
 import Ddr from '../img/ddr.svg'
 import Core from '../img/core.jpg'
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 
 
@@ -112,7 +112,7 @@ const Product = () => {
             <div className='flex items-center pt-[31px] max-w-[567px] justify-between '>
             <div className='flex '>
                 <p className='text-[12px] leading-[18px] font-semibold'>Have a Question?</p>
-                <a href="" className='pl-1 text-[12px] leading-[18px] font-normal text-[#0156FF] underline'>Contact Us</a>
+                <Link to={'/ContactUs'} className='pl-1 text-[12px] leading-[18px] font-normal text-[#0156FF] underline'>Contact Us</Link>
             </div>
             <h1 className='text-[12px] leading-[18px] font-light text-[#000000]'>SKU D5515AI</h1>
             </div>

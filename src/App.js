@@ -46,7 +46,7 @@ function ScrollToTop() {
   return null;
 }
 function App() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [allProducts, setallProducts] = useState([]);
   const array = [
     {
@@ -436,25 +436,25 @@ const productInLocalStorage = JSON.parse(localStorage.getItem('product')||'[]');
 setselectedProducts(productInLocalStorage)
 
 },[])
+const [loginButton, setloginButton] = useState(0);
   const defaultValues = {
     allProducts,setallProducts,
     selectedProducts,setselectedProducts,
     productToast, setproductToast,
     hidingExtra,setHidingExtra,
-    logout,setlogout
+    logout,setlogout,
+    loginButton,setloginButton
   };
   const [token, setToken] = useState(false);
 
-    if (token) {
-      sessionStorage.setItem('token', JSON.stringify(token));
-    }
+   
 
   useEffect(() => {
      if (sessionStorage.getItem('token')) {
       let data = JSON.parse(sessionStorage.getItem('token'));
      setToken(data);
      }
-  }, [token!==false]);
+  }, []);
 
   return (
     <div className="relative">
@@ -468,14 +468,14 @@ setselectedProducts(productInLocalStorage)
         <Route path="/Product" element={<Product/>}/>
         <Route path="/ContactUs" element={<ContactUs/>}/>
         <Route path="/Register" element={<Register/>}/> 
-        <Route path="/" element={<SignIn setToken = {setToken}/>}/>
+        <Route path="/login" element={<SignIn setToken = {setToken}/>}/>
         <Route path="/ShoppingCart" element={<ShoppingCart/>}/>
         <Route path="/Checkout" element={<CheckOut/>}/>
         <Route path="/UserAccount" element={<UserAccount/>}/>
         <Route path="/AboutUs" element={<AboutUs/>}/>
         <Route path="/FAQ" element={<Afaq/>}/>
         <Route path="/SearchedProducts" element={<SearchedProducts/>}/>
-        {token  ? <Route path="/Home" element={<Home token={token} />} /> :''}
+         <Route path="/" element={<Home token={token} />} />
       </Routes> 
        <Footer/>
     </BrowserRouter>

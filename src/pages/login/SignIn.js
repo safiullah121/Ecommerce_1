@@ -14,21 +14,26 @@ const SignIn = ({setToken}) => {
       });
       const [loding, setloding] = useState(false);
      const handleSignIpClick = async(e) => {
-      e.preventDefault();
+      e.preventDefault();  
+      
      product.setHidingExtra(true);
      product.setlogout(true)
+    
       try{
         const { data, error } = await supabase.auth.signInWithPassword({
           email: userData.email,
           password: userData.password,
         })
-        console.log(data)
+if (data){
+    sessionStorage.setItem('token',JSON.stringify(data))
+}
      if(data.user==null || data.session==null){
        toast.error(" Check Your Email or Password ")}
        if(data.session!==null || data.user!==null){
-        navigate("/Home")
+        navigate("/")
+        product.setloginButton(true)
         setToken(data)
-       
+        
        }
     }catch(error){
         alert(error)

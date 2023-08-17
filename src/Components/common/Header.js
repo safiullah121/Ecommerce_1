@@ -119,7 +119,7 @@ const Header = ({token}) => {
   //   }
   // }, []);
   const lies = [
-    { title: "  Sign In", path: "/" ,extraclass:'hidden'},
+    { title: "  Sign In", path: "/login" ,extraclass:'hidden'},
     { title: " Sign Up", path: "/Register" ,extraclass:'hidden'},
   ];
   const sale = [
@@ -155,6 +155,9 @@ const Header = ({token}) => {
       }
       if (e.target !== searchRef.current && e.target !== mainSearch.current) {
         setSearchMenu(false);
+      }
+      if (e.target !== sideImageDiv.current && e.target !== sideImageRef_2.current) {
+        setloginDropDown(false);
       }
     });
   
@@ -264,6 +267,15 @@ if (e.target.value==""){
       wishListSection.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  useEffect(() => {
+   if (sessionStorage.getItem('token')){
+    product.setloginButton(1)
+   }
+  }, []);
+  const sideImageRef_2 = useRef(null)
+  const sideImageDiv = useRef(null)
+  const [loginDropDown, setloginDropDown] = useState(false);
   return (
     <header>
       <div className="xsm:hidden xl:block pt-[15px] pb-[15px] bg-[#020202] pl-[15px] pr-[15px]">
@@ -379,10 +391,10 @@ if (e.target.value==""){
           initial={{ opacity: 0, x: -40 }}
           animate={{ opacity: 2, x: 0 }}
           transition={{ duration: 0.7 }}
-          className="xl:pt-[15px] xl:pb-[15px]  justify-between xl:max-w-[1400px]  w-full mx-auto   flex items-center pl-[15px] pr-[15px]"
+          className="xl:pt-[15px] xl:pb-[15px]  justify-between xl:max-w-[1400px]  w-full mx-auto  flex items-center "
         >
           <div className="flex items-center justify-between xl:w-auto xsm:w-full ">
-            <Link to="/Home">
+            <Link to="/">
               <img src={Logo} alt="" className="" onClick={()=>{product.setproductToast(false)}}/>
             </Link>
             <div className="xsm:block xl:hidden pr-[15px] pt-[3px]">
@@ -597,7 +609,7 @@ if (e.target.value==""){
                 ref={cartimageRef}
                 src={Cart}
                 alt=""
-                className="mt-[10px] mr-8 cursor-pointer"
+                className={`${product.loginButton ? 'mt-[11px] mr-5':"mt-[2.5px] mr-5"}  cursor-pointer `}
                 onClick={() => {
                   setshoppingCart(!shoppingCart);
                 }}
@@ -659,7 +671,7 @@ if (e.target.value==""){
                 </div>
               )}
             </div>
-            <motion.img
+          {product.loginButton ?  <motion.img
               ref={image}
               whileTap={{ scale: 0.6 }}
               src={Avatar}
@@ -667,11 +679,22 @@ if (e.target.value==""){
               onClick={() => {
                 setdropDown_2(!dropDown_2);
               }}
-              className=" cursor-pointer"
-            />
-            <div className="count absolute right-[57px] rounded-full w-[16px] h-[17px] bg-[#0156FF] flex items-center justify-center text-[10px] leading-[15px]  text-[#ffff]">
+              className=" cursor-pointer mr-[15px]"
+            />: 
+            <motion.i
+            ref={sideImageRef_2}
+            whileTap={{ scale: 0.6 }}
+            onClick={()=>{setloginDropDown(!loginDropDown)}}
+            className=" fa-solid fa-bars text-[20px] mr-[10px] text-[#0156FF] cursor-pointer "
+          ></motion.i>}
+            <div className={`count absolute  ${product.loginButton ? 'right-[61px] top-[-1px]': 'right-[38px] top-[-8px]'}  rounded-full w-[16px] h-[17px] bg-[#0156FF] flex items-center justify-center text-[10px] leading-[15px]  text-[#ffff]`}>
             {product.selectedProducts.length }
             </div>
+            {loginDropDown && <div ref={sideImageDiv} className="absolute right-[10px] bg-white top-[22px] z-40 p-[10px] border-[1px] border-solid border-slate-300">
+              {lies.map((item , index)=>(
+                <Link key={index+"lies2"} to={item.path} className="block text-slate-400 hover:text-black">{item.title}</Link>
+              ))}
+            </div>}
             {dropDown_2 == 1 ? (
               <div className="relitive " ref={drop}>
                 <div className="absolute bg-white w-[232px] z-20 border-[1px] border-solid border-[#CACDD8] top-[33px]  right-0  pl-[26px] pr-[17px] pt-[26px] pb-[26px]">
@@ -693,12 +716,14 @@ if (e.target.value==""){
                       {item.title}
                     </Link>
                   ))}
-                 {product.logout ?
+                 
                   <h1 onClick={()=>{
-                      product.setlogout(false)  
+                    sessionStorage.removeItem('token')
+                    product.setlogout(false)  
                     product.setHidingExtra(false)
-                  navigate('/')
-                  }} className="block hover:font-[600] list-none cursor-pointer text-[14px] leading-[28px] font-medium">Log out</h1>:''}
+                    product.setloginButton(false)
+                  navigate('/login')
+                  }} className="block hover:font-[600] list-none cursor-pointer text-[14px] leading-[28px] font-medium">Log out</h1>
                   </div>
                 </div>
               </div>
