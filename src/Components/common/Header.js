@@ -31,7 +31,7 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from "../../SupabaseClient";
 
 const Header = ({token}) => {
-
+   const [array, setarray] = useState([]);
   const [searchMenu , setSearchMenu] = useState(false);
   const [hoveredItem_3, setHoveredItem_3] = useState(null);
   const [dropDown_2, setdropDown_2] = useState(false);
@@ -636,7 +636,7 @@ if (e.target.value==""){
                       </button>
                     </Link>
                   </div>
-                  {products.map((item, index) => (
+                  {products?.map((item, index) => (
                     <div
                       key={index + "cart"}
                       className="flex justify-between pt-[17px] gap-[10px] pb-[19px] items-start pl-[15px] pr-[8px] border-b-[1px] border-solid border-[#CACDD8]"
@@ -691,7 +691,7 @@ if (e.target.value==""){
             {product.selectedProducts.length }
             </div>
             {loginDropDown && <div ref={sideImageDiv} className="absolute right-[10px] bg-white top-[22px] z-40 p-[10px] border-[1px] border-solid border-slate-300">
-              {lies.map((item , index)=>(
+              {lies?.map((item , index)=>(
                 <Link key={index+"lies2"} to={item.path} className="block text-slate-400 hover:text-black">{item.title}</Link>
               ))}
             </div>}
