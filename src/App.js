@@ -46,6 +46,12 @@ function ScrollToTop() {
   return null;
 }
 function App() {
+  useEffect(() => {
+  let productArr = [];
+  if (localStorage.getItem('product')==null) {
+    localStorage.setItem('product', JSON.stringify(productArr));
+  }
+   }, []);
   const [isLoading, setIsLoading] = useState(true);
   const [allProducts, setallProducts] = useState([]);
   const array = [

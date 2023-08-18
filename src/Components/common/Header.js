@@ -31,7 +31,7 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from "../../SupabaseClient";
 
 const Header = ({token}) => {
-   const [array, setarray] = useState([]);
+   const [array, setarray] = useState("hello");
   const [searchMenu , setSearchMenu] = useState(false);
   const [hoveredItem_3, setHoveredItem_3] = useState(null);
   const [dropDown_2, setdropDown_2] = useState(false);
@@ -45,6 +45,7 @@ const Header = ({token}) => {
   const [resulsToggle, setResulsToggle] = useState(false);
   const [shoppingCart, setshoppingCart] = useState(false);
   const [selectedTitleIndex, setSelectedTitleIndex] = useState(0);
+
 
 
   const dropDownRef = useRef(null);
