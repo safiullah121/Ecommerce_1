@@ -1,5 +1,5 @@
 import React, {useState  ,  useEffect } from "react";
-import { BrowserRouter, Routes,Route, useLocation } from "react-router-dom";
+import { HashRouter, Routes,Route, useLocation } from "react-router-dom";
 import './App.css'
 import Home from "./pages/Home/Home";
 import Product from "./pages/Product/Product";
@@ -469,7 +469,7 @@ const [loginButton, setloginButton] = useState(0);
     <div className={`absolute w-screen h-screen  bg-[#ffff] z-50 ${isLoading !== true? 'hidden':'block'}`}></div>
     <Loading isLoading={isLoading} />
     <Context.Provider value={defaultValues}>
-    <BrowserRouter>
+    <HashRouter>
     <Header token = {token}/>
       <ScrollToTop />
       <Routes>
@@ -486,7 +486,7 @@ const [loginButton, setloginButton] = useState(0);
          <Route path="/" element={<Home token={token} />} />
       </Routes> 
        <Footer/>
-    </BrowserRouter>
+    </HashRouter>
     </Context.Provider>
     </div>
   );
