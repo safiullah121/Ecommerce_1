@@ -403,6 +403,7 @@ function App() {
     
         if (data) {
           setallProducts(data);
+          localStorage.setItem('selectedProduct', JSON.stringify(data));
         }
       } catch (error) {
         alert(error);
@@ -413,6 +414,7 @@ function App() {
     }, 2000);
     fetchingData()
    }, []);
+   
 const images = {
   Check: Check,
   Window: Window,

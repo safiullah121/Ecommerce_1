@@ -12,7 +12,7 @@ import Context from '../Context'
 const ProductDiv = (props) => {
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate('/Product', { state: { image: props.item.image } });
+    navigate('/Product', { state: { image: props.item.id } });
   };
 
   const Hover = [{ img: Like }, { img: Graph }];

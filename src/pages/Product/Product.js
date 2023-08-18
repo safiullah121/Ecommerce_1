@@ -1,4 +1,4 @@
-import {React , useState} from 'react'
+import {React , useState , useContext , useEffect} from 'react'
 import Pay from '../img/pay.svg'
 import Heart from '../img/heart.svg'
 import Graph from '../img/graph.svg'
@@ -9,14 +9,20 @@ import Rtx from '../img/rtx.svg'
 import Ssd from '../img/ssd.svg'
 import Ddr from '../img/ddr.svg'
 import Core from '../img/core.jpg'
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation} from 'react-router-dom';
+import Context from '../Context'
+import { supabase } from '../../SupabaseClient'
 
 
 
 const Product = () => {
+    const Products = JSON.parse(localStorage.getItem('selectedProduct'))
     const [tabIndex, settabindex] = useState(0);
     const location = useLocation();
-    const image = location.state && location.state.image;
+    const id = location.state && location.state.image;
+
+    const product = useContext(Context);
+    const selectedImage = Products.find(p => p.id === id);
     const liArray =[
         '•  Intel Core i7-10700F',
         '•  Intel H410',
@@ -94,7 +100,7 @@ const Product = () => {
             <p className='max-w-[567px] pt-[24px]'>MSI MPG Trident 3 10SC-005AU Intel i7 10700F, 2060 SUPER, 16GB RAM, 512GB SSD, 2TB HDD, Windows 10 Home, Gaming Keyboard and Mouse 3 Years Warranty Gaming Desktop</p>
             <div className='flex gap-[18px] pt-[46px] items-center'>
             <div className=' p-[2px] rounded-full '>
-            <svg width="31" height="31" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg  onClick={()=>{console.log(product.allProducts)}} width="31" height="31" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="15.5" cy="15.5" r="15.5" transform="rotate(-180 15.5 15.5)" fill="#4B4D4F"/>
             </svg>
             </div>
@@ -201,7 +207,8 @@ const Product = () => {
                 <div className='w-[30px] h-[30px] mb-[3px] rounded-full border-2 border-solid border-[#A2A6B0] flex items-center justify-center cursor-pointer'><img src={Graph} alt="" /> </div>
                 <div className='w-[30px] h-[30px] mb-[3px] rounded-full border-2 border-solid border-[#A2A6B0] flex items-center justify-center cursor-pointer'><img src={Message} alt="" /> </div>
             </div>
-            <div className=' '>    {image && <img src={image} alt="Trident Image" className='w-[300px] h-[300px] mb-[32px]'/>}
+            <div className=' '> 
+                    <img src={selectedImage.image} alt="" />
             <div className='flex items-center  max-w-[263px] pb-[98px]'>
             <img src={Zip} alt="" />
             <div className='flex items-center ml-[11.5px] w-[1px] h-[23px]  border-[1px] border-[#00AEB8] border-solid'></div>

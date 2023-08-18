@@ -162,7 +162,20 @@ const productCart = useContext(Context)
     console.log(activeInputIndex)
     setActiveInputIndex(activeInputIndex === index ? null : index);
   };
-
+  const handleUpdateCart = () => {
+    const updatedProductArry = productArry.map((productItem) => {
+      // Calculate the new price based on quantity and convertPrice
+      const newPrice = productItem.Qty * convertPrice(productItem.discountedPrice);
+      
+      // Return a new object with updated price
+      return { ...productItem, price: `$${newPrice.toFixed(2)}` };
+    });
+  
+    setProductArry(updatedProductArry);
+    localStorage.setItem("product", JSON.stringify(updatedProductArry));
+    setShowMultiplication(false);
+  };
+  
   return (
     <>
       <div className="max-w-[1400px] w-full mx-auto flex pl-[15px] pr-[15px] justify-center flex-wrap gap-[19px]">
@@ -213,7 +226,7 @@ const productCart = useContext(Context)
                       {item.title}
                     </p>
                     <p className="font-[600] text-[16px] leading-[24px] pl-[65px]">
-                      {item.price}
+                      {item.discountedPrice}
                     </p>
                     <input
                       type="number"
@@ -223,15 +236,15 @@ const productCart = useContext(Context)
                       disabled={activeInputIndex!==index}
                       className={`${activeInputIndex==index ? ("border-[1px] border-solid border-gray-500"):("border-none")} w-[70px] h-[50px] bg-[#F5F7FF] rounded-[6px] pl-[10px] ml-[60px] outline-none`}
                     />
-   {showMultiplication ? (  
+   
                   <p className="font-[600] text-[16px] leading-[24px] pl-[40px]">
-                    ${item.Qty * convertPrice(item.price)}.00
+                    ${convertPrice(item.price)}
                   </p>
-                ) : (
-                  <p className="font-[600] text-[16px] leading-[24px] pl-[40px]">
+                
+                  {/* <p className="font-[600] text-[16px] leading-[24px] pl-[40px]">
                     $0.00
-                  </p>
-                )}
+                  </p> */}
+                
                     <div className="ml-[60px] flex flex-col gap-[10px]">
                       <img  onClick={() => handleImageClick(index)} src={Edit} alt="" className="cursor-pointer h-[26px] w-[26px]" />
                       <img
@@ -261,10 +274,7 @@ const productCart = useContext(Context)
                   Clear Shopping Cart
                 </button>
               </div>
-              <button  onClick={() => {
-            setShowMultiplication(true);
-            setActiveInputIndex(null);
-          }} className={`${buttonClass} text-[#ffffff] bg-black`}>
+              <button  onClick={handleUpdateCart} className={`${buttonClass} text-[#ffffff] bg-black`}>
                 Update Shopping Cart
               </button>
             </div>
@@ -462,9 +472,9 @@ const productCart = useContext(Context)
               <div key={index + "paragraph"}>
                 <div className="flex justify-between text-[13px] font-[600] leading-[27px]">
                   <p>{item.title}</p>
-                  <p>{showMultiplication==true ?
+                  <p>
                   (item.price)
-                  :("$0.00")}</p>
+                  </p>
                 </div>
                 <p className="text-[10px] leading-[18px] font-[400]">
                   {item.para}

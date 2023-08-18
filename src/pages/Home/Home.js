@@ -111,7 +111,7 @@ const [_, setInit] = useState(null);
   return (
     <div className="">
     <AnimatePresence>
-      {products.productToast&& (toast.info('Product Is Added To Your Cart'))}
+      {products.productToast&& (toast.success('Product Is Added To Your Cart'))}
       <div>
         <div className="mx-auto max-h-[328px] xl:pt-[0px] xsm:pt-[15px]">
           <Swiper
