@@ -1,4 +1,4 @@
-import {React , useContext, useState } from 'react'
+import {React , useContext, useState, useEffect } from 'react'
 import { Link , useNavigate} from 'react-router-dom'
 import { supabase } from '../../SupabaseClient';
 import { ToastContainer, toast } from "react-toastify";
@@ -6,6 +6,12 @@ import "react-toastify/dist/ReactToastify.css";
 import Context from '../Context';
 
 const SignIn = ({setToken}) => {
+
+  // useEffect(() => {
+   
+  //   fetchingData_2();
+  // }, []);
+  const profileData = JSON.parse(localStorage.getItem('profileData'))
     const product = useContext(Context)
     const navigate = useNavigate()
     const [userData, setuserData] = useState({
@@ -14,17 +20,22 @@ const SignIn = ({setToken}) => {
       });
       const [loding, setloding] = useState(false);
      const handleSignIpClick = async(e) => {
+  console.log(product.productIds)
+      const emailWanted = profileData?.find(item => item.user_email === userData.email)
       e.preventDefault();  
+      product.setHidingExtra(true);
+      product.setlogout(true)
+      if (emailWanted) {
+        const product_ids = emailWanted.product_ids;
+        // product.setproductIds((previousIds) => [...previousIds, ...product_ids]);
+      }
       
-     product.setHidingExtra(true);
-     product.setlogout(true)
-    
       try{
         const { data, error } = await supabase.auth.signInWithPassword({
           email: userData.email,
           password: userData.password,
         })
-if (data){
+    if (data){
     sessionStorage.setItem('token',JSON.stringify(data))
 }
      if(data.user==null || data.session==null){
@@ -33,11 +44,39 @@ if (data){
         navigate("/")
         product.setloginButton(true)
         setToken(data)
-        
+       
+
        }
     }catch(error){
         alert(error)
       }
+     if (sessionStorage.getItem('token')){ 
+      const user_email = JSON.parse(sessionStorage.getItem('token'))
+      await supabase
+  .from('User_Profile')
+  .select('product_ids') // Replace 'your_specific_column_name' with the column you want to retrieve
+  .eq('user_email', user_email.user.email) // Add any additional conditions to uniquely identify the row
+  .then(({ data, error }) => {
+    if (error) {
+      console.error('Error fetching data:', error);
+    } else {
+      // Handle the fetched data here
+      if (data.length > 0) {
+        product.setproductToast(false)
+        const specificColumnValue = data[0].product_ids;
+        
+         const allProducts = JSON.parse( localStorage.getItem('selectedProduct'))
+  const userProductIds = specificColumnValue.map(product => product.id);
+  const userProducts = allProducts.filter(product => userProductIds.includes(product.id))
+  localStorage.setItem('userProducts',JSON.stringify(userProducts))
+  product.setproductToast(false)
+  product.setselectedProducts_2(userProducts)
+      } else {
+        console.log('No data found.');
+      }
+    }
+  });
+}
       product.setproductToast(false)
      };
       const handleChange = (e) => {
@@ -48,7 +87,6 @@ if (data){
            }
          })
       }
-  
   
       const label =[
           <p className='text-[#000000] '>Home</p>,

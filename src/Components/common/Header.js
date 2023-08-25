@@ -60,6 +60,9 @@ const Header = ({token}) => {
   const sideRef = useRef(null);
   const sideImageRef = useRef(null);
 
+  const user = sessionStorage.getItem('token');
+const productArr = JSON.parse(localStorage.getItem('product'))
+const userProducts = JSON.parse(localStorage.getItem('userProducts'))
   const firstHoveredMenu = [
     { title: "Everyday Use Notebooks", img: right },
     { title: "MSI Workstation Series  ", img: right },
@@ -242,9 +245,14 @@ if (e.target.value==""){
   };
   const calculateOrderPrice = () => {
     let total = 0;
-    products.forEach((item) => {
+  if(!user){  products.forEach((item) => {
       total += item.Qty * convertPrice(item.price);
-    });
+    });}
+    else{
+      userProducts.forEach((item) => {
+        total += item.Qty * convertPrice(item.price);
+      });
+    }
     return total;
   };
   const products =  JSON.parse(localStorage.getItem('product'));
@@ -277,6 +285,33 @@ if (e.target.value==""){
   const sideImageRef_2 = useRef(null)
   const sideImageDiv = useRef(null)
   const [loginDropDown, setloginDropDown] = useState(false);
+  const [Data, setData] = useState(null);
+  const handleLogout = ()=>{
+    sessionStorage.setItem('token', JSON.stringify([]));
+    product.setselectedProducts_2([])
+    product.setlogout(false)  
+    product.setHidingExtra(false)
+    product.setloginButton(false)
+    product.setproductIds([])
+    
+  }
+  useEffect(() => {
+    const fetch =async () =>{ 
+    try {
+      const { data, error } = await supabase
+        .from('User_Profile')
+        .select();
+      if (data) {
+      localStorage.setItem('profileData', JSON.stringify(data));
+      }
+    } catch (error) {
+      alert(error);
+    }
+}
+    fetch()
+}, [handleLogout]);
+
+
   return (
     <header>
       <div className="xsm:hidden xl:block pt-[15px] pb-[15px] bg-[#020202] pl-[15px] pr-[15px]">
@@ -627,7 +662,7 @@ if (e.target.value==""){
                     My Cart
                   </h1>
                   <p className="font-[400] leading-[18px] text-[12px] text-[#000000] text-center pt-[6px]">
-                  {product.selectedProducts.length } item in cart
+                  {user ? product.selectedProducts_2.length : productArr.length} item in cart
                   </p>
                   <div className="pt-[17px] w-full pb-[20px] flex justify-center border-b-[1px] border-solid border-[#CACDD8]">
                     <Link to="/ShoppingCart">
@@ -637,6 +672,8 @@ if (e.target.value==""){
                       </button>
                     </Link>
                   </div>
+                  {!user ? 
+                    <div>
                   {products?.map((item, index) => (
                     <div
                       key={index + "cart"}
@@ -654,6 +691,26 @@ if (e.target.value==""){
                       <p>{item.title}</p>
                     </div>
                   ))}
+                  </div>
+                  :<div>
+                  {product.selectedProducts_2?.map((item, index) => (
+                    <div
+                      key={index + "cart"}
+                      className="flex justify-between pt-[17px] gap-[10px] pb-[19px] items-start pl-[15px] pr-[8px] border-b-[1px] border-solid border-[#CACDD8]"
+                    >
+                      <div className="flex items-center h-[70px]">
+                        <h1>{item.Qty}x</h1>
+                      </div>
+
+                      <img
+                        src={item.image}
+                        alt=""
+                        className="w-[50px] h-[50px]"
+                      />
+                      <p>{item.title}</p>
+                    </div>
+                  ))}
+                  </div>}
                   <h1 className="flex items-center justify-center text-[14px] leading-[18px] font-[600] text-[#A2A6B0] pt-[16px]">
                     Subtotal:
                     <p className=" text-black pl-2 text-[18px] leading-[26px] font-[600]">
@@ -689,7 +746,7 @@ if (e.target.value==""){
             className=" fa-solid fa-bars text-[20px] mr-[10px] text-[#0156FF] cursor-pointer "
           ></motion.i>}
             <div className={`count absolute  ${product.loginButton ? 'right-[61px] top-[-1px]': 'right-[38px] top-[-8px]'}  rounded-full w-[16px] h-[17px] bg-[#0156FF] flex items-center justify-center text-[10px] leading-[15px]  text-[#ffff]`}>
-            {product.selectedProducts.length }
+            {user  ? product.selectedProducts_2.length : product.selectedProducts.length}
             </div>
             {loginDropDown && <div ref={sideImageDiv} className="absolute right-[10px] bg-white top-[22px] z-40 p-[10px] border-[1px] border-solid border-slate-300">
               {lies?.map((item , index)=>(
@@ -705,8 +762,8 @@ if (e.target.value==""){
                   <div>
                   <h1  className="text-[20px] font-[600] flex items-center"><h1  className="mr-[5px] text-[16px] font-[400]"> Welcome!</h1>{userInformation && token.user.user_metadata.full_name}</h1>
                   <Link to={"/UserAccount"} className="hover:font-[600] list-none cursor-pointer text-[14px] leading-[28px] font-medium">My  Account</Link>
-                  <Link to="/UserAccount#wish"  onClick={handleWishListClick} className="block hover:font-[600] list-none cursor-pointer text-[14px] leading-[28px] font-medium"> My Wish List (0)</Link>
-                  <Link to="/UserAccount#compare" onClick={handleCompareClick} className="block hover:font-[600] list-none cursor-pointer text-[14px] leading-[28px] font-medium">Compare (0)</Link>
+                  <Link to="/UserAccount"   className="block hover:font-[600] list-none cursor-pointer text-[14px] leading-[28px] font-medium"> My Wish List (0)</Link>
+                  <Link to="/UserAccount"  className="block hover:font-[600] list-none cursor-pointer text-[14px] leading-[28px] font-medium">Compare (0)</Link>
                   {lies.map((item, index) => (
                    
                     <Link
@@ -718,13 +775,7 @@ if (e.target.value==""){
                     </Link>
                   ))}
                  
-                  <h1 onClick={()=>{
-                    sessionStorage.removeItem('token')
-                    product.setlogout(false)  
-                    product.setHidingExtra(false)
-                    product.setloginButton(false)
-                  navigate('/login')
-                  }} className="block hover:font-[600] list-none cursor-pointer text-[14px] leading-[28px] font-medium">Log out</h1>
+                  <Link to={'/login'} onClick={handleLogout} className="block hover:font-[600] list-none cursor-pointer text-[14px] leading-[28px] font-medium">Log out</Link>
                   </div>
                 </div>
               </div>

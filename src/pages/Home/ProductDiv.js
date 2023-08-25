@@ -1,4 +1,4 @@
-import React, { useState ,useContext } from 'react';
+import React, { useState ,useContext , useEffect} from 'react';
 import Rating from './Rating';
 import Uncheck from "../img/uncheck.svg";
 import { Link, ScrollRestoration } from 'react-router-dom';
@@ -7,9 +7,13 @@ import Graph from '../img/graph.svg';
 import Blue from '../img/blueCart.svg';
 import { useNavigate } from 'react-router-dom';
 import Context from '../Context'
+import { supabase } from '../../SupabaseClient';
+import { round } from 'lodash';
 
 
 const ProductDiv = (props) => {
+  const product = useContext(Context)
+
   const navigate = useNavigate();
   const handleClick = () => {
     navigate('/Product', { state: { image: props.item.id } });
@@ -37,37 +41,108 @@ const ProductDiv = (props) => {
     setHover(false);
     setHover_1(false);
   };
-
-const product = useContext(Context)
-const handleClick3 = (e) => {
-  e.stopPropagation();
-  const id = props.item.id;
-  const existingArray = JSON.parse(localStorage.getItem("product")) || [];
-  const existingProduct = existingArray.find((product) => product.id === id);
-
-  if (existingProduct) {
-    if (existingProduct.Qty < 50) {
-      const updatedArray = existingArray.map((product) => {
-        if (product.id === id) {
-          const newQty = product.Qty + 1;
-          return { ...product, Qty: newQty > 50 ? 50 : newQty };
-        }
-        return product;
-      });
-      localStorage.setItem("product", JSON.stringify(updatedArray));
-      product.setselectedProducts(updatedArray);
+  const [Data, setData] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState(null);
+  useEffect(() => {
+    if (sessionStorage.getItem('token') !== null) {
+      
+      const user_email = JSON.parse(sessionStorage.getItem('token')) || [];
+    const userProfile = JSON.parse(localStorage.getItem('profileData'));
+    const userProducts = JSON.parse(localStorage.getItem('userProducts'));
+    const emailWanted = userProfile?.find(item => item.user_email === user_email.user.email);
+    if (emailWanted.product_ids!==[] && user_email) {
+      product.setproductIds(emailWanted.product_ids);
+      product.setselectedProducts_2(userProducts)
     } else {
-      console.log("Quantity already at maximum (50)");
+      // Handle the case where emailWanted is undefined (not found)
+      console.error('User profile not found for the email:', user_email.user.email);
     }
-  } else {
-    const selectedArrayObj = product.allProducts.find((i) => i?.id === id);
-    const newProduct = { ...selectedArrayObj, Qty: 1 };
-    existingArray.push(newProduct);
-    localStorage.setItem("product", JSON.stringify(existingArray));
-    product.setselectedProducts(existingArray);
   }
-product.setproductToast(true)
+}, []);
+const id = props.item.id;
+  const handleClick3 =async (e) => {
+    await product.setproductToast(true)
+    if (!sessionStorage.getItem('token')) { const existingArray = JSON.parse(localStorage.getItem("product")) || [];
+    const existingProduct = existingArray.find((product) => product.id === id);
+    if (existingProduct) {
+      if (existingProduct.Qty < 50) {
+        const updatedArray = existingArray.map((product) => {
+          if (product.id === id) {
+            const newQty = product.Qty + 1;
+            return { ...product, Qty: newQty > 50 ? 50 : newQty };
+          }
+          return product;
+        });
+        localStorage.setItem("product", JSON.stringify(updatedArray));
+        product.setselectedProducts(updatedArray);
+      } else {
+        console.log("Quantity already at maximum (50)");
+      }
+    } else {
+      const selectedArrayObj = product.allProducts.find((i) => i?.id === id);
+      const newProduct = { ...selectedArrayObj, Qty: 1 };
+      existingArray.push(newProduct);
+      localStorage.setItem("product", JSON.stringify(existingArray));
+      product.setselectedProducts(existingArray);
+    }}
+  e.stopPropagation();
+  if (sessionStorage.getItem('token')!==null) {
+    
+    const dataArray = [...product.productIds, {id}]
+    console.log(dataArray, "dataArray")
+     product.setproductIds(dataArray);
+    const user_email = JSON.parse(sessionStorage.getItem('token')) || []
+  
+
+  if (dataArray!==[] && user_email.user.email!=='') {
+    const data = {
+      user_email: user_email.user.email,
+      product_ids: dataArray,
+    };
+
+    // Use the upsert method to insert or update data in the "User Profile" table
+  if (sessionStorage.getItem('token')!==null) { 
+    product.setproductToast(false)
+    await supabase
+      .from('User_Profile') // Replace 'user_profile' with your actual table name
+      .upsert([data]) // upsert() takes an array of data objects
+      .then(({ data, error }) => {
+        if (error) {
+          console.error('Error inserting data:', error);
+        } 
+        
+      });}
+  }
+  // const email = JSON.parse(sessionStorage.getItem('token'))
+  await supabase
+  .from('User_Profile')
+  .select('product_ids') // Replace 'your_specific_column_name' with the column you want to retrieve
+  .eq('user_email', user_email.user.email) // Add any additional conditions to uniquely identify the row
+  .then(({ data, error }) => {
+    if (error) {
+      console.error('Error fetching data:', error);
+    } else {
+      // Handle the fetched data here
+      if (data.length > 0) {
+        product.setproductToast(false)
+        const specificColumnValue = data[0].product_ids;
+        
+         const allProducts = JSON.parse( localStorage.getItem('selectedProduct'))
+  const userProductIds = specificColumnValue.map(product => product.id);
+  const userProducts = allProducts.filter(product => userProductIds.includes(product.id))
+  localStorage.setItem('userProducts',JSON.stringify(userProducts))
+  product.setproductToast(false)
+  product.setselectedProducts_2(userProducts)
+      } else {
+        console.log('No data found.');
+      }
+    }
+  });}
 };
+// useEffect(() => {
+
+// }, [Data]);
+
 
   return (
     <>
@@ -80,7 +155,7 @@ product.setproductToast(true)
         } rounded-[20px]  mx-auto w-[220px] relative pt-[5px] pr-[10px] pl-[17px]  pb-[20px] h-[400px] mt-[10px] mb-[10px]`}
       id={props.item.id}
       >
-        <div key={props.index}
+        <div key={props.index + Math.random()}
         onClick={handleClick}
 
         >

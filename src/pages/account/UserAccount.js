@@ -1,16 +1,10 @@
 import React, { useState , useEffect} from 'react';
+import { supabase } from '../../SupabaseClient';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const UserAccount = (props) => {
-  useEffect(() => {
-    // Check if the hash exists in the URL (e.g., #compare or #wish)
-    const hash = window.location.hash;
-    if (hash) {
-      const targetElement = document.querySelector(hash);
-      if (targetElement) {
-        targetElement.scrollIntoView({ behavior: "smooth" });
-      }
-    }
-  }, []);
+ 
   const [dashboard, setDashboard] = useState(0);
   const label = [
     { title: 'Home ' },
@@ -42,11 +36,39 @@ const information_2 =[
     setDashboard(index);
   };
 
+const [PasswordRecovery, setPasswordRecovery] = useState(false);
+const [email, setEmail] = useState('');
 
+const handlePasswordChange = () => {
+  setPasswordRecovery(true);
+};
+const handleSubmit = async () => {
+  await supabase.auth.resetPasswordForEmail(email)
+  setPasswordRecovery(false);
+ toast.success('Check Your Email')
+  setEmail('')
+  
+};
   return (
     <>
- 
-      <div className="max-w-[1400px] w-full  mx-auto pl-[15px] pr-[15px]">
+ <ToastContainer
+        position="top-center"
+        autoClose={1500}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover={true}
+        theme="light"
+      />
+      <div className=" relative max-w-[1400px] w-full  mx-auto pl-[15px] pr-[15px]">
+       {PasswordRecovery && <div className='max-w-[400px] w-full max-h-[300px] h-full bg-[#ffffff] border-[#dad7d7] border-solid border-2 fixed top-[150px] left-[500px] right-[550px] '>
+          <h1 className='text-[32px] mt-[40px] font-[600] text-center'>Recovery E-mail</h1>
+          <input value={email} onChange={(e)=>{setEmail(e.target.value)} } type="text" placeholder='Recovery E-mail here' className='pl-[15px] outline-none border-[#dad7d7] border-solid border-[1px] rounded-[6px] h-[40px] w-[350px] mt-[40px] ml-[22px]' />
+          <button onClick={handleSubmit} className='rounded-[10px] h-[40px] w-[200px] ml-[100px] bg-[#0156FF] text-[21px] text-[#ffff] font-[500] mt-[40px]'>Submit</button>
+        </div>}
         <div className="flex pt-[21px]">
           {label.map((item, index) => (
             <p
@@ -93,8 +115,8 @@ const information_2 =[
             <h1 className=' font-semibold text-[16px] leading-[20px] pb-[6px]'>{item.title}</h1>
             <p className='text-[16px] leading-[20px] font-[300] pb-[34px]'>{item.desc}</p>
             <div className='flex gap-[24px] text-[#0156FF] underline'>
-              <p className='cursor-pointer'>{item.link}</p>
-              <p className='cursor-pointer'>{item.link_2}</p>
+              <p className='cursor-pointer'>Edit</p>
+              <p className='cursor-pointer' onClick={handlePasswordChange}>{item.link_2}</p>
             </div>
           </div>
           ))}

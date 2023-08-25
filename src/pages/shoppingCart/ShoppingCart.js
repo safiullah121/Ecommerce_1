@@ -14,10 +14,16 @@ import { useLocation } from "react-router-dom";
 import { parseInt } from "lodash";
 import Context from '../Context';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from "../../SupabaseClient";
+import Loading from "../../Components/Loading"
 
 const ShoppingCart = (props) => {
-  const product = localStorage.getItem("product");
-  const productArr = JSON.parse(product);
+
+  const user = sessionStorage.getItem("token");
+  const userProducts = JSON.parse(localStorage.getItem("userProducts")|| []);
+ 
+  
+  const productArr = JSON.parse(localStorage.getItem("product")|| []);
   const convertPrice = (val) => {
     return parseInt(val.slice(1));
   };
@@ -25,9 +31,14 @@ const ShoppingCart = (props) => {
   const [dataChanged, setDataChanged] = useState(false);
   const calculateTotalPrice = () => {
     let total = 0;
-    productArry.forEach((item) => {
+  if(!user){  productArry.forEach((item) => {
       total += item.Qty * convertPrice(item.price);
-    });
+    });}
+    else{
+      userProducts.forEach((item) => {
+        total += item.Qty * convertPrice(item.price);
+      });
+    }
     return total;
   };
   const calculateOrderPrice = () => {
@@ -106,7 +117,36 @@ const ShoppingCart = (props) => {
         " xsm:w-[300px] 2xl:w-[386px]  text-[#A2A6B0] border-2 border-solid border-[#A2A6B0]",
     },
   ];
+  const email = JSON.parse(sessionStorage.getItem('token'))
 const productCart = useContext(Context)
+const [isLoading, setIsLoading] = useState(false);
+const allProducts =  JSON.parse( localStorage.getItem('userProducts'))
+  const handleDelete_2 = async (id) =>{
+    setIsLoading(true)
+    const {data , error} = await supabase
+    .from('User_Profile')
+    .select('product_ids') 
+    .eq('user_email', email.user.email) 
+    const specificColumnValue =  await data[0].product_ids;
+    const updatedProductIds =  await specificColumnValue.filter((item) => item.id !== id);
+    await productCart.setproductIds(updatedProductIds)
+    const userData = {
+      user_email:  email.user.email, 
+      product_ids: updatedProductIds,
+    };
+    
+    await supabase
+    .from('User_Profile') 
+    .upsert([userData])
+    setDataChanged(false)
+    // localStorage.setItem('userProducts',JSON.stringify(userProducts))
+    const updatedArray = allProducts.filter((item) => item.id !== id);
+    productCart.setselectedProducts_2(updatedArray)
+    localStorage.setItem("userProducts", JSON.stringify(updatedArray));
+    setDataChanged(true)
+    setIsLoading(false)
+  };
+ 
   
   const handleDelete = (parentId) => {
     const updatedArray = productArr.findIndex((item) => item.id === parentId);
@@ -121,20 +161,53 @@ const productCart = useContext(Context)
   useEffect(() => {
     const product = localStorage.getItem("product");
     const productArr = JSON.parse(product) || [];
-    setProductArry(productArr);
+    if(sessionStorage.getItem('token')==null){ setProductArry(productArr);}
+    else{ setProductArry(userProducts);}
     setDataChanged(false);
   }, [dataChanged]);
-
-  const handleClearCart = () => {
+  const dataArray = []
+  const handleClearCart = async() => {
     localStorage.setItem("product", JSON.stringify([]));
     setDataChanged(true);
     productCart.setselectedProducts([])
     setShowMultiplication(false)
-  };
-
+ if (email ) {
+  localStorage.setItem("userProducts", JSON.stringify(dataArray))
+  setDataChanged(true);
+  productCart.setselectedProducts_2(dataArray)
  
-  const handleInputChange = (e, itemId) => {
+    const data = {
+      user_email: email.user.email,
+      product_ids: dataArray,
+    };
+    await supabase
+    .from('User_Profile') // Replace 'user_profile' with your actual table name
+    .upsert([data]) // upsert() takes an array of data objects
+    .then(({ data, error }) => {
+      if (error) {
+        console.error('Error inserting data:', error);
+      } 
+      
+    });
+  }
+  };
+  
+  const handleInputChange_2 = (e, itemId) => {
     let quantity = e.target.value > 50 ? 50 : e.target.value;
+    if (e.target.value > 50) {
+      toast.info("Only 50 Products Are Allowed");
+    }
+    const updatedDataArr = userProducts.map((productItem) => {
+      if (productItem.id === itemId) {
+      return { ...productItem, Qty: quantity };
+    }
+    return productItem;
+  })
+  setProductArry(updatedDataArr);
+  localStorage.setItem("userProducts", JSON.stringify(updatedDataArr));
+ }
+ const handleInputChange = (e, itemId) => {
+   let quantity = e.target.value > 50 ? 50 : e.target.value;
     if (e.target.value > 50) {
       toast.info("Only 50 Products Are Allowed");
     }
@@ -143,11 +216,14 @@ const productCart = useContext(Context)
         return { ...productItem, Qty: quantity };
       }
       return productItem;
-    });
+    })
     setProductArry(updatedProductArr);
     localStorage.setItem("product", JSON.stringify(updatedProductArr));
+    ;
+    
+    
     setShowMultiplication(false);
- 
+    
   };
 
   const navigate = useNavigate();
@@ -157,27 +233,41 @@ const productCart = useContext(Context)
   }
   const [showMultiplication, setShowMultiplication] = useState(true);
   const [activeInputIndex, setActiveInputIndex] = useState(null);
-
+  
   const handleImageClick = (index) => {
-    console.log(activeInputIndex)
     setActiveInputIndex(activeInputIndex === index ? null : index);
   };
   const handleUpdateCart = () => {
-    const updatedProductArry = productArry.map((productItem) => {
+    console.log("hello",)
+    
+   if (user==null){ const updatedProductArry = productArry.map((productItem) => {
       // Calculate the new price based on quantity and convertPrice
       const newPrice = productItem.Qty * convertPrice(productItem.discountedPrice);
       
       // Return a new object with updated price
       return { ...productItem, price: `$${newPrice.toFixed(2)}` };
     });
-  
+   
     setProductArry(updatedProductArry);
-    localStorage.setItem("product", JSON.stringify(updatedProductArry));
+    localStorage.setItem("product", JSON.stringify(updatedProductArry));}
+    else{
+      const updatedUserData = productArry.map((productItem) => {
+        // Calculate the new price based on quantity and convertPrice
+        const newPrice = productItem.Qty * convertPrice(productItem.discountedPrice);
+        
+        // Return a new object with updated price
+        return { ...productItem, price: `$${newPrice.toFixed(2)}` };
+      });
+    
+      setProductArry(updatedUserData);
+      localStorage.setItem("userProducts", JSON.stringify(updatedUserData));
+    }
     setShowMultiplication(false);
   };
-  
+
   return (
     <>
+     <Loading isLoading={isLoading} />
       <div className="max-w-[1400px] w-full mx-auto flex pl-[15px] pr-[15px] justify-center flex-wrap gap-[19px]">
         <div className="max-w-[916px] w-full pt-[21px] ">
           <div className="flex items-center pb-[19px]">
@@ -205,61 +295,103 @@ const productCart = useContext(Context)
               ))}
             </div>
 
-            {productArr.length === 0 ? (
-              <div className="w-full pt-[20px] pb-[20px] flex justify-center">
-                <h1>No Products To Show</h1>
-              </div>
-            ) : (
-              <div>
-                {productArr.map((item, index) => (
-                  <div
-                    id={item.id}
-                    className="flex border-b-[1px]  border-solid border-[#CACDD8] pt-[25px] pb-[25px]"
-                    key={index + "product"}
-                  >
-                    <img
-                      src={item.image}
-                      alt=""
-                      className="w-[120px] h-[120px]"
-                    />
-                    <p className="max-w-[291px] w-full font-[400] text-[14px] leading-[21px] pl-[29px]">
-                      {item.title}
-                    </p>
-                    <p className="font-[600] text-[16px] leading-[24px] pl-[65px]">
-                      {item.discountedPrice}
-                    </p>
-                    <input
-                      type="number"
-                      value={item.Qty}
-                      onChange={(e) => handleInputChange(e, item.id)} // Pass item.id here
-                      min={1}
-                      disabled={activeInputIndex!==index}
-                      className={`${activeInputIndex==index ? ("border-[1px] border-solid border-gray-500"):("border-none")} w-[70px] h-[50px] bg-[#F5F7FF] rounded-[6px] pl-[10px] ml-[60px] outline-none`}
-                    />
-   
-                  <p className="font-[600] text-[16px] leading-[24px] pl-[40px]">
-                    ${convertPrice(item.price)}
-                  </p>
-                
-                  {/* <p className="font-[600] text-[16px] leading-[24px] pl-[40px]">
-                    $0.00
-                  </p> */}
-                
-                    <div className="ml-[60px] flex flex-col gap-[10px]">
-                      <img  onClick={() => handleImageClick(index)} src={Edit} alt="" className="cursor-pointer h-[26px] w-[26px]" />
-                      <img
-                        src={Cross}
-                        onClick={() => {
-                          handleDelete(item.id);
-                        }}
-                        alt=""
-                        className="cursor-pointer h-[26px] w-[26px]"
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+            {user !== null ? (
+  userProducts.length === 0 ? (
+    <div className="w-full pt-[20px] pb-[20px] flex justify-center">
+      <h1>No Products To Show</h1>
+    </div>
+  ) : (
+    userProducts.map((item, index) => (
+      <div
+        id={item.id}
+        className="flex border-b-[1px]  border-solid border-[#CACDD8] pt-[25px] pb-[25px]"
+        key={index + "userData"}
+      >
+        <img
+          src={item.image}
+          alt=""
+          className="w-[120px] h-[120px]"
+        />
+        <p className="max-w-[291px] w-full font-[400] text-[14px] leading-[21px] pl-[29px]">
+          {item.title}
+        </p>
+        <p className="font-[600] text-[16px] leading-[24px] pl-[65px]">
+          {item.discountedPrice}
+        </p>
+        <input
+          type="number"
+          value={item.Qty}
+          onChange={(e) => handleInputChange_2(e, item.id)} // Pass item.id here
+          min={1}
+          disabled={activeInputIndex !== index}
+          className={`${activeInputIndex == index ? ("border-[1px] border-solid border-gray-500") : ("border-none")} w-[70px] h-[50px] bg-[#F5F7FF] rounded-[6px] pl-[10px] ml-[60px] outline-none`}
+        />
+        <p className="font-[600] text-[16px] leading-[24px] pl-[40px]">
+          ${convertPrice(item.price)}
+        </p>
+        <div className="ml-[60px] flex flex-col gap-[10px]">
+          <img onClick={() => handleImageClick(index)} src={Edit} alt="" className="cursor-pointer h-[26px] w-[26px]" />
+          <img
+            src={Cross}
+            onClick={() => { handleDelete_2(item.id) }}
+            alt=""
+            className="cursor-pointer h-[26px] w-[26px]"
+          />
+        </div>
+      </div>
+    ))
+  )
+) : (
+  productArr.length === 0 ? (
+    <div className="w-full pt-[20px] pb-[20px] flex justify-center">
+      <h1>No Products To Show</h1>
+    </div>
+  ) : (
+    productArr.map((item, index) => (
+      <div
+        id={item.id}
+        className="flex border-b-[1px]  border-solid border-[#CACDD8] pt-[25px] pb-[25px]"
+        key={index + "product" + item.id}
+      >
+        <img
+          src={item.image}
+          alt=""
+          className="w-[120px] h-[120px]"
+        />
+        <p className="max-w-[291px] w-full font-[400] text-[14px] leading-[21px] pl-[29px]">
+          {item.title}
+        </p>
+        <p className="font-[600] text-[16px] leading-[24px] pl-[65px]">
+          {item.discountedPrice}
+        </p>
+        <input
+          type="number"
+          value={item.Qty}
+          onChange={(e) => handleInputChange(e, item.id)} // Pass item.id here
+          min={1}
+          disabled={activeInputIndex !== index}
+          className={`${activeInputIndex == index ? ("border-[1px] border-solid border-gray-500") : ("border-none")} w-[70px] h-[50px] bg-[#F5F7FF] rounded-[6px] pl-[10px] ml-[60px] outline-none`}
+        />
+        <p className="font-[600] text-[16px] leading-[24px] pl-[40px]">
+          ${convertPrice(item.price)}
+        </p>
+        <div className="ml-[60px] flex flex-col gap-[10px]">
+          <img onClick={() => handleImageClick(index)} src={Edit} alt="" className="cursor-pointer h-[26px] w-[26px]" />
+          <img
+            src={Cross}
+            onClick={() => {
+              handleDelete(item.id);
+            }}
+            alt=""
+            className="cursor-pointer h-[26px] w-[26px]"
+          />
+        </div>
+      </div>
+    ))
+  )
+)}
+
+              
             <div className="flex justify-between pt-[25px] pb-[30px]" >
               <div className="flex gap-[7px]">
                 <button
@@ -282,7 +414,7 @@ const productCart = useContext(Context)
           <div className="pl-[10px] xsm:block  md_3:hidden ">
             {productArr.map((item, index) => (
               <div
-                key={index + "details"}
+                key={index + "details" + item.id}
                 className="mx-auto flex  items-start max-w-[500px] pt-[25px] gap-[15px]"
               >
                 <img src={item.image} alt="" className="h-[62px] w-[62px]" />
@@ -469,7 +601,7 @@ const productCart = useContext(Context)
           )}
           <div className="pt-[10px] pb-[10px] border-t-[1px] border-solid border-[#CACDD8]">
             {paragraph.map((item, index) => (
-              <div key={index + "paragraph"}>
+              <div key={index + "paragraph" }>
                 <div className="flex justify-between text-[13px] font-[600] leading-[27px]">
                   <p>{item.title}</p>
                   <p>

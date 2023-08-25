@@ -125,7 +125,7 @@ const [_, setInit] = useState(null);
             onInit={() => setInit(true)}
           >
             {swiperImg.map((item, index) => (
-              <SwiperSlide key={item.id} className="h-[328px]">
+              <SwiperSlide key={index+"swiper_1"} className="h-[328px]">
                 <div className="mx-auto max-w-[1400px] w-full max-h-[328px] object-cover object-center"><img src={item} className="mx-auto " /></div>
               </SwiperSlide>
             ))}
@@ -193,7 +193,7 @@ const [_, setInit] = useState(null);
           >
          {products.allProducts.map(
             (item, index) =>
-            item.new && <SwiperSlide key={item.id} className=" mx-auto">  <ProductDiv item={item} index={index} /></SwiperSlide>
+            item.new && <SwiperSlide key={index + 'swiper_2'} className=" mx-auto">  <ProductDiv item={item} index={index} /></SwiperSlide>
           )}
     </Swiper>
         </div>
@@ -329,7 +329,7 @@ const [_, setInit] = useState(null);
           {products.allProducts.map(
             (item, index) =>{
               if(item.laptop){
-                return item.laptop && <SwiperSlide key={item.id}><ProductDiv item={item} index={index} /></SwiperSlide>
+                return item.laptop && <SwiperSlide key={index+"swiper_4"}><ProductDiv item={item} index={index} /></SwiperSlide>
               }
             }
           )}
@@ -397,7 +397,7 @@ const [_, setInit] = useState(null);
 
           {products.allProducts.map(
             (item, index) =>
-              item.color && <SwiperSlide key={item.id}><ProductDiv item={item} index={index} /></SwiperSlide>
+              item.color && <SwiperSlide key={index+"swiper_5"}><ProductDiv item={item} index={index} /></SwiperSlide>
           )}</Swiper>
         </div>
         <div className="mx-auto max-w-[1440px] flex justify-between gap-[20px] pt-[31px] pl-[15px] pr-[15px]">
@@ -449,7 +449,7 @@ const [_, setInit] = useState(null);
 </SwiperSlide>
           {products.allProducts.map(
             (item, index) =>
-              item.monitor &&<SwiperSlide key={item.id}> <ProductDiv item={item} index={index} /></SwiperSlide>
+              item.monitor &&<SwiperSlide key={index+'swiper_6'}> <ProductDiv item={item} index={index} /></SwiperSlide>
           )}
           </Swiper>
         </div>

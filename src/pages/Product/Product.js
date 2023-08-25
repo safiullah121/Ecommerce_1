@@ -92,7 +92,7 @@ const Product = () => {
             <div className='flex items-center pb-[25px] pt-[67px] '>
             {paraArray.map((item,index)=>(
                  
-                <div key={index+'para'}>{item}</div>
+                <div key={index+'para_1'}>{item}</div>
                  
             ))}  </div>
             <h1 className=' font-medium text-[32px] leading-[48px]'>MSI MPG Trident 3</h1>
@@ -135,14 +135,14 @@ const Product = () => {
             <div className='flex items-center pb-[25px] pt-[67px] '>
             {paraArray.map((item,index)=>(
                  
-                <div key={index+'para'}>{item}</div>
+                <div key={index+'para_2'}>{item}</div>
                  
             ))}  </div>
             <h1 className=' font-medium text-[32px] leading-[48px]'>MSI MPG Trident 3</h1>
             <button href="" className='pt-[13px] text-[12px] leading-[18px] font-normal text-[#0156FF]'>Be the first to review this product</button>
            <ul className='pt-[28px]'>
         {liArray.map((item ,index)=>(
-            <li key={index + item}>{item}</li>
+            <li key={index + "item"}>{item}</li>
         ))}
 
            </ul>
@@ -167,7 +167,7 @@ const Product = () => {
             <div className='flex items-center pb-[25px] pt-[67px] '>
             {paraArray.map((item,index)=>(
                  
-                <div key={index+'para'}>{item}</div>
+                <div key={index+'para_3'}>{item}</div>
                  
             ))}  </div>
             <h1 className=' font-medium text-[32px] leading-[48px]'>MSI MPG Trident 3</h1>
