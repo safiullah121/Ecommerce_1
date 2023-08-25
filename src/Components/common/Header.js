@@ -647,6 +647,7 @@ if (e.target.value==""){
                 alt=""
                 className={`${product.loginButton ? 'mt-[11px] mr-5':"mt-[2.5px] mr-5"}  cursor-pointer `}
                 onClick={() => {
+                  if(!sessionStorage.getItem('token')){localStorage.setItem("userProducts",JSON.stringify([]))}
                   setshoppingCart(!shoppingCart);
                 }}
               />
