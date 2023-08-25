@@ -1,10 +1,12 @@
-import React, { useState , useEffect} from 'react';
+import React, { useState , useEffect , } from 'react';
 import { supabase } from '../../SupabaseClient';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useContext } from 'react';
+import Context from '../Context';
 
 const UserAccount = (props) => {
- 
+ const product = useContext(Context)
   const [dashboard, setDashboard] = useState(0);
   const label = [
     { title: 'Home ' },
@@ -49,6 +51,35 @@ const handleSubmit = async () => {
   setEmail('')
   
 };
+useEffect(() => {
+  if (sessionStorage.getItem('token')){ 
+    const user_email = JSON.parse(sessionStorage.getItem('token'))
+   supabase
+.from('User_Profile')
+.select('product_ids') // Replace 'your_specific_column_name' with the column you want to retrieve
+.eq('user_email', user_email.user.email) // Add any additional conditions to uniquely identify the row
+.then(({ data, error }) => {
+  if (error) {
+    console.error('Error fetching data:', error);
+  } else {
+    // Handle the fetched data here
+    if (data.length > 0) {
+      product.setproductToast(false)
+      const specificColumnValue = data[0].product_ids;
+      
+       const allProducts = JSON.parse( localStorage.getItem('selectedProduct'))
+const userProductIds = specificColumnValue.map(product => product.id);
+const userProducts = allProducts.filter(product => userProductIds.includes(product.id))
+localStorage.setItem('userProducts',JSON.stringify(userProducts))
+product.setproductToast(false)
+product.setselectedProducts_2(userProducts)
+    } else {
+      console.log('No data found.');
+    }
+  }
+});
+}
+}, []);
   return (
     <>
  <ToastContainer

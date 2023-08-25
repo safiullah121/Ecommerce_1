@@ -114,34 +114,37 @@ const id = props.item.id;
       });}
   }
   // const email = JSON.parse(sessionStorage.getItem('token'))
-  await supabase
-  .from('User_Profile')
-  .select('product_ids') // Replace 'your_specific_column_name' with the column you want to retrieve
-  .eq('user_email', user_email.user.email) // Add any additional conditions to uniquely identify the row
-  .then(({ data, error }) => {
-    if (error) {
-      console.error('Error fetching data:', error);
-    } else {
-      // Handle the fetched data here
-      if (data.length > 0) {
-        product.setproductToast(false)
-        const specificColumnValue = data[0].product_ids;
-        
-         const allProducts = JSON.parse( localStorage.getItem('selectedProduct'))
-  const userProductIds = specificColumnValue.map(product => product.id);
-  const userProducts = allProducts.filter(product => userProductIds.includes(product.id))
-  localStorage.setItem('userProducts',JSON.stringify(userProducts))
-  product.setproductToast(false)
-  product.setselectedProducts_2(userProducts)
-      } else {
-        console.log('No data found.');
-      }
-    }
-  });}
+ setData(true)}
 };
-// useEffect(() => {
-
-// }, [Data]);
+useEffect(() => {
+  if (sessionStorage.getItem('token')){ 
+    const user_email = JSON.parse(sessionStorage.getItem('token'))
+   supabase
+.from('User_Profile')
+.select('product_ids') // Replace 'your_specific_column_name' with the column you want to retrieve
+.eq('user_email', user_email.user.email) // Add any additional conditions to uniquely identify the row
+.then(({ data, error }) => {
+  if (error) {
+    console.error('Error fetching data:', error);
+  } else {
+    // Handle the fetched data here
+    if (data.length > 0) {
+      product.setproductToast(false)
+      const specificColumnValue = data[0].product_ids;
+      
+       const allProducts = JSON.parse( localStorage.getItem('selectedProduct'))
+const userProductIds = specificColumnValue.map(product => product.id);
+const userProducts = allProducts.filter(product => userProductIds.includes(product.id))
+localStorage.setItem('userProducts',JSON.stringify(userProducts))
+product.setproductToast(false)
+product.setselectedProducts_2(userProducts)
+    } else {
+      console.log('No data found.');
+    }
+  }
+});
+}
+}, [Data]);
 
 
   return (

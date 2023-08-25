@@ -117,11 +117,9 @@ const userProducts = JSON.parse(localStorage.getItem('userProducts'))
     { img: Gig },
   ];
 
-  // useEffect(() => {
-  //   if (sessionStorage.getItem('token')) {
-  //     product.setHidingExtra(true);
-  //   }
-  // }, []);
+  useEffect(() => {
+  
+  }, []);
   const lies = [
     { title: "  Sign In", path: "/login" ,extraclass:'hidden'},
     { title: " Sign Up", path: "/Register" ,extraclass:'hidden'},
