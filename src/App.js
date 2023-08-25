@@ -485,7 +485,7 @@ const [userProducts, setUserProducts] = useState(null);
     <div className={`absolute w-screen h-screen  bg-[#ffff] z-50 ${isLoading !== true? 'hidden':'block'}`}></div>
     <Loading isLoading={isLoading} />
     <Context.Provider value={defaultValues}>
-    <BrowserRouter>
+    <HashRouter>
     <Header token = {token}/>
       <ScrollToTop />
       <Routes>
@@ -503,7 +503,7 @@ const [userProducts, setUserProducts] = useState(null);
          <Route path="/" element={<Home token={token} />} />
       </Routes> 
        <Footer/>
-    </BrowserRouter>
+    </HashRouter>
     </Context.Provider>
     </div>
   );

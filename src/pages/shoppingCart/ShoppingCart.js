@@ -20,7 +20,7 @@ import Loading from "../../Components/Loading"
 const ShoppingCart = (props) => {
 
   const user = sessionStorage.getItem("token");
-  const userProducts = JSON.parse(localStorage.getItem("userProducts")|| []);
+ 
  
   
   const productArr = JSON.parse(localStorage.getItem("product")|| []);
@@ -35,6 +35,7 @@ const ShoppingCart = (props) => {
       total += item.Qty * convertPrice(item.price);
     });}
     else{
+      const userProducts = JSON.parse(localStorage.getItem("userProducts")|| []);
       userProducts.forEach((item) => {
         total += item.Qty * convertPrice(item.price);
       });
@@ -120,9 +121,11 @@ const ShoppingCart = (props) => {
   const email = JSON.parse(sessionStorage.getItem('token'))
 const productCart = useContext(Context)
 const [isLoading, setIsLoading] = useState(false);
-const allProducts =  JSON.parse( localStorage.getItem('userProducts'))
+
   const handleDelete_2 = async (id) =>{
     setIsLoading(true)
+  if(sessionStorage.getItem('token')){  
+    const userProducts = JSON.parse(localStorage.getItem("userProducts")|| []);
     const {data , error} = await supabase
     .from('User_Profile')
     .select('product_ids') 
@@ -140,10 +143,10 @@ const allProducts =  JSON.parse( localStorage.getItem('userProducts'))
     .upsert([userData])
     setDataChanged(false)
     // localStorage.setItem('userProducts',JSON.stringify(userProducts))
-    const updatedArray = allProducts.filter((item) => item.id !== id);
+    const updatedArray = userProducts.filter((item) => item.id !== id);
     productCart.setselectedProducts_2(updatedArray)
     localStorage.setItem("userProducts", JSON.stringify(updatedArray));
-    setDataChanged(true)
+    setDataChanged(true)}
     setIsLoading(false)
   };
  
@@ -162,7 +165,9 @@ const allProducts =  JSON.parse( localStorage.getItem('userProducts'))
     const product = localStorage.getItem("product");
     const productArr = JSON.parse(product) || [];
     if(sessionStorage.getItem('token')==null){ setProductArry(productArr);}
-    else{ setProductArry(userProducts);}
+    else{
+      const userProducts = JSON.parse(localStorage.getItem("userProducts")|| []);
+      setProductArry(userProducts);}
     setDataChanged(false);
   }, [dataChanged]);
   const dataArray = []
@@ -193,6 +198,8 @@ const allProducts =  JSON.parse( localStorage.getItem('userProducts'))
   };
   
   const handleInputChange_2 = (e, itemId) => {
+  if(sessionStorage.getItem('token')){ 
+    const userProducts = JSON.parse(localStorage.getItem("userProducts")|| []);
     let quantity = e.target.value > 50 ? 50 : e.target.value;
     if (e.target.value > 50) {
       toast.info("Only 50 Products Are Allowed");
@@ -204,7 +211,7 @@ const allProducts =  JSON.parse( localStorage.getItem('userProducts'))
     return productItem;
   })
   setProductArry(updatedDataArr);
-  localStorage.setItem("userProducts", JSON.stringify(updatedDataArr));
+  localStorage.setItem("userProducts", JSON.stringify(updatedDataArr));}
  }
  const handleInputChange = (e, itemId) => {
    let quantity = e.target.value > 50 ? 50 : e.target.value;
@@ -264,7 +271,7 @@ const allProducts =  JSON.parse( localStorage.getItem('userProducts'))
     }
     setShowMultiplication(false);
   };
-
+  const userProducts = JSON?.parse(localStorage.getItem("userProducts")|| []);
   return (
     <>
      <Loading isLoading={isLoading} />
@@ -295,7 +302,7 @@ const allProducts =  JSON.parse( localStorage.getItem('userProducts'))
               ))}
             </div>
 
-            {user !== null ? (
+            { user !== null ? (
   userProducts.length === 0 ? (
     <div className="w-full pt-[20px] pb-[20px] flex justify-center">
       <h1>No Products To Show</h1>
@@ -605,7 +612,7 @@ const allProducts =  JSON.parse( localStorage.getItem('userProducts'))
                 <div className="flex justify-between text-[13px] font-[600] leading-[27px]">
                   <p>{item.title}</p>
                   <p>
-                  (item.price)
+                  {item.price}
                   </p>
                 </div>
                 <p className="text-[10px] leading-[18px] font-[400]">
