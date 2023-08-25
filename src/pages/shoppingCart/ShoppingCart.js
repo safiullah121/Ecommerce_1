@@ -20,7 +20,9 @@ import Loading from "../../Components/Loading"
 const ShoppingCart = (props) => {
 
   const user = sessionStorage.getItem("token");
- 
+ useEffect(() => {
+    if(!sessionStorage.getItem('token')){localStorage.setItem("userProducts",JSON.stringify([]))}
+ }, []);
  
   
   const productArr = JSON.parse(localStorage.getItem("product")|| []);
