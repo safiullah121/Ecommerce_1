@@ -1,4 +1,4 @@
-import {React , useContext, useState, useEffect } from 'react'
+import {React , useContext, useState, useEffect , useRef } from 'react'
 import { Link , useNavigate} from 'react-router-dom'
 import { supabase } from '../../SupabaseClient';
 import { ToastContainer, toast } from "react-toastify";
@@ -98,6 +98,21 @@ const SignIn = ({setToken}) => {
   '•  Keep more than one address',
   '•  Track orders and more'
       ]
+      const signInButtonRef = useRef(null);
+      useEffect(() => {
+        const handleKeyPress = (event) => {
+          if (event.key === 'Enter') {
+            signInButtonRef.current.click(); // Simulate a click on the "Sign In" button
+          }
+        };
+      
+        document.addEventListener('keydown', handleKeyPress);
+      
+        return () => {
+          document.removeEventListener('keydown', handleKeyPress);
+        };
+      }, []);
+      
     return (
       <>
         <div className='max-w-[1400px] w-full pt-[21px] pb-[58px] mx-auto pl-[15px] pr-[15px]'>
@@ -110,21 +125,16 @@ const SignIn = ({setToken}) => {
               <div className='bg-[#F5F7FF] pr-[20px] mx-auto max-w-[564px] w-full pt-[37px] xsm:pl-[10px] xsm:pr-[5px] sm:pl-[57px] sm:pr-[60px] pb-[40px]'>
                   <h1 className='text-[18px] leading-[27px] font-semibold'>Registered Customers</h1>
                   <p  className='text-[14px] leading-[30px] font-light'>If you have an account, sign in with your email address.</p>
-                  {/* <div className='pt-[3px]'>
-                  <label  className='flex font-semibold text-[13px] leading-[27px]'> Name <p className='pl-1 text-[#C94D3F]' >*</p></label>
-          <input type="text" name='fullName' onChange={handleChange} placeholder='Full Name' className=' cursor-text placeholder:text-[#A2A6B0] placeholder:text-[14px] placeholder:font-light placeholder:leading-[20px] pl-[17px] maxwidth_2  h-[50px] border-[1px] border-[#A2A6B0] border-solid outline-none rounded-[4px] '  />
-                  </div> */}
                   <div className='pt-[6px]'>
                   <label  className='flex font-semibold text-[13px] leading-[27px] mt-[10px]'>Email <p className='pl-1 text-[#C94D3F] ' >*</p></label>
           <input type="text" name='email' onChange={handleChange} className='cursor-text placeholder:text-[#A2A6B0] placeholder:text-[14px] placeholder:font-light placeholder:leading-[20px] pl-[17px] maxwidth_2  h-[50px] border-[1px] border-[#A2A6B0] border-solid outline-none rounded-[4px] ' placeholder='Your Email' />
           <label  className='flex font-semibold text-[13px] leading-[27px] mt-[10px]'>Password <p className='pl-1 text-[#C94D3F] ' >*</p></label>
           <input type="password" name='password' onChange={handleChange} className='cursor-text placeholder:text-[#A2A6B0] placeholder:text-[14px] placeholder:font-light placeholder:leading-[20px] pl-[17px] maxwidth_2  h-[50px] border-[1px] border-[#A2A6B0] border-solid outline-none rounded-[4px] ' placeholder='Your Password' />
-          {/* <label  className='flex font-semibold text-[13px] leading-[27px] mt-[10px]'>Confirm Password <p className='pl-1 text-[#C94D3F] ' >*</p></label>
-          <input type="password" name='password_confirmation' onChange={handleChange} className='cursor-text placeholder:text-[#A2A6B0] placeholder:text-[14px] placeholder:font-light placeholder:leading-[20px] pl-[17px] maxwidth_2  h-[50px] border-[1px] border-[#A2A6B0] border-solid outline-none rounded-[4px] ' placeholder='Password Again' /> */}
+                  
                   </div>
                   <div className='flex items-center w-full justify-between pt-[30px] '>
-                  <button className='text-[14px] leading-[21px] font-semibold bg-[#0156FF] rounded-[50px] text-[#ffffff] w-[151px] h-[50px]' onClick={handleSignIpClick} >Sign In</button>
-                  {/* <p className='text-[14px] leading-[20px] font-normal text-[#0156FF] cursor-pointer'>Forgot Your Password?</p> */}
+                  <button className='text-[14px] leading-[21px] font-semibold bg-[#0156FF] rounded-[50px] text-[#ffffff] w-[151px] h-[50px]'   ref={signInButtonRef} onClick={handleSignIpClick} >Sign In</button>
+                 
                   </div>
               </div>
               <div className='bg-[#F5F7FF]  mx-auto max-w-[564px] w-full pt-[37px] pl-[57px] pr-[60px] pb-[146px]'>

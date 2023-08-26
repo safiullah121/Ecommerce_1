@@ -125,7 +125,7 @@ const productCart = useContext(Context)
 const [isLoading, setIsLoading] = useState(false);
 
   const handleDelete_2 = async (id) =>{
-    setIsLoading(true)
+    setIsLoading(id)
   if(sessionStorage.getItem('token')){  
     const userProducts = JSON.parse(localStorage.getItem("userProducts")|| []);
     const {data , error} = await supabase
@@ -276,7 +276,6 @@ const [isLoading, setIsLoading] = useState(false);
   const userProducts = JSON?.parse(localStorage.getItem("userProducts")|| []);
   return (
     <>
-     <Loading isLoading={isLoading} />
       <div className="max-w-[1400px] w-full mx-auto flex pl-[15px] pr-[15px] justify-center flex-wrap gap-[19px]">
         <div className="max-w-[916px] w-full pt-[21px] ">
           <div className="flex items-center pb-[19px]">
@@ -338,14 +337,16 @@ const [isLoading, setIsLoading] = useState(false);
         <p className="font-[600] text-[16px] leading-[24px] pl-[40px]">
           ${convertPrice(item.price)}
         </p>
-        <div className="ml-[60px] flex flex-col gap-[10px]">
+        <div className="relative ml-[60px] flex flex-col gap-[10px]">
+       
           <img onClick={() => handleImageClick(index)} src={Edit} alt="" className="cursor-pointer h-[26px] w-[26px]" />
+          {isLoading==item.id ? <div class="absolute top-[37px] right-[0.5px] loader"></div>:
           <img
             src={Cross}
-            onClick={() => { handleDelete_2(item.id) }}
+            onClick={() => { handleDelete_2(item.id , index) }}
             alt=""
             className="cursor-pointer h-[26px] w-[26px]"
-          />
+          />}
         </div>
       </div>
     ))

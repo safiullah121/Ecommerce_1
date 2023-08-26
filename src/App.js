@@ -365,7 +365,7 @@ const allObj= [{
   'Qty' : 1 ,
   'color': true,
 },];
-  const { pathname } = useLocation();
+const { pathname } = useLocation();
   
   useEffect(() => {
     window.scrollTo({
