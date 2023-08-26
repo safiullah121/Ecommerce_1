@@ -451,6 +451,7 @@ const [loginButton, setloginButton] = useState(0);
 const [loginEmail , setloginEmail] = useState('');
 const [productIds, setproductIds] = useState(null);
 const [userProducts, setUserProducts] = useState(null);
+const [hoveredItem_3, setHoveredItem_3] = useState(null);
   const defaultValues = {
     allProducts,setallProducts,
     selectedProducts,setselectedProducts,
@@ -462,7 +463,8 @@ const [userProducts, setUserProducts] = useState(null);
     productIds,setproductIds,
     profileData,setprofileData,
     setUserProducts,userProducts,
-    setselectedProducts_2, selectedProducts_2
+    setselectedProducts_2, selectedProducts_2,
+    hoveredItem_3, setHoveredItem_3
   };
   const [token, setToken] = useState(false);
 
@@ -476,9 +478,35 @@ const [userProducts, setUserProducts] = useState(null);
      
   }, []);
   
-// useEffect(() => {
-
-// }, [productIds]);
+  useEffect(() => {
+    if (sessionStorage.getItem('token')){ 
+      const user_email = JSON.parse(sessionStorage.getItem('token'))
+     supabase
+  .from('User_Profile')
+  .select('product_ids') // Replace 'your_specific_column_name' with the column you want to retrieve
+  .eq('user_email', user_email.user.email) // Add any additional conditions to uniquely identify the row
+  .then(({ data, error }) => {
+    if (error) {
+      console.error('Error fetching data:', error);
+    } else {
+      // Handle the fetched data here
+      if (data.length > 0) {
+        setproductToast(false)
+        const specificColumnValue = data[0].product_ids;
+        
+         const allProducts = JSON.parse( localStorage.getItem('selectedProduct'))
+  const userProductIds = specificColumnValue.map(product => product.id);
+  const userProducts = allProducts.filter(product => userProductIds.includes(product.id))
+  localStorage.setItem('userProducts',JSON.stringify(userProducts))
+  setproductToast(false)
+  setselectedProducts_2(userProducts)
+      } else {
+        console.log('No data found.');
+      }
+    }
+  });
+  }
+  }, []);
 
   return (
     <div className="relative">

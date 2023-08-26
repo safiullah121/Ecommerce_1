@@ -33,7 +33,7 @@ import { supabase } from "../../SupabaseClient";
 const Header = ({token}) => {
    const [array, setarray] = useState("hello");
   const [searchMenu , setSearchMenu] = useState(false);
-  const [hoveredItem_3, setHoveredItem_3] = useState(null);
+
   const [dropDown_2, setdropDown_2] = useState(false);
   const [menu, setmenu] = useState(false);
   const [menu_2, setmenu_2] = useState(false);
@@ -479,14 +479,14 @@ if (e.target.value==""){
                 >
                   <li
                     className={` cursor-pointer flex items-center justify-center  font-semibold rounded-[100px] w-[80px] h-[37px] ${
-                      hoveredItem_3 ? "bg-[#0156FF] text-[#ffff] " : ""
+                     product.hoveredItem_3 ? "bg-[#0156FF] text-[#ffff] " : ""
                     }]`}
                     onMouseEnter={() => {
-                      setHoveredItem_3(true);
+                      product.setHoveredItem_3(true);
                     }}
                     onMouseLeave={() => {
                       const timeout = setTimeout(() => {
-                        setHoveredItem_3(false);
+                        product.setHoveredItem_3(false);
                       }, 1000);
                       if (hoveredItem_3Ref.current) {
                         hoveredItem_3Ref.current.addEventListener(
@@ -520,12 +520,12 @@ if (e.target.value==""){
                 </button>
               </motion.div>
             )}
-            {hoveredItem_3 ? (
+            {product.hoveredItem_3 ? (
               <div
                 className="absolute z-20 top-[156px]"
                 ref={hoveredItem_3Ref}
                 onMouseLeave={() => {
-                  setHoveredItem_3(false);
+                  product.setHoveredItem_3(false);
                   setmenu(false);
                   setmenu_2(false); 
                   setmenu_3(false);
