@@ -513,7 +513,7 @@ const [hoveredItem_3, setHoveredItem_3] = useState(null);
     <div className={`absolute w-screen h-screen  bg-[#ffff] z-50 ${isLoading !== true? 'hidden':'block'}`}></div>
     <Loading isLoading={isLoading} />
     <Context.Provider value={defaultValues}>
-    <HashRouter>
+    <BrowserRouter>
     <Header token = {token}/>
       <ScrollToTop />
       <Routes>
@@ -531,7 +531,7 @@ const [hoveredItem_3, setHoveredItem_3] = useState(null);
          <Route path="/" element={<Home token={token} />} />
       </Routes> 
        <Footer/>
-    </HashRouter>
+    </BrowserRouter>
     </Context.Provider>
     </div>
   );
