@@ -8,7 +8,7 @@ const PasswordRecovery = () => {
     const [password, setpassword] = useState('');
     const [confirmPassword, setconfirmPassword] = useState('');
     const handleSumit = async () =>{
-    if (password == confirmPassword) {
+    if (password == confirmPassword ) {
         await supabase.auth.updateUser({ password: password})  
         navigate('/login')
         setconfirmPassword('')

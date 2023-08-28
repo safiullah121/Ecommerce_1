@@ -12,8 +12,8 @@ import Core from '../img/core.jpg'
 import { Link, useLocation} from 'react-router-dom';
 import Context from '../Context'
 import { supabase } from '../../SupabaseClient'
-
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Product = () => {
     const Products = JSON.parse(localStorage.getItem('selectedProduct'))
@@ -46,9 +46,136 @@ const Product = () => {
         <p className='text-[#A3A3A3] text-[12px] leading[18px] font-normal'> MSI WS Series</p>,
     ];
     const [price, setprice] = useState(' $3,299.00');
+    const [productVal , setproductVal] = useState(1)
+    const handleAddToCart = async () => {
+        toast.success('Product Is Added To Cart');
+      
+       if(!sessionStorage.getItem('token')){
+         if (productVal >= 1 && productVal <= 50) {
+          const existingArray = JSON.parse(localStorage.getItem("product")) || [];
+          const existingProduct = existingArray.find((product) => product.id === id);
+      
+          if (existingProduct) {
+         
+            if (existingProduct.Qty==50) {
+                alert("only 50 products are allowed");
+            }
+            const newQty = existingProduct.Qty + productVal;
+            const updatedQty = newQty <= 50 ? newQty : 50;
+            const updatedArray = existingArray.map((product) => {
+              if (product.id === id) {
+                return { ...product, Qty: updatedQty };
+              }
+              return product;
+            });
+            localStorage.setItem("product", JSON.stringify(updatedArray));
+        } else {
+            const selectedArrayObj = product.allProducts.find((i) => i?.id === id);
+            const newQty = productVal <= 50 ? productVal : 50;
+            const newProduct = { ...selectedArrayObj, Qty: newQty };
+            existingArray.push(newProduct);
+            product.setselectedProducts(existingArray)
+            localStorage.setItem("product", JSON.stringify(existingArray));
+          }
+        } else {
+          alert("only 50 products are allowed");
+        }}
+        else if(sessionStorage.getItem("token")){
+            if (productVal >= 1 && productVal <= 50) {
+                const existingArray = JSON.parse(localStorage.getItem("userProducts")) || [];
+                const existingProduct = existingArray.find((product) => product.id === id);
+                if (existingProduct) {
+                    if (existingProduct.Qty==50) {
+                      alert("only 50 products are allowed");
+                  }
+                    
+                  const newQty = existingProduct.Qty + productVal;
+                  const updatedQty = newQty <= 50 ? newQty : 50;
+                  const updatedArray = existingArray.map((product) => {
+                    if (product.id === id) {
+                      return { ...product, Qty: updatedQty };
+                    }
+                    return product;
+                });
+                localStorage.setItem("userProducts", JSON.stringify(updatedArray));
+            } else {
+                const selectedArrayObj = product.allProducts.find((i) => i?.id === id);
+                const newQty = productVal <= 50 ? productVal : 50;
+                const newProduct = { ...selectedArrayObj, Qty: newQty };
+                existingArray.push(newProduct);
+                localStorage.setItem("userProducts", JSON.stringify(existingArray));
+                product.setselectedProducts_2(existingArray)
+                }
+              } else {
+                alert("only 50 products are allowed");
+              }
+              const dataArray = [...product.productIds, {id}]
+    console.log(dataArray, "dataArray")
+     product.setproductIds(dataArray);
+    const user_email = JSON.parse(sessionStorage.getItem('token')) || []
   
+
+  if (dataArray!==[] && user_email.user.email!=='') {
+    const data = {
+      user_email: user_email.user.email,
+      product_ids: dataArray,
+    };
+
+    // Use the upsert method to insert or update data in the "User Profile" table
+  if (sessionStorage.getItem('token')) { 
+    await supabase
+      .from('User_Profile') // Replace 'user_profile' with your actual table name
+      .upsert([data]) // upsert() takes an array of data objects
+      .then(({ data, error }) => {
+        if (error) {
+          console.error('Error inserting data:', error);
+        } 
+        
+      });}
+  }
+  // const email = JSON.parse(sessionStorage.getItem('token'))
+  await supabase
+  .from('User_Profile')
+  .select('product_ids') // Replace 'your_specific_column_name' with the column you want to retrieve
+  .eq('user_email', user_email.user.email) // Add any additional conditions to uniquely identify the row
+  .then(({ data, error }) => {
+    if (error) {
+      console.error('Error fetching data:', error);
+    } else {
+      // Handle the fetched data here
+      if (data.length > 0) {
+        product.setproductToast(false)
+        const specificColumnValue = data[0].product_ids;
+        
+         const allProducts = JSON.parse( localStorage.getItem('selectedProduct'))
+  const userProductIds = specificColumnValue.map(product => product.id);
+  const userProducts = allProducts.filter(product => userProductIds.includes(product.id))
+  localStorage.setItem('userProducts',JSON.stringify(userProducts))
+  product.setproductToast(false)
+  product.setselectedProducts_2(userProducts)
+      } else {
+        console.log('No data found.');
+      }
+    }
+  });
+        }
+      };
+      
+      
   return (
     <div className=''>
+           <ToastContainer
+        position="top-center"
+        autoClose={1500}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover={true}
+        theme="light"
+      />
         <div className=' border-b-[1px] border-solid border-[#CACDD8] pl-[15px] pr-[15px]'>
         <div className='flex justify-between xsm:flex-col-reverse xl:flex-row xsm:gap-[20px] lg:-flex-row items-center max-w-[1398px] mx-auto pt-[26px] pb-[25px] '>
             <div className='flex'>
@@ -78,8 +205,14 @@ const Product = () => {
             </div>
             <div className=' flex items-center flex-wrap justify-center'>
                <div className='flex'> <p className='text-[14px] leading-[21px] font-normal' >On Sale from </p> <p className='pl-1 text-[14px] leading-[21px] font-semibold'>{price}</p> </div>
-                <input type="number" min={0} max={100} className='ml-[10px] bg-[#F5F7FF] max-w-[70px] max-[40px] pt-[11px] pb-[12px] pr-[9px] pl-[15px] rounded-[6px] font-semibold text-[13px] leading-[27px] outline-none' />
-                <button className='bg-[#0156FF] ml-[21px] text-[#FFFFFF] text-[14px] leading-[21px] xsm:mt-[15px] sm:mt-[0px] font-semibold rounded-[50px] pt-[15px] pb-[15px] pl-[32px] pr-[32px]'>Add to Cart</button>
+                <input type="number" value={productVal}onChange={(e) => {
+    if (e.target.value <= 50) {
+      setproductVal(e.target.value);
+    } else {
+      alert("Only 50 Products Are Allowed");
+    }
+  }} min={1} max={50} className='ml-[10px] bg-[#F5F7FF] max-w-[70px] max-[40px] pt-[11px] pb-[12px] pr-[9px] pl-[15px] rounded-[6px] font-semibold text-[13px] leading-[27px] outline-none' />
+                <button className='bg-[#0156FF] ml-[21px] text-[#FFFFFF] text-[14px] leading-[21px] xsm:mt-[15px] sm:mt-[0px] font-semibold rounded-[50px] pt-[15px] pb-[15px] pl-[32px] pr-[32px]' onClick={handleAddToCart}>Add to Cart</button>
                 <button className='bg-[#FFB800] ml-[13px] rounded-[50px] pt-[15px] pb-[15px] pl-[32px] xsm:mt-[15px] sm:mt-[0px] pr-[32px]'><img src={Pay} alt="" /></button>
             </div>
         </div>

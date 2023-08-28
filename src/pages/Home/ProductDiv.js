@@ -45,7 +45,7 @@ const ProductDiv = (props) => {
   const [Data, setData] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState(null);
   useEffect(() => {
-    if (sessionStorage.getItem('token') !== null) {
+    if (sessionStorage.getItem('token')) {
       
       const user_email = JSON.parse(sessionStorage.getItem('token')) || [];
     const userProfile = JSON.parse(localStorage.getItem('profileData'));
@@ -60,10 +60,12 @@ const ProductDiv = (props) => {
     }
   }
 }, []);
+
 const id = props.item.id;
   const handleClick3 =async (e) => {
-    await product.setproductToast(true)
+     product.setproductToast(true)
     if (!sessionStorage.getItem('token')) { const existingArray = JSON.parse(localStorage.getItem("product")) || [];
+    
     const existingProduct = existingArray.find((product) => product.id === id);
     if (existingProduct) {
       if (existingProduct.Qty < 50) {
@@ -77,7 +79,7 @@ const id = props.item.id;
         localStorage.setItem("product", JSON.stringify(updatedArray));
         product.setselectedProducts(updatedArray);
       } else {
-        console.log("Quantity already at maximum (50)");
+        alert("Quantity already at maximum (50)");
       }
     } else {
       const selectedArrayObj = product.allProducts.find((i) => i?.id === id);
@@ -87,7 +89,8 @@ const id = props.item.id;
       product.setselectedProducts(existingArray);
     }}
   e.stopPropagation();
-  if (sessionStorage.getItem('token')!==null) {
+  if (sessionStorage.getItem('token')) {
+    await product.setproductToast(true)
     
     const dataArray = [...product.productIds, {id}]
     console.log(dataArray, "dataArray")
@@ -102,7 +105,7 @@ const id = props.item.id;
     };
 
     // Use the upsert method to insert or update data in the "User Profile" table
-  if (sessionStorage.getItem('token')!==null) { 
+  if (sessionStorage.getItem('token')) { 
     product.setproductToast(false)
     await supabase
       .from('User_Profile') // Replace 'user_profile' with your actual table name

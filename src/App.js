@@ -372,7 +372,7 @@ const { pathname } = useLocation();
       top: 0,
       behavior: "smooth",
     });
-  }, [pathname]);
+  }, [pathname]); 
 
   return null;
 }
@@ -507,14 +507,23 @@ const [hoveredItem_3, setHoveredItem_3] = useState(null);
   });
   }
   }, []);
+  const [scrollToSection, setScrollToSection] = useState(null);
 
+  const handleCompareClick = () => {
+    setScrollToSection('compare');
+  };
+
+  const handleWishListClick = () => {
+    setScrollToSection('wish');
+  };
   return (
     <div className="relative">
     <div className={`absolute w-screen h-screen  bg-[#ffff] z-50 ${isLoading !== true? 'hidden':'block'}`}></div>
     <Loading isLoading={isLoading} />
     <Context.Provider value={defaultValues}>
     <BrowserRouter>
-    <Header token = {token}/>
+    <Header token = {token} handleCompareClick={handleCompareClick}
+        handleWishListClick={handleWishListClick}/>
       <ScrollToTop />
       <Routes>
         <Route path="/passwordRecovery" element={<PasswordRecovery/>} />

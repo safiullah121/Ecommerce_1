@@ -7,7 +7,7 @@ import Beautiful from '../img/beautiful.svg'
 import { useState , useEffect} from 'react'
 import { useLocation } from 'react-router-dom'
 import Context from '../Context'
-
+import { useNavigate } from 'react-router-dom'
 const CheckOut = (props) => {
   const product = useContext(Context)
   const [country, setcountry] = useState('United States');
@@ -18,8 +18,7 @@ const CheckOut = (props) => {
   const [radios, setradios] = useState(true);
   const [blue, setblue] = useState('farad');
   const [products, setproducts] = useState(false);
-
- 
+const navigate = useNavigate()
   const label = [
     {label:'Home'},
     {label:' › ', extraclass:'text-[#0156FF] pl-1 pr-1 font-[300]'},
@@ -53,7 +52,9 @@ const CheckOut = (props) => {
      </div>
      <div className='flex items-center pt-[19px] pb-[43px] gap-[20px]'>
       <h1 className='text-[32px] font-[600] leading-[48px] '>Checkout</h1>
-      <button className='text-[14px] leading-[21px] font-[600] text-[#0156FF] border-2 border-[#0156FF] border-solid h-[50px] rounded-[50px] max-w-[208px] w-full'>Sign In</button>
+      {!sessionStorage.getItem('token') && <button onClick={()=>{
+        navigate('/login')
+      }} className='text-[14px] leading-[21px] font-[600] text-[#0156FF] border-2 border-[#0156FF] border-solid h-[50px] rounded-[50px] max-w-[208px] w-full'>Sign In</button>}
      </div>
      <div className='w-full pb-[14px] border-b-[1px] border-solid border-[#CACDD8]'>
       <p className='text-[18px] font-[600] leading-[27px]'>Shipping Address</p>

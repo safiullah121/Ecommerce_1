@@ -36,11 +36,18 @@ import Context from "../Context";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { supabase } from "../../SupabaseClient";
+import { Link } from "react-router-dom";
 
 const Home = (props) => {
   const products = useContext(Context)
  
   const li = [
+    { title:"MSI GS Series", extraClass:"text-[#020203] border-b-[2px] border-[#0156FF] border-solid"},
+    { title:"MSI GT Series"},
+    { title:"MSI GL Series"},
+   {  title:"MSI GE Series"},
+  ];
+  const li_2 = [
     { title:"MSI Infinute Series", extraClass:"text-[#020203] border-b-[2px] border-[#0156FF] border-solid"},
     { title:"MSI Triden"},
     { title:"MSI GL Serie s"},
@@ -58,7 +65,7 @@ const Home = (props) => {
     {
       img: Dragon,
       para_1:
-        "  As a gamer, superior sound counts for a lot. You need to hear enemies tiptoeing up behind you for a sneak attack or a slight change in the atmospheric music signaling a new challenge or task...",
+        "  As a gamer, superior sound counts for a lot. You need to hear enemies tiptoeing up behind you for a sneak attack or a slight change in the atmospheric music signaling a new or task...",
       para_2: "    01.09.2020",
     },
     {
@@ -152,12 +159,11 @@ const [_, setInit] = useState(null);
             <h1 className="text-[#000000] font-semibold  text-[22px] leading-[33px]">
               New Products
             </h1>
-            <a
+            <Link
               className="text-[#0156FF] leading-[14px] font-normal text-[13px] underline"
-              href=""
             >
               See All New Products
-            </a>
+            </Link>
           </div>
         </div>
       <div className={` bg-transparent flex xsm:flex-wrap xl:flex-nowrap justify-center gap-[10px] max-w-[1440px] mx-auto pt-[4px] pl-[15px] pr-[15px]  `}>
@@ -317,12 +323,11 @@ const [_, setInit] = useState(null);
               </h1>
             </div>
             <div className="mt-[110px]">
-              <a
-                href=""
+              <Link
                 className="text-[#FFFFFF] text-[13px] font-normal leading-[14px] underline "
               >
                 See All Products
-              </a>
+              </Link>
             </div>
           </div>
 </SwiperSlide>
@@ -337,7 +342,7 @@ const [_, setInit] = useState(null);
         </div>
         <div className="max-w-[1440px] mx-auto xsm:hidden xl:flex mt-[30px] pl-[15px]">
           <ul className="flex gap-[29px] items-center">
-            {li.map((item, index) => (
+            {li_2.map((item, index) => (
               <li
                 key={index + "lies"}
                 className={`font-semibold text-[16px] leading-[28px] text-[#838383] cursor-pointer ${item.extraClass}`}

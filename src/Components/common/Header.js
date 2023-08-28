@@ -29,8 +29,9 @@ import { useContext } from "react";
 import Context from "../../pages/Context";
 import { useNavigate } from 'react-router-dom';
 import { supabase } from "../../SupabaseClient";
+import { animateScroll as scroll } from 'react-scroll';
 
-const Header = ({token}) => {
+const Header = ({token ,handleCompareClick, handleWishListClick }) => {
    const [array, setarray] = useState("hello");
   const [searchMenu , setSearchMenu] = useState(false);
 
@@ -77,9 +78,9 @@ const userProducts = JSON.parse(localStorage.getItem('userProducts'))
     { title: "  MSI Prestige Series ", img: right },
   ];
   const thirdHoveredMenu = [
-    { title: "MSI WS Series", num: <p className="text-[#A2A6B0]"> (12)</p> },
-    { title: "  MSI WT Series", num: <p className="text-[#A2A6B0]"> (31)</p> },
-    { title: "  MSI WE Series", num: <p className="text-[#A2A6B0]"> (7)</p> },
+    { title: "MSI WS Series", num: <p className="text-[#A2A6B0]"> (2)</p> , onClick:true },
+    { title: "  MSI WT Series", num: <p className="text-[#A2A6B0]"> (0)</p> },
+    { title: "  MSI WE Series", num: <p className="text-[#A2A6B0]"> (0)</p> },
   ];
   const hoveredProducts = [
     {
@@ -259,21 +260,7 @@ if (e.target.value==""){
   }
   const userInformation = sessionStorage.getItem('token');
  
-  const handleCompareClick = () => {
-    navigate("/UserAccount");
-    const compareSection = document.getElementById("compare");
-    if (compareSection) {
-      compareSection.scrollIntoView({ behavior: "smooth" });
-    }
-  };
 
-  const handleWishListClick = () => {
-    navigate("/UserAccount");
-    const wishListSection = document.getElementById("wish");
-    if (wishListSection) {
-      wishListSection.scrollIntoView({ behavior: "smooth" });
-    }
-  };
 
   useEffect(() => {
    if (sessionStorage.getItem('token')){
@@ -285,7 +272,7 @@ if (e.target.value==""){
   const [loginDropDown, setloginDropDown] = useState(false);
   const [Data, setData] = useState(null);
   const handleLogout = ()=>{
-    sessionStorage.setItem('token', JSON.stringify([]));
+    sessionStorage.removeItem('token');
     product.setselectedProducts_2([])
     product.setlogout(false)  
     product.setHidingExtra(false)
@@ -309,7 +296,12 @@ if (e.target.value==""){
     fetch()
 }, [handleLogout]);
 
-
+const scrollToSection = (sectionId) => {
+  const element = document.getElementById(sectionId);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' });
+  }
+};
   return (
     <header>
       <div className="xsm:hidden xl:block pt-[15px] pb-[15px] bg-[#020202] pl-[15px] pr-[15px]">
@@ -521,7 +513,10 @@ if (e.target.value==""){
               </motion.div>
             )}
             {product.hoveredItem_3 ? (
-              <div
+              <motion.div
+              initial={{ opacity: 0, y: -40 }}
+              animate={{ opacity: 2, y: 0 }}
+              transition={{ duration: 0.7 }}
                 className="absolute z-20 top-[156px]"
                 ref={hoveredItem_3Ref}
                 onMouseLeave={() => {
@@ -581,8 +576,9 @@ if (e.target.value==""){
                       {thirdHoveredMenu.map((item, index) => (
                         <div
                           key={index + "3menu"}
-                          onClick={() => {
-                            setmenu_3((menu_3) => !menu_3);
+                          onClick={
+                            () => {
+                              item.onClick &&  setmenu_3(!menu_3);
                           }}
                           className={`w-full flex justify-center  pl-[28px] pt-[10px] pb-[13px] pr-[24px]`}
                         >
@@ -614,7 +610,7 @@ if (e.target.value==""){
                   ))}
                 </div>
                 </div>
-              </div>
+              </motion.div>
             ) : (
               ""
             )}
@@ -761,8 +757,8 @@ if (e.target.value==""){
                   <div>
                   <h1  className="text-[20px] font-[600] flex items-center"><h1  className="mr-[5px] text-[16px] font-[400]"> Welcome!</h1>{userInformation && token.user.user_metadata.full_name}</h1>
                   <Link to={"/UserAccount"} className="hover:font-[600] list-none cursor-pointer text-[14px] leading-[28px] font-medium">My  Account</Link>
-                  <Link to="/UserAccount"   className="block hover:font-[600] list-none cursor-pointer text-[14px] leading-[28px] font-medium"> My Wish List (0)</Link>
-                  <Link to="/UserAccount"  className="block hover:font-[600] list-none cursor-pointer text-[14px] leading-[28px] font-medium">Compare (0)</Link>
+                  <Link to="/UserAccount?scroll=wish"   className="block hover:font-[600] list-none cursor-pointer text-[14px] leading-[28px] font-medium"> My Wish List (0)</Link>
+                  <Link to="/UserAccount?scroll=compare"  className="block hover:font-[600] list-none cursor-pointer text-[14px] leading-[28px] font-medium">Compare (0)</Link>
                   {lies.map((item, index) => (
                    
                     <Link

@@ -1,9 +1,11 @@
-import React, { useState , useEffect , } from 'react';
+import React, { useState , useEffect, useRef , } from 'react';
 import { supabase } from '../../SupabaseClient';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useContext } from 'react';
 import Context from '../Context';
+import Modal from 'react-modal';
+import { useLocation } from 'react-router-dom';
 
 const UserAccount = (props) => {
  const product = useContext(Context)
@@ -42,14 +44,16 @@ const [PasswordRecovery, setPasswordRecovery] = useState(false);
 const [email, setEmail] = useState('');
 
 const handlePasswordChange = () => {
-  setPasswordRecovery(true);
+  setPasswordRecovery(true)
 };
 const handleSubmit = async () => {
-  await supabase.auth.resetPasswordForEmail(email)
+ if(sessionStorage.getItem('token') && email!=='' && email.includes("@")){ await supabase.auth.resetPasswordForEmail(email)
   setPasswordRecovery(false);
- toast.success('Check Your Email')
-  setEmail('')
-  
+ toast.info('Check Your Email')
+  setEmail('')}
+  if (email === '' || !email.includes("@")) {
+    toast.error('Please enter a valid email')
+  }
 };
 useEffect(() => {
   if (sessionStorage.getItem('token')){ 
@@ -80,6 +84,41 @@ product.setselectedProducts_2(userProducts)
 });
 }
 }, []);
+
+const customStyles = {
+  overlay: {
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    zIndex: 1000,
+  },
+  content: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    maxWidth: '430px', // Adjust to your preference
+    width: '100%',
+    height : '300px',
+    padding: '20px',
+    border: '2px solid #dad7d7',
+    borderRadius: '6px',
+    background: '#ffffff',
+  },
+};
+
+Modal.setAppElement('#root'); // Replace '#root' with your app's root element ID
+const location = useLocation();
+
+useEffect(() => {
+  const { search } = location;
+  const scrollSection = new URLSearchParams(search).get('scroll');
+  
+  if (scrollSection) {
+    const element = document.getElementById(scrollSection);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+}, [location]);
   return (
     <>
  <ToastContainer
@@ -95,11 +134,22 @@ product.setselectedProducts_2(userProducts)
         theme="light"
       />
       <div className=" relative max-w-[1400px] w-full  mx-auto pl-[15px] pr-[15px]">
-       {PasswordRecovery && <div className='max-w-[400px] w-full max-h-[300px] h-full bg-[#ffffff] border-[#dad7d7] border-solid border-2 fixed top-[150px] left-[500px] right-[550px] '>
-          <h1 className='text-[32px] mt-[40px] font-[600] text-center'>Recovery E-mail</h1>
-          <input value={email} onChange={(e)=>{setEmail(e.target.value)} } type="text" placeholder='Recovery E-mail here' className='pl-[15px] outline-none border-[#dad7d7] border-solid border-[1px] rounded-[6px] h-[40px] w-[350px] mt-[40px] ml-[22px]' />
-          <button onClick={handleSubmit} className='rounded-[10px] h-[40px] w-[200px] ml-[100px] bg-[#0156FF] text-[21px] text-[#ffff] font-[500] mt-[40px]'>Submit</button>
-        </div>}
+      <Modal
+  isOpen={PasswordRecovery}
+  onRequestClose={() => setPasswordRecovery(false)}
+  style={customStyles}
+>
+  <h1 className='text-[32px] mt-[40px] font-[600] text-center'>Recovery E-mail</h1>
+  <input
+    value={email}
+    onChange={(e) => setEmail(e.target.value)}
+    type="text"
+    placeholder='Recovery E-mail here'
+    className='pl-[15px] outline-none border-[#dad7d7] border-solid border-[1px] rounded-[6px] h-[40px] w-[350px] mt-[40px] ml-[22px]'
+  />
+  <button onClick={handleSubmit} className='rounded-[10px] h-[40px] w-[200px] ml-[100px] bg-[#0156FF] text-[21px] text-[#ffff] font-[500] mt-[40px]'>Submit</button>
+</Modal>
+
         <div className="flex pt-[21px]">
           {label.map((item, index) => (
             <p
@@ -147,7 +197,7 @@ product.setselectedProducts_2(userProducts)
             <p className='text-[16px] leading-[20px] font-[300] pb-[34px]'>{item.desc}</p>
             <div className='flex gap-[24px] text-[#0156FF] underline'>
               <p className='cursor-pointer'>Edit</p>
-              <p className='cursor-pointer' onClick={handlePasswordChange}>{item.link_2}</p>
+              <button className='cursor-pointer'  onClick={handlePasswordChange}>{item.link_2}</button>
             </div>
           </div>
           ))}
