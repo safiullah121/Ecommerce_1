@@ -48,11 +48,11 @@ const Product = () => {
     const [price, setprice] = useState(' $3,299.00');
     const [productVal , setproductVal] = useState(1)
     const handleAddToCart = async () => {
-        toast.success('Product Is Added To Cart');
-      
-       if(!sessionStorage.getItem('token')){
-         if (productVal >= 1 && productVal <= 50) {
-          const existingArray = JSON.parse(localStorage.getItem("product")) || [];
+        toast.success('Product Is Added to Cart')
+        
+        if(!sessionStorage.getItem('token')){
+            if (productVal >= 1 && productVal <= 50) {
+                const existingArray = JSON.parse(localStorage.getItem("product")) || [];
           const existingProduct = existingArray.find((product) => product.id === id);
       
           if (existingProduct) {
@@ -63,11 +63,13 @@ const Product = () => {
             const newQty = existingProduct.Qty + productVal;
             const updatedQty = newQty <= 50 ? newQty : 50;
             const updatedArray = existingArray.map((product) => {
-              if (product.id === id) {
-                return { ...product, Qty: updatedQty };
-              }
-              return product;
+                if (product.id === id) {
+                    return { ...product, Qty: updatedQty };
+                }
+                return product;
             });
+           
+            product.setselectedProducts(updatedArray)
             localStorage.setItem("product", JSON.stringify(updatedArray));
         } else {
             const selectedArrayObj = product.allProducts.find((i) => i?.id === id);
@@ -85,9 +87,10 @@ const Product = () => {
                 const existingArray = JSON.parse(localStorage.getItem("userProducts")) || [];
                 const existingProduct = existingArray.find((product) => product.id === id);
                 if (existingProduct) {
-                    if (existingProduct.Qty==50) {
+                    if (existingProduct.Qty>=50) {
                       alert("only 50 products are allowed");
                   }
+               
                     
                   const newQty = existingProduct.Qty + productVal;
                   const updatedQty = newQty <= 50 ? newQty : 50;
@@ -97,6 +100,8 @@ const Product = () => {
                     }
                     return product;
                 });
+                console.log(updatedArray, "updated")
+                product.setselectedProducts_2(updatedArray)
                 localStorage.setItem("userProducts", JSON.stringify(updatedArray));
             } else {
                 const selectedArrayObj = product.allProducts.find((i) => i?.id === id);
@@ -110,7 +115,6 @@ const Product = () => {
                 alert("only 50 products are allowed");
               }
               const dataArray = [...product.productIds, {id}]
-    console.log(dataArray, "dataArray")
      product.setproductIds(dataArray);
     const user_email = JSON.parse(sessionStorage.getItem('token')) || []
   
@@ -133,31 +137,7 @@ const Product = () => {
         
       });}
   }
-  // const email = JSON.parse(sessionStorage.getItem('token'))
-  await supabase
-  .from('User_Profile')
-  .select('product_ids') // Replace 'your_specific_column_name' with the column you want to retrieve
-  .eq('user_email', user_email.user.email) // Add any additional conditions to uniquely identify the row
-  .then(({ data, error }) => {
-    if (error) {
-      console.error('Error fetching data:', error);
-    } else {
-      // Handle the fetched data here
-      if (data.length > 0) {
-        product.setproductToast(false)
-        const specificColumnValue = data[0].product_ids;
-        
-         const allProducts = JSON.parse( localStorage.getItem('selectedProduct'))
-  const userProductIds = specificColumnValue.map(product => product.id);
-  const userProducts = allProducts.filter(product => userProductIds.includes(product.id))
-  localStorage.setItem('userProducts',JSON.stringify(userProducts))
-  product.setproductToast(false)
-  product.setselectedProducts_2(userProducts)
-      } else {
-        console.log('No data found.');
-      }
-    }
-  });
+  
         }
       };
       
