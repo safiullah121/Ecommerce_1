@@ -379,6 +379,7 @@ const { pathname } = useLocation();
 }
 function App() {
   useEffect(() => {
+    setproductToast(false)
   let productArr = [];
   if (localStorage.getItem('product')==null) {
     localStorage.setItem('product', JSON.stringify(productArr));
@@ -390,6 +391,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [allProducts, setallProducts] = useState([]);
   useEffect(() => {
+    setproductToast(false)
     if (isLoading) {
       document.body.classList.add("scroll-lock"); // Add scroll-lock class to body
     } else {
@@ -397,6 +399,7 @@ function App() {
     }
   }, [isLoading]);
   useEffect(() => {
+    setproductToast(false)
     setIsLoading(true)
     const fetchingData = async () => {
       
@@ -457,7 +460,7 @@ const [productIds, setproductIds] = useState(null);
 const [userProducts, setUserProducts] = useState(null);
 const [hoveredItem_3, setHoveredItem_3] = useState(null);
 const [favProductsName, setfavProductsName] = useState(0);
-const [favProsuct, setfavProsuct] = useState(true);
+const [favProduct, setfavProduct] = useState(false);
   const defaultValues = {
     allProducts,setallProducts,
     selectedProducts,setselectedProducts,
@@ -472,7 +475,7 @@ const [favProsuct, setfavProsuct] = useState(true);
     setselectedProducts_2, selectedProducts_2,
     hoveredItem_3, setHoveredItem_3,
     favProductsName,setfavProductsName,
-    favProsuct, setfavProsuct
+    favProduct, setfavProduct
   };
   const [token, setToken] = useState(false);
 
@@ -483,7 +486,8 @@ const [favProsuct, setfavProsuct] = useState(true);
       let data = JSON.parse(sessionStorage.getItem('token'));
      setToken(data);
      }
-     
+     const favProducts =JSON.parse(localStorage.getItem('favProduct')) || [];
+     setfavProductsName(favProducts)
   }, []);
   
   useEffect(() => {

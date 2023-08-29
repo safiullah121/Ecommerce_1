@@ -10,8 +10,7 @@ import Context from '../Context'
 import { supabase } from '../../SupabaseClient';
 import { round } from 'lodash';
 import { motion } from 'framer-motion';
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 const ProductDiv = (props) => {
 
   
@@ -48,8 +47,8 @@ const ProductDiv = (props) => {
   const [Data, setData] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState(null);
   useEffect(() => {
+    product.setproductToast(false)
     if (sessionStorage.getItem('token')) {
-      
       const user_email = JSON.parse(sessionStorage.getItem('token')) || [];
     const userProfile = JSON.parse(localStorage.getItem('profileData'));
     const userProducts = JSON.parse(localStorage.getItem('userProducts'));
@@ -67,10 +66,15 @@ const ProductDiv = (props) => {
 const id = props.item.id;
   const handleClick3 =async (e) => {
     if (window.location.pathname == "/favProducts") {
-    toast.success('Product Added successfully')
+    product.setfavProduct(true)
+    setTimeout(() => {
+      product.setfavProduct(false)
+    }, 1500);
     }
-     product.setproductToast(true)
-    if (!sessionStorage.getItem('token')) { const existingArray = JSON.parse(localStorage.getItem("product")) || [];
+    
+    if (!sessionStorage.getItem('token')) {
+      product.setproductToast(true)
+      const existingArray = JSON.parse(localStorage.getItem("product")) || [];
     
     const existingProduct = existingArray.find((product) => product.id === id);
     if (existingProduct) {
@@ -134,14 +138,14 @@ const id = props.item.id;
     } else {
       // Handle the fetched data here
       if (data.length > 0) {
-        product.setproductToast(false)
+      
         const specificColumnValue = data[0].product_ids;
         
          const allProducts = JSON.parse( localStorage.getItem('selectedProduct'))
   const userProductIds = specificColumnValue.map(product => product.id);
   const userProducts = allProducts.filter(product => userProductIds.includes(product.id))
   localStorage.setItem('userProducts',JSON.stringify(userProducts))
-  product.setproductToast(false)
+ 
   product.setselectedProducts_2(userProducts)
       } else {
         console.log('No data found.');
@@ -161,15 +165,16 @@ const handleFav = () => {
 const specificProduct = product.allProducts.find(product => product.id === id);
 const favProduct = JSON.parse(localStorage.getItem('favProduct')) || [];
 const exsistance = favProduct.find(product => product.id === id)
-if(window.location.pathname == "/"){  if (like==false && !exsistance){
+  if (like==false && !exsistance){
       favProduct.push(specificProduct)
       localStorage.setItem('favProduct', JSON.stringify(favProduct))
     }
-  if (like==true) {
+  if (exsistance) {
     const productIndex = favProduct.findIndex(i => i.id === id )
     favProduct.splice(productIndex , 1)
     localStorage.setItem('favProduct', JSON.stringify(favProduct))
-  }}
+  }
+  product.setfavProductsName(favProduct)
 };
 
   const favProduct = JSON.parse(localStorage.getItem('favProduct')) || [];
@@ -177,24 +182,16 @@ if(window.location.pathname == "/"){  if (like==false && !exsistance){
   useEffect(() => {
     const isProductInFavorites = favProduct.some(product => product.id === id);
     setlike(isProductInFavorites);
-    product.setfavProductsName(favProduct)
-  }, [like]);
+
+  }, [favProduct]);
+  
   return (
     <>
-    <ToastContainer
-        position="top-center"
-        autoClose={1500}
-        hideProgressBar
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover={true}
-        theme="light"
-      />
+   
       <motion.div
-        whileHover={{scale:1.02}}
+        initial={{ scale: 1 }} // Initial state
+        whileHover={{ scale: 1.02 }} // Scale up when hovering
+        transition={{ type: 'spring', stiffness: 300, damping: 40 }} 
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onClick={handleClick}
@@ -275,8 +272,9 @@ if(window.location.pathname == "/"){  if (like==false && !exsistance){
         )}
          </div>  
       </motion.div>
-     
+
     </>
+    
   );
 };
 

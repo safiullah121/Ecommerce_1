@@ -470,25 +470,16 @@ const scrollToSection = (sectionId) => {
                   className="flex items-center 2xl:gap-[20px] gap-[13px] "
                 >
                   <li
-                    className={` cursor-pointer flex items-center justify-center  font-semibold rounded-[100px] w-[80px] h-[37px] ${
-                     product.hoveredItem_3 ? "bg-[#0156FF] text-[#ffff] " : ""
-                    }]`}
-                    onMouseEnter={() => {
-                      product.setHoveredItem_3(true);
+                    className={` cursor-pointer flex items-center justify-center  font-semibold rounded-[100px] w-[80px] h-[37px]
+                     hover:bg-[#0156FF]  hover:text-[#FFFFFF]
+                    `}
+                    onClick={() => {
+                      product.setHoveredItem_3(!product.hoveredItem_3);
+                      setmenu(false);
+                      setmenu_2(false); 
+                      setmenu_3(false);
                     }}
-                    onMouseLeave={() => {
-                      const timeout = setTimeout(() => {
-                        product.setHoveredItem_3(false);
-                      }, 1000);
-                      if (hoveredItem_3Ref.current) {
-                        hoveredItem_3Ref.current.addEventListener(
-                          "mouseenter",
-                          () => {
-                            clearTimeout(timeout);
-                          }
-                        );
-                      }
-                    }}
+          
                   >
                     Laptops
                   </li>
@@ -519,12 +510,7 @@ const scrollToSection = (sectionId) => {
               transition={{ duration: 0.7 }}
                 className="absolute z-20 top-[156px]"
                 ref={hoveredItem_3Ref}
-                onMouseLeave={() => {
-                  product.setHoveredItem_3(false);
-                  setmenu(false);
-                  setmenu_2(false); 
-                  setmenu_3(false);
-                }}
+             
               >
                 <div className="divShadow">
                 <div className="flex  bg-white  max-w-[1398px] w-full mx-auto border-[1px] border-[#CACDD8] border-solid">
@@ -635,7 +621,6 @@ const scrollToSection = (sectionId) => {
             )}
           <div className="relative flex items-center">  <svg width={20} onClick={()=>{
             navigate('/favProducts')
-            product.setfavProsuct(false)
           }} className={`mr-[15px] ${product.loginButton ?"mt-[-2px]":"mt-[-2px]"}  cursor-pointer`} height={16} viewBox="0 0 17 14" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path d="M7.68513 2.82536L8.39535 3.54187L9.10557 2.82536C9.77879 2.14617 10.8139 1.375 11.8922 1.375C12.9606 1.375 13.8026 1.73075 14.3714 2.278C14.9374 2.82255 15.2936 3.61414 15.2936 4.60948C15.2936 5.68046 14.8643 6.59251 14.1287 7.47611C13.3739 8.3829 12.3563 9.19134 11.2509 10.0643L11.2252 10.0846C10.2883 10.8241 9.24578 11.647 8.39584 12.5675C7.55422 11.655 6.52157 10.8387 5.59303 10.1047L5.54239 10.0646L5.54198 10.0643C4.43628 9.19109 3.4189 8.38246 2.66433 7.47571C1.92905 6.59215 1.5 5.68023 1.5 4.60948C1.5 3.61414 1.8562 2.82257 2.42223 2.27804C2.99108 1.73079 3.83327 1.375 4.9021 1.375C5.97913 1.375 7.01114 2.14538 7.68513 2.82536Z" stroke="#000000" strokeWidth={2} />
 </svg>
