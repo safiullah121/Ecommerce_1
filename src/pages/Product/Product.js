@@ -14,8 +14,10 @@ import Context from '../Context'
 import { supabase } from '../../SupabaseClient'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from 'react-router-dom'
 
 const Product = () => {
+    const navigate = useNavigate()
     const Products = JSON.parse(localStorage.getItem('selectedProduct'))
     const [tabIndex, settabindex] = useState(0);
     const location = useLocation();
@@ -47,101 +49,15 @@ const Product = () => {
     ];
     const [price, setprice] = useState(' $3,299.00');
     const [productVal , setproductVal] = useState(1)
-    const handleAddToCart = async () => {
-        toast.success('Product Is Added to Cart')
-        
-        if(!sessionStorage.getItem('token')){
-            if (productVal >= 1 && productVal <= 50) {
-                const existingArray = JSON.parse(localStorage.getItem("product")) || [];
-          const existingProduct = existingArray.find((product) => product.id === id);
-      
-          if (existingProduct) {
-         
-            if (existingProduct.Qty==50) {
-                alert("only 50 products are allowed");
-            }
-            const newQty = existingProduct.Qty + productVal;
-            const updatedQty = newQty <= 50 ? newQty : 50;
-            const updatedArray = existingArray.map((product) => {
-                if (product.id === id) {
-                    return { ...product, Qty: updatedQty };
-                }
-                return product;
-            });
-           
-            product.setselectedProducts(updatedArray)
-            localStorage.setItem("product", JSON.stringify(updatedArray));
-        } else {
-            const selectedArrayObj = product.allProducts.find((i) => i?.id === id);
-            const newQty = productVal <= 50 ? productVal : 50;
-            const newProduct = { ...selectedArrayObj, Qty: newQty };
-            existingArray.push(newProduct);
-            product.setselectedProducts(existingArray)
-            localStorage.setItem("product", JSON.stringify(existingArray));
-          }
-        } else {
-          alert("only 50 products are allowed");
-        }}
-        else if(sessionStorage.getItem("token")){
-            if (productVal >= 1 && productVal <= 50) {
-                const existingArray = JSON.parse(localStorage.getItem("userProducts")) || [];
-                const existingProduct = existingArray.find((product) => product.id === id);
-                if (existingProduct) {
-                    if (existingProduct.Qty>=50) {
-                      alert("only 50 products are allowed");
-                  }
-               
-                    
-                  const newQty = existingProduct.Qty + productVal;
-                  const updatedQty = newQty <= 50 ? newQty : 50;
-                  const updatedArray = existingArray.map((product) => {
-                    if (product.id === id) {
-                      return { ...product, Qty: updatedQty };
-                    }
-                    return product;
-                });
-                console.log(updatedArray, "updated")
-                product.setselectedProducts_2(updatedArray)
-                localStorage.setItem("userProducts", JSON.stringify(updatedArray));
-            } else {
-                const selectedArrayObj = product.allProducts.find((i) => i?.id === id);
-                const newQty = productVal <= 50 ? productVal : 50;
-                const newProduct = { ...selectedArrayObj, Qty: newQty };
-                existingArray.push(newProduct);
-                localStorage.setItem("userProducts", JSON.stringify(existingArray));
-                product.setselectedProducts_2(existingArray)
-                }
-              } else {
-                alert("only 50 products are allowed");
-              }
-              const dataArray = [...product.productIds, {id}]
-     product.setproductIds(dataArray);
-    const user_email = JSON.parse(sessionStorage.getItem('token')) || []
-  
-
-  if (dataArray!==[] && user_email.user.email!=='') {
-    const data = {
-      user_email: user_email.user.email,
-      product_ids: dataArray,
-    };
-
-    // Use the upsert method to insert or update data in the "User Profile" table
-  if (sessionStorage.getItem('token')) { 
-    await supabase
-      .from('User_Profile') // Replace 'user_profile' with your actual table name
-      .upsert([data]) // upsert() takes an array of data objects
-      .then(({ data, error }) => {
-        if (error) {
-          console.error('Error inserting data:', error);
-        } 
-        
-      });}
-  }
-  
-        }
+    const handleEdit = async () => {
+     navigate('/ShoppingCart')
       };
       
-      
+      const userProduct = JSON.parse(localStorage.getItem('userProducts')) || [];
+      const products = JSON.parse(localStorage.getItem('product')) || [];  
+      const userProductCheck = userProduct.find(i => i.id === id);
+      const productsCheck = products.find(i => i.id === id);
+      const hasToken = sessionStorage.getItem('token');
   return (
     <div className=''>
            <ToastContainer
@@ -185,15 +101,17 @@ const Product = () => {
             </div>
             <div className=' flex items-center flex-wrap justify-center'>
                <div className='flex'> <p className='text-[14px] leading-[21px] font-normal' >On Sale from </p> <p className='pl-1 text-[14px] leading-[21px] font-semibold'>{price}</p> </div>
-                <input type="number" value={productVal}onChange={(e) => {
-    if (e.target.value <= 50) {
-      setproductVal(e.target.value);
-    } else {
-      alert("Only 50 Products Are Allowed");
-    }
-  }} min={1} max={50} className='ml-[10px] bg-[#F5F7FF] max-w-[70px] max-[40px] pt-[11px] pb-[12px] pr-[9px] pl-[15px] rounded-[6px] font-semibold text-[13px] leading-[27px] outline-none' />
-                <button className='bg-[#0156FF] ml-[21px] text-[#FFFFFF] text-[14px] leading-[21px] xsm:mt-[15px] sm:mt-[0px] font-semibold rounded-[50px] pt-[15px] pb-[15px] pl-[32px] pr-[32px]' onClick={handleAddToCart}>Add to Cart</button>
-                <button className='bg-[#FFB800] ml-[13px] rounded-[50px] pt-[15px] pb-[15px] pl-[32px] xsm:mt-[15px] sm:mt-[0px] pr-[32px]'><img src={Pay} alt="" /></button>
+              
+               {hasToken ? (
+      userProductCheck ? (
+        <button className='bg-[#0156FF] ml-[21px] text-[#FFFFFF] text-[14px] leading-[21px] xsm:mt-[15px] sm:mt-[0px] font-semibold rounded-[50px] pt-[15px] pb-[15px] pl-[32px] pr-[32px]' onClick={handleEdit}>Edit </button>
+      ) : null
+    ) : (
+      productsCheck ? (
+        <button className='bg-[#0156FF] ml-[21px] text-[#FFFFFF] text-[14px] leading-[21px] xsm:mt-[15px] sm:mt-[0px] font-semibold rounded-[50px] pt-[15px] pb-[15px] pl-[32px] pr-[32px]' onClick={handleEdit}>Edit </button>
+      ) : null
+    )}
+
             </div>
         </div>
         </div>

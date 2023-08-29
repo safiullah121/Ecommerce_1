@@ -9,9 +9,12 @@ import { useNavigate } from 'react-router-dom';
 import Context from '../Context'
 import { supabase } from '../../SupabaseClient';
 import { round } from 'lodash';
-
-
+import { motion } from 'framer-motion';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const ProductDiv = (props) => {
+
+  
   const product = useContext(Context)
 
   const navigate = useNavigate();
@@ -63,6 +66,9 @@ const ProductDiv = (props) => {
 
 const id = props.item.id;
   const handleClick3 =async (e) => {
+    if (window.location.pathname == "/favProducts") {
+    toast.success('Product Added successfully')
+    }
      product.setproductToast(true)
     if (!sessionStorage.getItem('token')) { const existingArray = JSON.parse(localStorage.getItem("product")) || [];
     
@@ -143,20 +149,58 @@ const id = props.item.id;
     }
   });}
 };
-// useEffect(() => {
+const [like , setlike]= useState(false)
 
-// }, [Data]);
+const handleClick4 = (e) => {
+  setlike(!like)
+  e.stopPropagation();
 
+}
+const handleFav = () => {
 
+const specificProduct = product.allProducts.find(product => product.id === id);
+const favProduct = JSON.parse(localStorage.getItem('favProduct')) || [];
+const exsistance = favProduct.find(product => product.id === id)
+if(window.location.pathname == "/"){  if (like==false && !exsistance){
+      favProduct.push(specificProduct)
+      localStorage.setItem('favProduct', JSON.stringify(favProduct))
+    }
+  if (like==true) {
+    const productIndex = favProduct.findIndex(i => i.id === id )
+    favProduct.splice(productIndex , 1)
+    localStorage.setItem('favProduct', JSON.stringify(favProduct))
+  }}
+};
+
+  const favProduct = JSON.parse(localStorage.getItem('favProduct')) || [];
+
+  useEffect(() => {
+    const isProductInFavorites = favProduct.some(product => product.id === id);
+    setlike(isProductInFavorites);
+    product.setfavProductsName(favProduct)
+  }, [like]);
   return (
     <>
-      <div
+    <ToastContainer
+        position="top-center"
+        autoClose={1500}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover={true}
+        theme="light"
+      />
+      <motion.div
+        whileHover={{scale:1.02}}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onClick={handleClick}
         className={` cursor-pointer group ${
           hover_1 === true && 'productDiv'
-        } rounded-[20px]  mx-auto w-[220px] relative pt-[5px] pr-[10px] pl-[17px]  pb-[20px] h-[400px] mt-[10px] mb-[10px]`}
+        } rounded-[20px]   w-[220px] relative pt-[5px] pr-[10px] pl-[17px]  pb-[20px] h-[400px] ml-[10px] mr-[10px] mt-[10px] mb-[10px]`}
       id={props.item.id}
       >
         <div key={props.index + Math.random()}
@@ -213,10 +257,14 @@ const id = props.item.id;
         <div
            className='absolute top-[25px] z-20 right-[15px] flex flex-col '
          >
-         {hover ? ( <div className=' flex flex-col'> <div 
-           onClick={handleClick2}
+         {hover ? ( <div className={`flex flex-col ${like ? 'text-[#C94D3F]' : 'text-[#A2A6B0]'}`}> <div 
+           onClick={handleClick4}
            onMouseEnter={handleMouseEnter_2} className=' z-10 top-[-500px] right-[10px] w-[30px] h-[30px] mb-[3px] rounded-full border-2 border-solid border-[#A2A6B0] flex flex-col items-center justify-center'>
-             <img src={Like} alt='' />
+           <svg width={20} onClick={handleFav} height={16} viewBox="0 0 17 14"   fill={ like ? '#C94D3F' : 'white'
+  } xmlns="http://www.w3.org/2000/svg">
+  <path d="M7.68513 2.82536L8.39535 3.54187L9.10557 2.82536C9.77879 2.14617 10.8139 1.375 11.8922 1.375C12.9606 1.375 13.8026 1.73075 14.3714 2.278C14.9374 2.82255 15.2936 3.61414 15.2936 4.60948C15.2936 5.68046 14.8643 6.59251 14.1287 7.47611C13.3739 8.3829 12.3563 9.19134 11.2509 10.0643L11.2252 10.0846C10.2883 10.8241 9.24578 11.647 8.39584 12.5675C7.55422 11.655 6.52157 10.8387 5.59303 10.1047L5.54239 10.0646L5.54198 10.0643C4.43628 9.19109 3.4189 8.38246 2.66433 7.47571C1.92905 6.59215 1.5 5.68023 1.5 4.60948C1.5 3.61414 1.8562 2.82257 2.42223 2.27804C2.99108 1.73079 3.83327 1.375 4.9021 1.375C5.97913 1.375 7.01114 2.14538 7.68513 2.82536Z" stroke="currentColor" strokewidth={1} />
+</svg>
+
            </div>
            <div  
            onClick={handleClick2}
@@ -226,7 +274,7 @@ const id = props.item.id;
           ''
         )}
          </div>  
-      </div>
+      </motion.div>
      
     </>
   );

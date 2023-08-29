@@ -166,7 +166,7 @@ const [_, setInit] = useState(null);
             </Link>
           </div>
         </div>
-      <div className={` bg-transparent flex xsm:flex-wrap xl:flex-nowrap justify-center gap-[10px] max-w-[1440px] mx-auto pt-[4px] pl-[15px] pr-[15px]  `}>
+      <div className={` bg-transparent flex xsm:flex-wrap xl:flex-nowrap justify-center gap-[10px] max-w-[1460px] mx-auto pt-[4px] pl-[25px] pr-[15px]  `}>
       <Swiper
       ref={swiperRef}
       className="mx-auto flex justify-center"
@@ -199,7 +199,7 @@ const [_, setInit] = useState(null);
           >
          {products.allProducts.map(
             (item, index) =>
-            item.new && <SwiperSlide key={index + 'swiper_2'} className=" mx-auto">  <ProductDiv item={item} index={index} /></SwiperSlide>
+            item.new && <SwiperSlide key={index + 'swiper_2'} >  <ProductDiv item={item} index={index} /></SwiperSlide>
           )}
     </Swiper>
         </div>

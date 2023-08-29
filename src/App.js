@@ -31,6 +31,7 @@ import SignIn from "./pages/login/SignIn"
 import { supabase } from "./SupabaseClient";
 import Loading from "./Components/Loading";
 import PasswordRecovery from "./pages/PasswordRecovery";
+import FavProducts from "./Components/common/FavProducts";
 
 
 function ScrollToTop() {
@@ -381,6 +382,9 @@ function App() {
   let productArr = [];
   if (localStorage.getItem('product')==null) {
     localStorage.setItem('product', JSON.stringify(productArr));
+  }if (!localStorage.getItem('favProduct')) {
+    
+    localStorage.setItem('favProduct', JSON.stringify([]))
   }
    }, []);
   const [isLoading, setIsLoading] = useState(true);
@@ -452,6 +456,8 @@ const [loginEmail , setloginEmail] = useState('');
 const [productIds, setproductIds] = useState(null);
 const [userProducts, setUserProducts] = useState(null);
 const [hoveredItem_3, setHoveredItem_3] = useState(null);
+const [favProductsName, setfavProductsName] = useState(0);
+const [favProsuct, setfavProsuct] = useState(true);
   const defaultValues = {
     allProducts,setallProducts,
     selectedProducts,setselectedProducts,
@@ -464,7 +470,9 @@ const [hoveredItem_3, setHoveredItem_3] = useState(null);
     profileData,setprofileData,
     setUserProducts,userProducts,
     setselectedProducts_2, selectedProducts_2,
-    hoveredItem_3, setHoveredItem_3
+    hoveredItem_3, setHoveredItem_3,
+    favProductsName,setfavProductsName,
+    favProsuct, setfavProsuct
   };
   const [token, setToken] = useState(false);
 
@@ -507,6 +515,7 @@ const [hoveredItem_3, setHoveredItem_3] = useState(null);
   });
   }
   }, []);
+  
   const [scrollToSection, setScrollToSection] = useState(null);
 
   const handleCompareClick = () => {
@@ -526,6 +535,7 @@ const [hoveredItem_3, setHoveredItem_3] = useState(null);
         handleWishListClick={handleWishListClick}/>
       <ScrollToTop />
       <Routes>
+      <Route path="/favProducts" element={<FavProducts/>}/>
         <Route path="/passwordRecovery" element={<PasswordRecovery/>} />
         <Route path="/Product" element={<Product/>}/>
         <Route path="/ContactUs" element={<ContactUs/>}/>
