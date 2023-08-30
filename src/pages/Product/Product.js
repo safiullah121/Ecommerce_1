@@ -23,9 +23,33 @@ const Product = () => {
    const ProductId = Number(id)
     const Products = JSON.parse(localStorage.getItem('selectedProduct'))
     const [tabIndex, settabindex] = useState(0);
-
+const [image, setimage] = useState([]);
     const product = useContext(Context);
-    const selectedImage = Products.find(p => p.id === ProductId);
+    useEffect(() => {
+        product.setproductToast(false)
+     
+        const fetchingData = async () => {
+          
+          try {
+            const { data, error } = await supabase
+              .from('products')
+              .select();
+        
+            if (error) {
+              alert(error);
+            }
+        
+            if (data) {
+                const selectedImage = data.find(p => p.id === ProductId);
+                setimage(selectedImage)
+            }
+          } catch (error) {
+            alert(error);
+          }
+        };
+      
+        fetchingData()
+       }, []);
     const liArray =[
         '•  Intel Core i7-10700F',
         '•  Intel H410',
@@ -52,7 +76,6 @@ const Product = () => {
     const [productVal , setproductVal] = useState(1)
     
     const handleAddToCart = async (e) => {
-        console.log(selectedImage, 'products')
         toast.success('Product added successfully')
         if (!sessionStorage.getItem('token')) {
             product.setproductToast(true)
@@ -354,7 +377,7 @@ const handleFav = (e) => {
                 <div className='w-[30px] h-[30px] mb-[3px] rounded-full border-2 border-solid border-[#A2A6B0] flex items-center justify-center cursor-pointer'><img src={Message} alt="" /> </div>
             </div>
             <div className=' '> 
-                    <img src={selectedImage.image} alt="" />
+                    <img src={image.image} alt="" />
             <div className='flex items-center  max-w-[263px] pb-[98px]'>
             <img src={Zip} alt="" />
             <div className='flex items-center ml-[11.5px] w-[1px] h-[23px]  border-[1px] border-[#00AEB8] border-solid'></div>
