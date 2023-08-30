@@ -291,7 +291,7 @@ const handleFav = (e) => {
             </div>
             <div className='xsm:pt-[50px] md:pt-[100px] xl:pt-[166px] xl:pl-[20px] 2xl:pl-[210px] flex items-center pb-[59px] max-w-[1064px] w-full'>
                 <p className=' text-[14px] leading-[21px] font-bold'>+</p>
-            <p className=' text-[18px] leading-[27px] font-bold'><a href=""> More information</a></p>
+            <p className=' text-[18px] leading-[27px] font-bold cursor-pointer'> More information</p>
             </div>
         </div>):('')}
     
@@ -323,7 +323,7 @@ const handleFav = (e) => {
             </div>
             <div className='pt-[82px]  flex items-center pb-[59px] xl:pl-[10px] 2xl:pl-[200px] max-w-[900px] w-full'>
                 <p className=' text-[14px] leading-[21px] font-bold'>+</p>
-            <p className=' text-[18px] leading-[27px] font-bold'><a href=""> More information</a></p>
+            <p className=' text-[18px] leading-[27px] font-bold cursor-pointer'> More information</p>
             </div>
         </div>):('')}
   
@@ -363,7 +363,7 @@ const handleFav = (e) => {
             </div>
             <div className='mt-[82px] xl:pl-[40px] 2xl:pl-[250px] flex items-center mb-[169px] max-w-[1064px] w-full '>
                 <p className=' text-[14px] leading-[21px] font-bold'>+</p>
-            <p className=' text-[18px] leading-[27px] font-bold'><a href=""> More information</a></p>
+            <p className=' text-[18px] leading-[27px] font-bold cursor-pointer'> More information</p>
             </div>
         </div>):('')}
         <div className='xl:max-w-[600px] 2xl:max-w-[855px] mx-auto w-full'>

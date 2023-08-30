@@ -167,11 +167,11 @@ input[type="number"]::-webkit-contacts-auto-fill-button {
   }
 }
 .loading-spinner {
-  width: 20px;
-  height: 20px;
-  border: 5px solid #f3f3f3; /* Light grey */
-  border-top: 5px solid #383636; /* Black */
-  border-radius: 20%;
+  width: 40px;
+  height: 40px;
+  border: 8px solid #cfc9c9; /* Light grey */
+  border-top: 8px solid #0156FF; /* Black */
+  border-radius: 50%;
   animation: spinner 1.5s linear infinite;
 }
 .loader {
