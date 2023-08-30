@@ -17,10 +17,7 @@ const ProductDiv = (props) => {
   const product = useContext(Context)
 
   const navigate = useNavigate();
-  const handleClick = () => {
-    navigate('/Product', { state: { image: props.item.id } });
-    product.setHoveredItem_3(false)
-  };
+
 
   const Hover = [{ img: Like }, { img: Graph }];
   const [hover, setHover] = useState(false);
@@ -65,6 +62,7 @@ const ProductDiv = (props) => {
 
 const id = props.item.id;
   const handleClick3 =async (e) => {
+    e.preventDefault();
     if (window.location.pathname == "/favProducts") {
     product.setfavProduct(true)
     setTimeout(() => {
@@ -98,7 +96,6 @@ const id = props.item.id;
       localStorage.setItem("product", JSON.stringify(existingArray));
       product.setselectedProducts(existingArray);
     }}
-  e.stopPropagation();
   if (sessionStorage.getItem('token')) {
     await product.setproductToast(true)
     
@@ -160,8 +157,9 @@ const handleClick4 = (e) => {
   e.stopPropagation();
 
 }
-const handleFav = () => {
-
+const handleFav = (e) => {
+  e.preventDefault()
+  product.setproductToast(false)
 const specificProduct = product.allProducts.find(product => product.id === id);
 const favProduct = JSON.parse(localStorage.getItem('favProduct')) || [];
 const exsistance = favProduct.find(product => product.id === id)
@@ -169,7 +167,7 @@ const exsistance = favProduct.find(product => product.id === id)
       favProduct.push(specificProduct)
       localStorage.setItem('favProduct', JSON.stringify(favProduct))
     }
-  if (exsistance) {
+  if (like==true) {
     const productIndex = favProduct.findIndex(i => i.id === id )
     favProduct.splice(productIndex , 1)
     localStorage.setItem('favProduct', JSON.stringify(favProduct))
@@ -184,24 +182,29 @@ const exsistance = favProduct.find(product => product.id === id)
     setlike(isProductInFavorites);
 
   }, [favProduct]);
-  
+
+  const generateProductLink = (productId) => {
+    return `/Product/${productId}`; // Assuming your route for individual product pages is "/product/:id"
+  };
   return (
     <>
-   
+   <Link to={generateProductLink(props.item.id)}>
       <motion.div
         initial={{ scale: 1 }} // Initial state
         whileHover={{ scale: 1.02 }} // Scale up when hovering
         transition={{ type: 'spring', stiffness: 300, damping: 40 }} 
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        onClick={handleClick}
+        onClick={()=>{
+          product.setHoveredItem_3(false)
+        }}
         className={` cursor-pointer group ${
           hover_1 === true && 'productDiv'
         } rounded-[20px]   w-[220px] relative pt-[5px] pr-[10px] pl-[17px]  pb-[20px] h-[400px] ml-[10px] mr-[10px] mt-[10px] mb-[10px]`}
       id={props.item.id}
       >
         <div key={props.index + Math.random()}
-        onClick={handleClick}
+        
 
         >
           <div
@@ -272,7 +275,7 @@ const exsistance = favProduct.find(product => product.id === id)
         )}
          </div>  
       </motion.div>
-
+</Link>
     </>
     
   );

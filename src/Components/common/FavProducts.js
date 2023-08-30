@@ -11,6 +11,7 @@ const FavProducts = () => {
         if(product.favProduct){ toast.success('Product Added successfully')}
     }, [product.favProduct]);
     const favProducts =  JSON.parse(localStorage.getItem('favProduct')) || []
+    
   return (
     <>
           <ToastContainer

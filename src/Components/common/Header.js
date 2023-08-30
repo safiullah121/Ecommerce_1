@@ -223,10 +223,12 @@ if (e.target.value==""){
   setSearchMenu(true)
 
   };
-  const handleProductsSearched = ()=>{
+  const ids = filteredProducts.map(p => p.id)
   
+  const handleProductsSearched = ()=>{
+  console.log(ids)
     if (filteredProducts[0].title!=="No Products To Show") {
-      navigate('/SearchedProducts' , {state:{filteredProducts}})   
+      navigate(`/SearchedProducts?array=${ids}`)   
       setResulsToggle(true)   
     }
     
@@ -234,7 +236,7 @@ if (e.target.value==""){
   const handleKeyUp = (e)=>{
     if (filteredProducts[0].title!=="No Products To Show") {
     if (e.key=='Enter') {
-      navigate('/SearchedProducts' , {state:{filteredProducts}})
+      navigate(`/SearchedProducts?array=${ids}`)
       setSearchMenu(false)
       setResulsToggle(false)
     }}
@@ -296,12 +298,7 @@ if (e.target.value==""){
     fetch()
 }, [handleLogout]);
 
-const scrollToSection = (sectionId) => {
-  const element = document.getElementById(sectionId);
-  if (element) {
-    element.scrollIntoView({ behavior: 'smooth' });
-  }
-};
+
   return (
     <header>
       <div className="xsm:hidden xl:block pt-[15px] pb-[15px] bg-[#020202] pl-[15px] pr-[15px]">

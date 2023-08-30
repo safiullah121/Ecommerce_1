@@ -461,6 +461,7 @@ const [userProducts, setUserProducts] = useState(null);
 const [hoveredItem_3, setHoveredItem_3] = useState(null);
 const [favProductsName, setfavProductsName] = useState(0);
 const [favProduct, setfavProduct] = useState(false);
+
   const defaultValues = {
     allProducts,setallProducts,
     selectedProducts,setselectedProducts,
@@ -475,7 +476,8 @@ const [favProduct, setfavProduct] = useState(false);
     setselectedProducts_2, selectedProducts_2,
     hoveredItem_3, setHoveredItem_3,
     favProductsName,setfavProductsName,
-    favProduct, setfavProduct
+    favProduct, setfavProduct,
+   
   };
   const [token, setToken] = useState(false);
 
@@ -541,7 +543,7 @@ const [favProduct, setfavProduct] = useState(false);
       <Routes>
       <Route path="/favProducts" element={<FavProducts/>}/>
         <Route path="/passwordRecovery" element={<PasswordRecovery/>} />
-        <Route path="/Product" element={<Product/>}/>
+        <Route path="/Product/:id" element={<Product/>}/>
         <Route path="/ContactUs" element={<ContactUs/>}/>
         <Route path="/Register" element={<Register/>}/> 
         <Route path="/login" element={<SignIn setToken = {setToken}/>}/>

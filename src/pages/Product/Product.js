@@ -15,16 +15,17 @@ import { supabase } from '../../SupabaseClient'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom';
 
 const Product = () => {
-    const navigate = useNavigate()
+     const navigate = useNavigate()
+     const { id } = useParams();
+   const ProductId = Number(id)
     const Products = JSON.parse(localStorage.getItem('selectedProduct'))
     const [tabIndex, settabindex] = useState(0);
-    const location = useLocation();
-    const id = location.state && location.state.image;
 
     const product = useContext(Context);
-    const selectedImage = Products.find(p => p.id === id);
+    const selectedImage = Products.find(p => p.id === ProductId);
     const liArray =[
         '•  Intel Core i7-10700F',
         '•  Intel H410',
@@ -49,15 +50,128 @@ const Product = () => {
     ];
     const [price, setprice] = useState(' $3,299.00');
     const [productVal , setproductVal] = useState(1)
-    const handleEdit = async () => {
-     navigate('/ShoppingCart')
-      };
+    
+    const handleAddToCart = async (e) => {
+        console.log(selectedImage, 'products')
+        toast.success('Product added successfully')
+        if (!sessionStorage.getItem('token')) {
+            product.setproductToast(true)
+            const existingArray = JSON.parse(localStorage.getItem("product")) || [];
+          
+          const existingProduct = existingArray.find((product) => product.id === ProductId);
+          if (existingProduct) {
+            if (existingProduct.Qty < 50) {
+              const updatedArray = existingArray.map((product) => {
+                if (product.id === id) {
+                  const newQty = product.Qty + 1;
+                  return { ...product, Qty: newQty > 50 ? 50 : newQty };
+                }
+                return product;
+              });
+              localStorage.setItem("product", JSON.stringify(updatedArray));
+              product.setselectedProducts(updatedArray);
+            } else {
+              alert("Quantity already at maximum (50)");
+            }
+          } else {
+            const selectedArrayObj = product.allProducts.find((i) => i?.id === ProductId);
+            const newProduct = { ...selectedArrayObj, Qty: 1 };
+            existingArray.push(newProduct);
+            localStorage.setItem("product", JSON.stringify(existingArray));
+            product.setselectedProducts(existingArray);
+          }}
+        e.stopPropagation();
+        if (sessionStorage.getItem('token')) {
+          await product.setproductToast(true)
+          
+          const dataArray = [...product.productIds, {ProductId}]
+          console.log(dataArray, "dataArray")
+           product.setproductIds(dataArray);
+          const user_email = JSON.parse(sessionStorage.getItem('token')) || []
+        
       
+        if (dataArray!==[] && user_email.user.email!=='') {
+          const data = {
+            user_email: user_email.user.email,
+            product_ids: dataArray,
+          };
+      
+          // Use the upsert method to insert or update data in the "User Profile" table
+        if (sessionStorage.getItem('token')) { 
+          product.setproductToast(false)
+          await supabase
+            .from('User_Profile') // Replace 'user_profile' with your actual table name
+            .upsert([data]) // upsert() takes an array of data objects
+            .then(({ data, error }) => {
+              if (error) {
+                console.error('Error inserting data:', error);
+              } 
+              
+            });}
+        }
+        // const email = JSON.parse(sessionStorage.getItem('token'))
+        await supabase
+        .from('User_Profile')
+        .select('product_ids') // Replace 'your_specific_column_name' with the column you want to retrieve
+        .eq('user_email', user_email.user.email) // Add any additional conditions to uniquely identify the row
+        .then(({ data, error }) => {
+          if (error) {
+            console.error('Error fetching data:', error);
+          } else {
+            // Handle the fetched data here
+            if (data.length > 0) {
+            
+              const specificColumnValue = data[0].product_ids;
+              
+               const allProducts = JSON.parse( localStorage.getItem('selectedProduct'))
+        const userProductIds = specificColumnValue.map(product => product.id);
+        const userProducts = allProducts.filter(product => userProductIds.includes(product.id))
+        localStorage.setItem('userProducts',JSON.stringify(userProducts))
+       
+        product.setselectedProducts_2(userProducts)
+            } else {
+              console.log('No data found.');
+            }
+          }
+        });}
+      };
       const userProduct = JSON.parse(localStorage.getItem('userProducts')) || [];
-      const products = JSON.parse(localStorage.getItem('product')) || [];  
-      const userProductCheck = userProduct.find(i => i.id === id);
-      const productsCheck = products.find(i => i.id === id);
-      const hasToken = sessionStorage.getItem('token');
+const products = JSON.parse(localStorage.getItem('product')) || [];  
+const userProductCheck = userProduct.find(i => i.id === ProductId);
+const productsCheck = products.find(i => i.id === ProductId);
+
+const hasToken = sessionStorage.getItem('token');
+
+const handleEdit = () => {
+    navigate('/ShoppingCart')
+
+}  
+const [like , setlike]= useState(false)    
+const handleFav = (e) => {
+    e.preventDefault()
+    setlike(!like)
+    product.setproductToast(false)
+  const specificProduct = product.allProducts.find(product => product.id === ProductId);
+  const favProduct = JSON.parse(localStorage.getItem('favProduct')) || [];
+  const exsistance = favProduct.find(product => product.id === ProductId)
+    if (like==false && !exsistance){
+        favProduct.push(specificProduct)
+        localStorage.setItem('favProduct', JSON.stringify(favProduct))
+      }
+    if (like==true) {
+      const productIndex = favProduct.findIndex(i => i.id === ProductId )
+      favProduct.splice(productIndex , 1)
+      localStorage.setItem('favProduct', JSON.stringify(favProduct))
+    }
+    product.setfavProductsName(favProduct)
+  };
+  const favProduct = JSON.parse(localStorage.getItem('favProduct')) || [];
+
+  useEffect(() => {
+    const isProductInFavorites = favProduct.some(product => product.id === ProductId);
+    setlike(isProductInFavorites);
+
+  }, [favProduct]);
   return (
     <div className=''>
            <ToastContainer
@@ -101,17 +215,17 @@ const Product = () => {
             </div>
             <div className=' flex items-center flex-wrap justify-center'>
                <div className='flex'> <p className='text-[14px] leading-[21px] font-normal' >On Sale from </p> <p className='pl-1 text-[14px] leading-[21px] font-semibold'>{price}</p> </div>
-              
+             
                {hasToken ? (
       userProductCheck ? (
-        <button className='bg-[#0156FF] ml-[21px] text-[#FFFFFF] text-[14px] leading-[21px] xsm:mt-[15px] sm:mt-[0px] font-semibold rounded-[50px] pt-[15px] pb-[15px] pl-[32px] pr-[32px]' onClick={handleEdit}>Edit </button>
-      ) : null
+        <button className='bg-[#0156FF] ml-[21px] text-[#FFFFFF] text-[14px] leading-[21px] xsm:mt-[15px] sm:mt-[0px] font-semibold rounded-[50px] pt-[15px] pb-[15px] pl-[32px] pr-[32px]' onClick={handleEdit}>Edit</button>
+      ) :  <button className='bg-[#0156FF] ml-[21px] text-[#FFFFFF] text-[14px] leading-[21px] xsm:mt-[15px] sm:mt-[0px] font-semibold rounded-[50px] pt-[15px] pb-[15px] pl-[32px] pr-[32px]' onClick={handleAddToCart}>Add to Cart</button>
     ) : (
       productsCheck ? (
-        <button className='bg-[#0156FF] ml-[21px] text-[#FFFFFF] text-[14px] leading-[21px] xsm:mt-[15px] sm:mt-[0px] font-semibold rounded-[50px] pt-[15px] pb-[15px] pl-[32px] pr-[32px]' onClick={handleEdit}>Edit </button>
-      ) : null
+        <button className='bg-[#0156FF] ml-[21px] text-[#FFFFFF] text-[14px] leading-[21px] xsm:mt-[15px] sm:mt-[0px] font-semibold rounded-[50px] pt-[15px] pb-[15px] pl-[32px] pr-[32px]' onClick={handleEdit}>Edit</button>
+      ) :  <button className='bg-[#0156FF] ml-[21px] text-[#FFFFFF] text-[14px] leading-[21px] xsm:mt-[15px] sm:mt-[0px] font-semibold rounded-[50px] pt-[15px] pb-[15px] pl-[32px] pr-[32px]' onClick={handleAddToCart}>Add to Cart</button>
     )}
-
+               
             </div>
         </div>
         </div>
@@ -130,11 +244,9 @@ const Product = () => {
             <a href="" className='pt-[13px] text-[12px] leading-[18px] font-normal text-[#0156FF]'>Be the first to review this product</a>
             <p className='max-w-[567px] pt-[24px]'>MSI MPG Trident 3 10SC-005AU Intel i7 10700F, 2060 SUPER, 16GB RAM, 512GB SSD, 2TB HDD, Windows 10 Home, Gaming Keyboard and Mouse 3 Years Warranty Gaming Desktop</p>
             <div className='flex gap-[18px] pt-[46px] items-center'>
-            <div className=' p-[2px] rounded-full '>
-            <svg  onClick={()=>{console.log(product.allProducts)}} width="31" height="31" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="15.5" cy="15.5" r="15.5" transform="rotate(-180 15.5 15.5)" fill="#4B4D4F"/>
-            </svg>
-            </div>
+            {/* <div className=' p-[2px] rounded-full '>
+        
+            </div> */}
             <div className=' p-[2px] rounded-full '>
             <svg width="31" height="31" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="15.5" cy="15.5" r="15.5" transform="rotate(-180 15.5 15.5)" fill="#F2E9DC"/>
@@ -234,7 +346,10 @@ const Product = () => {
         <div className='xl:max-w-[600px] 2xl:max-w-[855px] mx-auto w-full'>
         <div className='flex pt-[74px] xsm:justify-center xl:justify-start gap_1'>
             <div className='pt-[12px] padding'>
-                <div className='w-[30px] h-[30px] mb-[3px] rounded-full border-2 border-solid border-[#A2A6B0] flex items-center justify-center cursor-pointer '><img src={Heart} alt="" /> </div>
+                <div className={`w-[30px] h-[30px] mb-[3px] rounded-full border-2 border-solid border-[#A2A6B0] flex items-center justify-center cursor-pointer ${like ? 'text-[#C94D3F]' : 'text-[#A2A6B0]'}`}>    <svg width={20} onClick={handleFav} height={16} viewBox="0 0 17 14"   fill={ like ? '#C94D3F' : 'white'
+  } xmlns="http://www.w3.org/2000/svg">
+  <path d="M7.68513 2.82536L8.39535 3.54187L9.10557 2.82536C9.77879 2.14617 10.8139 1.375 11.8922 1.375C12.9606 1.375 13.8026 1.73075 14.3714 2.278C14.9374 2.82255 15.2936 3.61414 15.2936 4.60948C15.2936 5.68046 14.8643 6.59251 14.1287 7.47611C13.3739 8.3829 12.3563 9.19134 11.2509 10.0643L11.2252 10.0846C10.2883 10.8241 9.24578 11.647 8.39584 12.5675C7.55422 11.655 6.52157 10.8387 5.59303 10.1047L5.54239 10.0646L5.54198 10.0643C4.43628 9.19109 3.4189 8.38246 2.66433 7.47571C1.92905 6.59215 1.5 5.68023 1.5 4.60948C1.5 3.61414 1.8562 2.82257 2.42223 2.27804C2.99108 1.73079 3.83327 1.375 4.9021 1.375C5.97913 1.375 7.01114 2.14538 7.68513 2.82536Z" stroke="currentColor" strokewidth={1} />
+</svg> </div>
                 <div className='w-[30px] h-[30px] mb-[3px] rounded-full border-2 border-solid border-[#A2A6B0] flex items-center justify-center cursor-pointer'><img src={Graph} alt="" /> </div>
                 <div className='w-[30px] h-[30px] mb-[3px] rounded-full border-2 border-solid border-[#A2A6B0] flex items-center justify-center cursor-pointer'><img src={Message} alt="" /> </div>
             </div>
@@ -314,5 +429,4 @@ const Product = () => {
     </div>
   )
 }
-
 export default Product
