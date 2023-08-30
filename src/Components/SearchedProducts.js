@@ -24,7 +24,6 @@ const SearchedProducts = () => {
     
         if (data) {
           products.setallProducts(data);
-          localStorage.setItem('selectedProduct', JSON.stringify(data));
         }
       } catch (error) {
         alert(error);
@@ -39,7 +38,7 @@ const SearchedProducts = () => {
   const searched = queryParams.get('array');
   const values = searched.split(",").map((value) => parseInt(value));
   const all = JSON.parse(localStorage.getItem('selectedProduct'));
-    const productsToFind = all.filter((product) =>
+    const productsToFind = products.allProducts.filter((product) =>
     values.indexOf(product.id) !== -1
   );
 console.log(productsToFind)
