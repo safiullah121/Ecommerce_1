@@ -1,11 +1,39 @@
-import React, { useState ,useContext } from 'react';
+import React, { useEffect ,useContext } from 'react';
 import { useLocation,useNavigate } from 'react-router-dom';
 import ProductDiv from '../pages/Home/ProductDiv';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Context from "../pages/Context"
+import { supabase } from '../SupabaseClient';
 
 const SearchedProducts = () => {
+  const products = useContext(Context)
+  useEffect(() => {
+    products.setproductToast(false)
+ 
+    const fetchingData = async () => {
+      
+      try {
+        const { data, error } = await supabase
+          .from('products')
+          .select();
+    
+        if (error) {
+          alert(error);
+        }
+    
+        if (data) {
+          products.setallProducts(data);
+          localStorage.setItem('selectedProduct', JSON.stringify(data));
+        }
+      } catch (error) {
+        alert(error);
+      }
+    };
+  
+    fetchingData()
+   }, []);
+   
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const searched = queryParams.get('array');
@@ -15,7 +43,6 @@ const SearchedProducts = () => {
     values.indexOf(product.id) !== -1
   );
 console.log(productsToFind)
-    const products = useContext(Context)
     {products.productToast&& (toast.info('Product Is Added To Your Cart'))}
   return (
     <>
